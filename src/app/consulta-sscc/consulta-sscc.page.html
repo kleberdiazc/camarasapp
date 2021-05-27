@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      SONGA
+    </ion-title>
+    <button slot="end" (click)="ActivarBluetooth()">buscar</button>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content  class="forms-validations-content">
+  <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
+  <ion-row>
+    <ion-col size="12">
+      <ion-item class="input-item">
+        <ion-input type="email" placeholder="sscc" formControlName="sscc" clearInput autocapitalize="off" inputmode="email"></ion-input>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.sscc">
+          <div class="error-message" *ngIf="validationsForm.get('sscc').hasError(validation.type) && (validationsForm.get('sscc').dirty || validationsForm.get('sscc').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Submit</ion-button>
+  </form>
+
+  <div>
+    <div *ngFor="let data of Devices">
+      <p>{{data.name}}</p>
+      <p>{{data.id}}</p>
+      <button (click)="connect(data.address)">Conectar</button>
+    </div>
+    
+  </div>
+</ion-content>

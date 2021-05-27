@@ -17,10 +17,36 @@ const { SplashScreen, Storage } = Plugins;
     './side-menu/styles/side-menu.responsive.scss'
   ]
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   selectedPath: string;
   componentes: Observable<Componente[]>;
-  appPages: Observable<Componente[]>;
+  appPages = [
+    {
+      title: 'Categories',
+      url: '/app/categories',
+      ionicIcon: 'list-outline'
+    },
+    {
+      title: 'Saldos',
+      url: '/app/saldos',
+      ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Consulta SSCC',
+      url: '/app/consulta-sscc',
+      ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Contact Card',
+      url: '/contact-card',
+      customIcon: './assets/custom-icons/side-menu/contact-card.svg'
+    },
+    {
+      title: 'Notifications',
+      url: '/app/notifications',
+      ionicIcon: 'notifications-outline'
+    }
+    ];
   accountPages = [
   {
     title: 'Log In',
@@ -53,14 +79,14 @@ export class AppComponent implements OnInit{
 
   async initializeApp() {
     try {
-      this.appPages = this.menServi.getAll();
+      //this.appPages = this.menServi.getAll();
       console.log(this.appPages);
       await SplashScreen.hide();
     } catch (err) {
       console.log('This is normal in a browser', err);
     }
   }
-  ngOnInit() {
+ /* ngOnInit() {
     this.appPages = this.menServi.getAll();
     console.log(this.appPages);
     console.log('INICIE');
@@ -71,7 +97,7 @@ export class AppComponent implements OnInit{
     console.log('INICIE');
 
   }
-
+*/
   
 
   openTutorial() {

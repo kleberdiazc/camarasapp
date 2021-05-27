@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      SONGA
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col size="12">
+        <ion-button (click)="Buscar_Saldos()" expand="block">
+            <ion-icon name="search" size="large"></ion-icon>
+        </ion-button>
+    </ion-col>
+</ion-row>
+  <ion-row >
+    <ion-col size="12">
+      <div>
+        <ngx-datatable
+            #table
+            class="material"
+            [rows]="rows"
+            columnMode="force"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            [rowHeight]="30"
+            [scrollbarV]="true"
+            [scrollbarH]="true">
+            <ngx-datatable-column name="BODEGA" prop='BODEGA' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Ubica" prop='Ubica' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column [width]="350" name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="4"></ngx-datatable-column>
+            <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="3"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+    </ion-col>
+  </ion-row>
+</ion-content>

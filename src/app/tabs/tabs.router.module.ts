@@ -1,3 +1,4 @@
+import { ConsultaSSCCPage } from './../consulta-sscc/consulta-sscc.page';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -84,7 +85,25 @@ const routes: Routes = [
             loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsPageModule)
           }
         ]
-      }
+      },
+      {
+        path: 'saldos',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../saldos/saldos.module').then(m => m.SaldosPageModule)
+          }
+        ]
+      },
+      {
+        path: 'consulta-sscc',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../consulta-sscc/consulta-sscc.module').then(m => m.ConsultaSSCCPageModule)
+          }
+        ]
+      },
     ]
   }
 ];
