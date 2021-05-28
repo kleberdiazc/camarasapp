@@ -6,5 +6,9 @@
     <param name="android-package" value="com.megster.cordova.BluetoothSerial"/>
   </feature>
 
+  <feature name="BluetoothPrinter">
+    <param name="android-package" value="br.com.cordova.printer.bluetooth.BluetoothPrinter"/>
+  </feature>
+
   
 </widget>

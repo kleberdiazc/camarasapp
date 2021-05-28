@@ -8,7 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { ConsultaSSCCPage } from './consulta-sscc.page';
 import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from '../components/components.module';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+
 
 
 const SsccRoutes: Routes = [
@@ -27,6 +27,6 @@ const SsccRoutes: Routes = [
     ComponentsModule
   ],
   declarations: [ConsultaSSCCPage],
-  providers:[BluetoothSerial]
+
 })
 export class ConsultaSSCCPageModule {}

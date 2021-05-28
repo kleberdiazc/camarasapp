@@ -1,7 +1,7 @@
 import { AlertController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { ConsultaSsccService } from './consulta-sscc.service';
 
 @Component({
   selector: 'app-consulta-sscc',
@@ -15,16 +15,22 @@ export class ConsultaSSCCPage implements OnInit {
       { type: 'required', message: 'sscc es requerido.' }
     ]
   };
-  Devices;
+  bluetoothList:any=[];
+  selectedPrinter:any;
 
-  constructor(private _BluetoothSerial: BluetoothSerial
+  constructor(private print:ConsultaSsccService
               ,private alertController:AlertController) {
     this.validationsForm = new FormGroup({
       'sscc': new FormControl('',Validators.compose([
         Validators.required
         //Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ]))
+
+       //This will list all of your bluetooth devices
     });
+    
+    //this.listPrinter();
+
   }
   ngOnInit() {
   
@@ -37,70 +43,76 @@ export class ConsultaSSCCPage implements OnInit {
     console.log(this.validationsForm.get('sscc').value);
   }
 
-  /*
-   Bluethoot
-  */
-  
-  ActivarBluetooth(){
-    this._BluetoothSerial.isEnabled().then(response => {
-      console.log("isEnabled");
-      //this.isEnabled("ON");
-      this.Listdevice();
-    }, error => {
-      console.log("isDisabled");
-      this.isEnabled("Off");
+  selectPrinter(macAddress)
+  {
+    //Selected printer macAddress stored here
+    this.selectedPrinter=macAddress;
+  }
+
+
+  listBTDevice()
+  {
+    this.print.searchBt().then(datalist=>{
+      
+      this.bluetoothList = datalist;
+
+    },async err=>{
+      console.log("ERROR",err);
+      let mno= await this.alertController.create({
+        header:"ERROR "+err,
+        buttons:['Dismiss']
+      });
+      await mno.present();
     })
+
   }
 
-  Listdevice() {
-    this._BluetoothSerial.list().then(response => {
-      this.Devices = response;
-    }, error => {
-      console.log("error");
-    });
+  testConnectPrinter()
+  {
+    var id=this.selectedPrinter;
+    if(id==null||id==""||id==undefined)
+    {
+      //nothing happens, you can put an alert here saying no printer selected
+    }
+    else
+    {
+      let foo=this.print.connectBT(id).subscribe(async data=>{
+        console.log("CONNECT SUCCESSFUL",data);
+
+        let mno= await this.alertController.create({
+          header:"Connect successful",
+          buttons:['Dismiss']
+        });
+        await mno.present();
+
+      },async err=>{
+        console.log("Not able to connect",err);
+        let mno= await this.alertController.create({
+          header:"ERROR "+err,
+          buttons:['Dismiss']
+        });
+        await mno.present();
+      });
+    }
+
+    
+
   }
 
-  connect(address) {
-    this._BluetoothSerial.connect(address).subscribe(suscribe => {
-      this.deviceConnected();
-    }, error => {
-      console.log("error");
-    })
+  testPrinter()
+  {
+    var id=this.selectedPrinter;
+    if(id==null||id==""||id==undefined)
+    {
+      //nothing happens, you can put an alert here saying no printer selected
+    }
+    else
+    {
+      let foo=this.print.testPrint(id);
+    }
   }
 
-  deviceConnected() {
-    this._BluetoothSerial.subscribe('/n').subscribe(success => {
-      this.hundler(success)
-    });
-  }
 
-  hundler(value) {
-    console.log(value);
-  }
 
-  sebData() {
-    this._BluetoothSerial.write("7").then(response => {
-      console.log("oky")
-    }, error => {
-      console.log("problema")
-    })
-  }
-
-  Disconnected() {
-    this._BluetoothSerial.disconnect();
-    console.log("dispositivo conectado");
-  }
-  async isEnabled(msg) {
-    const alert =  await this.alertController.create({
-      header: "Alerta",
-      message: msg,
-      buttons: [{
-        text: 'Okay',
-        handler:()=> {
-          console.log("Okay")
-        }
-      }]
-    })
-  }
 
 }

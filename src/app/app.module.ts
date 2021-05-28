@@ -12,6 +12,7 @@ import { ComponentsModule } from './components/components.module';
 import { environment } from '../environments/environment';
 
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    BluetoothSerial
   ],
   bootstrap: [AppComponent]
 })

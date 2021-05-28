@@ -6,7 +6,7 @@
     <ion-title>
       SONGA
     </ion-title>
-    <button slot="end" (click)="ActivarBluetooth()">buscar</button>
+    <button slot="end" (click)="listBTDevice()">buscar</button>
   </ion-toolbar>
 </ion-header>
 
@@ -32,11 +32,19 @@
   </form>
 
   <div>
-    <div *ngFor="let data of Devices">
-      <p>{{data.name}}</p>
-      <p>{{data.id}}</p>
-      <button (click)="connect(data.address)">Conectar</button>
-    </div>
-    
+    <ion-list>
+      <ion-item *ngFor="let item of bluetoothList" (click)="selectPrinter(item.id)">
+          {{item.name}} {{item.id}}
+      </ion-item>
+      </ion-list>
+      <div>
+          Selected Printer: {{selectedPrinter}}
+      </div>
+      <ion-button expand="full" color="danger" *ngIf='selectedPrinter' (click)="testConnectPrinter()">
+      CONECTAR!
+      </ion-button>
+      <ion-button expand="full" color="danger" *ngIf='selectedPrinter' (click)="testPrinter()">
+        PRINT!
+        </ion-button>
   </div>
 </ion-content>
