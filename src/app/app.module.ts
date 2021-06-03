@@ -15,6 +15,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
