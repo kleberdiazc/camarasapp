@@ -42,3 +42,9 @@ export interface TablaCodigo {
 
 
 
+export interface SaldosGlobal{
+  CODIGO:string,
+  DESCRIPCION:string,
+  MASTER:number,
+  LIBRAS:number,
+}
