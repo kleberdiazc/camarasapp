@@ -14,11 +14,31 @@ export interface Saldos {
   CJS: string;
   MSTRS: string;
 }
-
-
-export interface SaldosGlobal{
-  CODIGO:string,
-  DESCRIPCION:string,
-  MASTER:number,
-  LIBRAS:number,
+ 
+export interface DataCombos {
+  CODIGO: string;
+  DESCRIPCION: string;
 }
+
+export interface Tables {
+  Table: [];
+  Table1: [];
+  Table2: [];
+  Table3: [];
+  Table4: [];
+  Table5: [];
+  Table6: [];
+}
+
+export interface ResultWS {
+  Codigo: string;
+  Description: string;
+  Dt: Tables;
+}
+
+export interface TablaCodigo {
+  Codigo: string;
+}
+
+
+

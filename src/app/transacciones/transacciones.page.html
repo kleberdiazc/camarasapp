@@ -1,0 +1,300 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Transacciones
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <div>
+    <div>
+      <ng-container *ngIf="tab === 'Tab1'">
+          <ion-row>
+            <ion-col size="6">
+              <ion-label class="labelTab1">Tipo</ion-label>
+              <ion-item>
+                <ion-select [(ngModel)]="cmbTipo" (ionChange)="OnChangeTipo($event)">
+                  <ion-select-option *ngFor="let data of dataCombosTipo"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-label class="labelTab1">Motivo</ion-label>
+              <ion-item>
+                <ion-select [(ngModel)]="cmbMotivo">
+                  <ion-select-option *ngFor="let data of dataCombosMotivo"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <ion-label class="labelTab1">Origen</ion-label>
+              <ion-item>
+                <ion-select [(ngModel)]="cmbOrigen">
+                  <ion-select-option *ngFor="let data of dataCombosOrigen"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-label class="labelTab1">Destino</ion-label>
+              <ion-item>
+                <ion-select [(ngModel)]="cmbDestino">
+                  <ion-select-option *ngFor="let data of dataCombosDestino"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          
+      </ng-container>
+
+      <ng-container *ngIf="tab === 'Tab2'">
+        <ion-row>
+          <ion-col size="12">
+            <ion-item class="input-item">
+              <ion-input type="email" placeholder="Detalle" clearInput autocapitalize="off" inputmode="email"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label class="labelTab1">Reci.</ion-label>
+            <ion-item>
+              <ion-select [(ngModel)]="cmbReci">
+                <ion-select-option *ngFor="let data of dataCombosReci"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">
+            <ion-row>
+              <ion-col size="3">
+                <ion-checkbox></ion-checkbox>
+              </ion-col>
+              <ion-col size="9">
+                <ion-label>Cuarentena</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col size="2">
+            <ion-checkbox></ion-checkbox>
+          </ion-col>
+          <ion-col size="5">
+            <ion-row>
+              <ion-col size="3">
+                <ion-label>Ult.</ion-label>
+              </ion-col>
+              <ion-col size="9">
+                <ion-input style="--padding-top: 0px;" placeholder="" clearInput autocapitalize="off" ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <ng-container *ngIf="tab === 'Tab3'">
+        <ion-row>
+          <ion-col size="12">
+            <ion-row>
+              <ion-col size="3">
+                <ion-label class="labelTab1">Refer.</ion-label>
+              </ion-col>
+              <ion-col size="9">
+                <ion-input style="--padding-top: 0px;" placeholder="" clearInput autocapitalize="off" ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label class="labelTab1">MQ.</ion-label>
+              <ion-select [(ngModel)]="cmbMQ">
+                <ion-select-option *ngFor="let data of dataCombosMQ"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-radio-group value="biff">
+                <ion-row>
+                  <ion-col>
+                    <ion-list-header>
+                      <ion-label>Conversión</ion-label>
+                    </ion-list-header>
+                  </ion-col>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label>SI</ion-label>
+                      <ion-radio slot="start" value="biff"></ion-radio>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col>
+                    <ion-item>
+                      <ion-label>NO</ion-label>
+                      <ion-radio slot="start" value="griff"></ion-radio>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>Inventario</ion-label>
+              <ion-checkbox slot="start"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-select [(ngModel)]="cmbTipoConv">
+                <ion-select-option *ngFor="let data of dataCombosTipoConv"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+
+      <ng-container *ngIf="tab === 'Tab4'">
+        <ion-row>
+          <ion-col size="10">
+            <ion-item>
+              <ion-label>Movil</ion-label>
+              <ion-select [(ngModel)]="cmbMovil" (ionChange)="OnChangeMovil($event)">
+                <ion-select-option *ngFor="let data of dataCombosMovil"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-row>
+              <ion-col size="5">
+                <ion-label style="margin-left: 12px;">Factura.</ion-label>
+              </ion-col>
+              <ion-col size="7">
+                <ion-input style="--padding-top: 0px;" placeholder="" clearInput autocapitalize="off" ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col size="6">
+            <ion-row>
+              <ion-col size="4">
+                <ion-label >Sellos.</ion-label>
+              </ion-col>
+              <ion-col size="8">
+                <ion-input style="--padding-top: 0px;" placeholder="" clearInput autocapitalize="off" ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="3">
+            <ion-label class="labelTab1">Chofer</ion-label>
+          </ion-col>
+          <ion-col size="9">
+            <ion-select value={{cmbChofer}}>
+              <ion-select-option *ngFor="let data of dataCombosChofer"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ng-container>
+    </div>
+
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button (click)="show('Tab1')">
+        <ion-label>Generales</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="show('Tab2')">
+        <ion-label>Obs.</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="show('Tab3')">
+        <ion-label>Especifica</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="show('Tab4')">
+        
+        <ion-label>Movil</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item class="contentbuttonSSCC">
+          <ion-label class="labelSSCC">Pallet</ion-label>
+          <ion-button class="buttonSSCC">00378611592303645755</ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label class="labelTab1">Ubicac.</ion-label>
+          <ion-select>
+            <ion-select-option *ngFor="let data of dataCombosTipo"  value={{data.CODIGO}} >{{data.DESCRIPCION}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-input placeholder="SSCC" clearInput autocapitalize="off"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-item>
+          <ion-label>Pallet</ion-label>
+          <ion-badge slot="end">22</ion-badge>
+        </ion-item>
+      </ion-col>
+      <ion-col size="4">
+        <ion-item>
+          <ion-label>T. Mas</ion-label>
+          <ion-badge slot="end">22</ion-badge>
+        </ion-item>
+      </ion-col>
+      <ion-col size="4">
+        <ion-item>
+          <ion-label>Caj.</ion-label>
+          <ion-badge slot="end">22</ion-badge>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-tab-bar style="height: 50px;" slot="bottom">
+      <ion-tab-button (click)="show('Tab1')">
+        <ion-icon name="document-outline"></ion-icon>
+        <ion-label>Nuevo.</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="show('Tab2')">
+        <ion-icon name="print-outline"></ion-icon>
+        <ion-label>Reimp.</ion-label>
+      </ion-tab-button>
+
+      <!-- <ion-tab-button (click)="show('Tab3')">
+        <ion-label>C.Pr</ion-label>
+      </ion-tab-button> -->
+
+      <ion-tab-button (click)="show('Tab4')">
+        <ion-icon name="save-outline"></ion-icon>
+        <ion-label>Grabar</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </div>
+</ion-content>
