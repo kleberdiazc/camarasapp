@@ -104,6 +104,15 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'saldo-global',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../saldo-global/saldo-global.module').then(m => m.SaldoGlobalPageModule)
+          }
+        ]
+      },
     ]
   }
 ];

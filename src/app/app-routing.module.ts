@@ -72,6 +72,10 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'page-not-found'
+  },
+  {
+    path: 'consultas-sscc',
+    loadChildren: () => import('./consultas-sscc/consultas-sscc.module').then( m => m.ConsultasSsccPageModule)
   }
 ];
 @NgModule({

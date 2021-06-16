@@ -37,3 +37,6 @@ UserInterfaceState.xcuserstate
 
 .firebase
 release/
+
+src/app/saldo-global
+src/app/tabs

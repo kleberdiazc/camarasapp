@@ -37,14 +37,9 @@ export class AppComponent {
       ionicIcon: 'person-outline'
     },
     {
-      title: 'Contact Card',
-      url: '/contact-card',
-      customIcon: './assets/custom-icons/side-menu/contact-card.svg'
-    },
-    {
-      title: 'Notifications',
-      url: '/app/notifications',
-      ionicIcon: 'notifications-outline'
+      title: 'Saldo Global',
+      url: '/app/saldo-global',
+      ionicIcon: 'person-outline'
     }
     ];
   accountPages = [
@@ -52,21 +47,6 @@ export class AppComponent {
     title: 'Log In',
     url: '/auth/login',
     ionicIcon: 'log-in-outline'
-  },
-  {
-    title: 'Sign Up',
-    url: '/auth/signup',
-    ionicIcon: 'person-add-outline'
-  },
-  {
-    title: 'Getting Started',
-    url: '/getting-started',
-    ionicIcon: 'rocket-outline'
-  },
-  {
-    title: '404 page',
-    url: '/page-not-found',
-    ionicIcon: 'alert-circle-outline'
   }
 ];
 

@@ -14,4 +14,11 @@ export interface Saldos {
   CJS: string;
   MSTRS: string;
 }
- 
+
+
+export interface SaldosGlobal{
+  CODIGO:string,
+  DESCRIPCION:string,
+  MASTER:number,
+  LIBRAS:number,
+}
