@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="app/consultas-sscc"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consulta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-row >
+    <ion-col size="12">
+      <div>
+        <ngx-datatable
+            #table
+            class="material"
+            [rows]="rows"
+            columnMode="force"
+            [headerHeight]="20"
+            [footerHeight]="0"
+            [rowHeight]="10"
+            [scrollbarV]="true"
+            [scrollbarH]="true">
+            <ngx-datatable-column name="CODIGO" prop='CODIGO' [flexGrow]="5"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col size = "6">
+      <ion-list>
+        <ion-item>
+          <ion-label position="fixed">Codigo</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Talla</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Descripción</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size = "6">
+      <ion-list>
+        <ion-item>
+          <ion-label position="fixed" >{{tipo}}</ion-label>
+          <ion-input>500</ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+ 
+
+  <ion-row>
+    <ion-col size = "6">
+      <ion-list>
+        <ion-item>
+          <ion-label position="fixed">Lote</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed" Text="Total">total</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Pallet</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size = "6">
+      <ion-list>
+        <ion-item>
+          <ion-label position="fixed">Bodega</ion-label>
+          <ion-input>500</ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Saldo</ion-label>
+          <ion-input>500</ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row> 
+    <ion-col size = "5">
+      <ion-item>
+        <ion-label>Cantidad</ion-label>
+        <ion-badge slot="end">22</ion-badge>
+      </ion-item>
+    </ion-col>  
+    <ion-col size = "5">
+      <ion-button >Barras</ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row> 
+    <ion-col size = "5">
+      <ion-button >Cerrar</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

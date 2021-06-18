@@ -40,6 +40,16 @@ export class AppComponent {
       title: 'Saldo Global',
       url: '/app/saldo-global',
       ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Transacciones',
+      url: '/app/transacciones',
+      ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Consultas SSCC',
+      url: '/app/consultas-sscc',
+      ionicIcon: 'person-outline'
     }
     ];
   accountPages = [

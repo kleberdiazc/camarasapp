@@ -48,3 +48,25 @@ export interface SaldosGlobal{
   MASTER:number,
   LIBRAS:number,
 }
+
+
+export interface Valida{
+  Codigo: string;
+  Description: string;
+  Dt: Validatable;
+}
+
+export interface Validatable{
+  Table: [];
+}
+
+
+export interface DetalleCons {
+  Table: [];
+}
+
+export interface RWDetalleCons{
+  Codigo: string;
+  Description: string;
+  Dt: Validatable;
+}

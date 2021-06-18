@@ -72,6 +72,10 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'page-not-found'
+  },
+  {
+    path: 'detalle-consulta',
+    loadChildren: () => import('./detalle-consulta/detalle-consulta.module').then( m => m.DetalleConsultaPageModule)
   }
 ];
 @NgModule({

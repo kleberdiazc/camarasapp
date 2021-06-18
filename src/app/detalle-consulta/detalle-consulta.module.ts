@@ -5,26 +5,29 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 
-
-import { ConsultasSsccPage } from './consultas-sscc.page';
+import { DetalleConsultaPage } from './detalle-consulta.page';
 import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from '../components/components.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
-const SsccRoutes: Routes = [
+
+
+const routes: Routes = [
   {
     path: '',
-    component: ConsultasSsccPage
+    component: DetalleConsultaPage,
   }
 ];
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(SsccRoutes),
-    ComponentsModule
+    ReactiveFormsModule,
+    RouterModule.forChild(routes),
+    ComponentsModule,
+    NgxDatatableModule
   ],
-  declarations: [ConsultasSsccPage]
+  declarations: [DetalleConsultaPage]
 })
-export class ConsultasSsccPageModule {}
+export class DetalleConsultaPageModule {}

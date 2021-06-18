@@ -113,6 +113,29 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'transacciones',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../transacciones/transacciones.module').then(m => m.TransaccionesPageModule)
+          }
+        ]
+      },
+
+      {
+        path: 'consultas-sscc',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../consultas-sscc/consultas-sscc.module').then(m => m.ConsultasSsccPageModule)
+          },
+          {
+            path: 'detalle-consulta',
+            loadChildren: () => import('../detalle-consulta/detalle-consulta.module').then(m => m.DetalleConsultaPageModule)
+          },
+        ]
+      },
     ]
   }
 ];
