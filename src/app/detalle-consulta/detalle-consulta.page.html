@@ -19,10 +19,10 @@
             columnMode="force"
             [headerHeight]="20"
             [footerHeight]="0"
-            [rowHeight]="10"
+            [rowHeight]="100"
             [scrollbarV]="true"
             [scrollbarH]="true">
-            <ngx-datatable-column name="CODIGO" prop='CODIGO' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
         </ngx-datatable>
     </div>
     </ion-col>
@@ -34,15 +34,15 @@
       <ion-list>
         <ion-item>
           <ion-label position="fixed">Codigo</ion-label>
-          <ion-input></ion-input>
+          <ion-input>{{codigo}}</ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="fixed">Talla</ion-label>
-          <ion-input></ion-input>
+          <ion-input>{{talla}}</ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="fixed">Descripción</ion-label>
-          <ion-input></ion-input>
+          <ion-input>{{Descri}}</ion-input>
         </ion-item>
       </ion-list>
     </ion-col>
@@ -62,15 +62,15 @@
       <ion-list>
         <ion-item>
           <ion-label position="fixed">Lote</ion-label>
-          <ion-input></ion-input>
+          <ion-input>{{Lote}}</ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="fixed" Text="Total">total</ion-label>
-          <ion-input></ion-input>
+          <ion-input>{{Total}}</ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="fixed">Pallet</ion-label>
-          <ion-input></ion-input>
+          <ion-input>{{Pallet}}</ion-input>
         </ion-item>
       </ion-list>
     </ion-col>
@@ -78,11 +78,11 @@
       <ion-list>
         <ion-item>
           <ion-label position="fixed">Bodega</ion-label>
-          <ion-input>500</ion-input>
+          <ion-input>{{bodega}}</ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="fixed">Saldo</ion-label>
-          <ion-input>500</ion-input>
+          <ion-input>{{saldo}}</ion-input>
         </ion-item>
       </ion-list>
     </ion-col>

@@ -39,7 +39,7 @@ export class ConsultasSsccPage implements OnInit {
   onSubmit(values) {
     let navigationExtras: NavigationExtras = {
       state: {
-        sscc: this.validationsForm.get('sscc').value,
+        sscc: this.validationsForm.get('sscc').value.substring(2, 20),
         resumido: this.myBoolean,
         consulta: this.consulta
       }

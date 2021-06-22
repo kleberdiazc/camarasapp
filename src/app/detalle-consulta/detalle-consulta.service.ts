@@ -44,6 +44,7 @@ export class DetalleConsultaService {
           conexion: 'PRODUCCION'
       };
      
+      console.log(resumido,sscc)
       return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
     }
 }

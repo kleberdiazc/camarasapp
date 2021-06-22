@@ -1,0 +1,110 @@
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+@import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
+@import '~@swimlane/ngx-datatable/themes/dark.scss';
+
+
+.top-20 {
+    margin-top: 20%
+}
+
+.botton-20 {
+    margin-bottom: 20%
+}
+
+.top-5 {
+    margin-top: 5%
+}
+
+.top-3 {
+    margin-top: 3%
+}
+
+.ion-color-hsonga {
+    --ion-color-base: var(--ion-color-hsonga);
+    --ion-color-base-rgb: var(--ion-color-hsonga-rgb);
+    --ion-color-contrast: var(--ion-color-hsonga-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-hsonga-contrast-rgb);
+    --ion-color-shade: var(--ion-color-hsonga-shade);
+    --ion-color-tint: var(--ion-color-hsonga-tint);
+}
+
+.ion-color-songa {
+    --ion-color-base: var(--ion-color-songa);
+    --ion-color-base-rgb: var(--ion-color-songa-rgb);
+    --ion-color-contrast: var(--ion-color-songa-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-songa-contrast-rgb);
+    --ion-color-shade: var(--ion-color-songa-shade);
+    --ion-color-tint: var(--ion-color-songa-tint);
+}
+
+ion-checkbox {
+    --size: 20px;
+}
+
+.ion-checkEdit {
+    --size: 15px;
+}
+
+.ion-prd {
+    border-radius: 10px !important;
+    padding-right: 30px;
+    font-size: 0.9em;
+    border: 1px solid #006D97 !important;
+    /*--background: rgb(219, 219, 219) !important;*/
+    /* height: 10%; */
+    /* width: 41%; */
+    max-width: 50vw; // this is applying perfectly
+    max-height: 10vh;
+}
+
+.ion-buscar {
+    padding-right: 30px;
+    font-size: 0.9em;
+    /*--background: rgb(219, 219, 219) !important;*/
+    /* height: 10%; */
+    /* width: 41%; */
+    max-width: 50vw; // this is applying perfectly
+    max-height: 10vh;
+}
+
+.my-label {
+    font-size: 0.7em;
+}
+
+.datatable-body-cell { text-align: left; padding: .9rem 1.2rem; font-weight: 400; color: rgba(0,0,0,.54); vertical-align: bottom; font-size: 70px; font-weight: 500;}
+
+.ion-cant {
+    border-radius: 10px !important;
+    padding-right: 30px;
+    font-size: 0.9em;
+    border: 1px solid #006D97 !important;
+    /*--background: rgb(219, 219, 219) !important;*/
+    /* height: 10%; */
+    /* width: 41%; */
+    max-width: 50vw !important; // this is applying perfectly
+    max-height: 10vh !important;
+}
+
+.my-cant {
+    border-radius: 10px !important;
+    padding-right: 30px;
+    font-size: 0.7em;
+    background: rgb(219, 219, 219) !important;
+    /* height: 10%; */
+    /* width: 41%; */
+    max-width: 80vw !important; // this is applying perfectly
+    max-height: 10vh !important;
+}
+
+.requermiento{
+    width: 10%;
+}
+
+.smallbtn {
+    display:block;
+    height: 6% !important;
+    width: 6% !important;
+    font-size: 20px;
+  }

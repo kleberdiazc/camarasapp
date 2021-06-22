@@ -1,3 +1,4 @@
+import { DetalleConsultaService } from './detalle-consulta.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { SaldosGlobal } from '../interfaces/interfaces';
@@ -8,32 +9,63 @@ import { SaldosGlobal } from '../interfaces/interfaces';
   styleUrls: ['./detalle-consulta.page.scss'],
 })
 export class DetalleConsultaPage implements OnInit {
-  rows: SaldosGlobal[] = [];
+  rows = [];
   columns = [];
   total: number = 0;
   sscc: string;
   resumido: boolean;
   consulta: string;
   data: any;
-  tipo:string = "CAJA"
-  constructor(private route:ActivatedRoute,private router:Router) {
+  tipo: string = "CAJA"
+  codigo: string;
+  talla: string;
+  Descri: string;
+  Lote: string;
+  Total: string;
+  Pallet: string
+  saldo: string;
+  bodega: string;
+
+  constructor(private route:ActivatedRoute,private router:Router,private _detalle:DetalleConsultaService) {
     this.columns = [
-      { prop: 'CODIGO',name: 'CODIGO'},
-      { prop: 'DESCRIPCION', name:'DESCRIPCION' },
-      { prop: 'MASTER', name: 'MASTER' },
+      { prop: 'Cod',name: 'Cod'},
+      { prop: 'Talla', name:'Talla' },
+      { prop: 'Descri', name: 'Descri' },
       { prop: 'LIBRAS', name: 'LIBRAS' },
     ]
     if (this.router.getCurrentNavigation().extras.state) {
       console.log(this.router.getCurrentNavigation().extras.state.sscc)
-      this.data = this.router.getCurrentNavigation().extras.state.sscc;
-      if (this.data.substring(0, 9) == '786115922' || this.data.substring(0, 9) == '786120672') {
+      this.data = this.router.getCurrentNavigation().extras.state;
+      if (this.data.sscc.substring(1, 9) == '786115922' || this.data.sscc.substring(1, 9) == '786120672') {
           this.tipo = "CAJA"
         }
-      if (this.data.substring(0, 9) == '786115923' || this.data.substring(0, 9) == '786120673') {
+      if (this.data.sscc.substring(1, 9) == '786115923' || this.data.sscc.substring(1, 9) == '786120673') {
         this.tipo = "MASTER"
         }
       
     }
+    let resum;
+    
+    if (this.data.resumido) {
+      resum = 'S';
+    } else {
+      resum = 'N';
+    }
+    this._detalle.ConsultarDetalle(resum, this.data.sscc).subscribe((resp) => {
+      console.log('DETALLE', resp);
+      console.log('DETALLE', resp.Dt.Table);
+       this.rows = resp.Dt.Table;
+      /*this.codigo = tablex[0]["Cod"];
+      this.talla = tablex[0]["Talla"];
+      this.Descri = tablex[0]["Descri"];
+      this.Lote = tablex[0]["Lote"];
+      this.Total = tablex[0]["Master"];
+      this.Pallet = tablex[0][""];
+      this.saldo = tablex[0]["Saldo"];
+      this.bodega = tablex[0]["sscc_Bodega"];*/
+    });
+
+    
   }
 
   ngOnInit() {
