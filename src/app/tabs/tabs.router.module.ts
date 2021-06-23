@@ -136,6 +136,10 @@ const routes: Routes = [
           },
         ]
       },
+      {
+        path: 'temperatura',
+        loadChildren: () => import('../temperatura/temperatura.module').then( m => m.TemperaturaPageModule)
+      }
     ]
   }
 ];

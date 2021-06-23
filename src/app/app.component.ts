@@ -50,6 +50,11 @@ export class AppComponent {
       title: 'Consultas SSCC',
       url: '/app/consultas-sscc',
       ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Temperatura',
+      url: '/app/temperatura',
+      ionicIcon: 'person-outline'
     }
     ];
   accountPages = [

@@ -31,6 +31,9 @@ export class DetalleConsultaPage implements OnInit {
       { prop: 'Cod',name: 'Cod'},
       { prop: 'Talla', name:'Talla' },
       { prop: 'Descri', name: 'Descri' },
+      { prop: 'Lote', name: 'Lote' },
+      { prop: 'Master', name: 'Master' },
+      { prop: 'sscc_Bodega', name: 'Bodega' },
       { prop: 'LIBRAS', name: 'LIBRAS' },
     ]
     if (this.router.getCurrentNavigation().extras.state) {
@@ -69,6 +72,18 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+   onClickRow(row) {
+    console.log('mi row',row.Lote);
+    this.codigo = row.Cod;
+    this.talla = row.Talla;
+    this.Descri = row.Descri;
+    this.Lote = row.Lote;
+    this.Total = row.Master;
+    this.saldo = row.Saldo;
+    this.bodega = row.sscc_Bodega;
+  
   }
 
 }

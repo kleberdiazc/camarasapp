@@ -22,7 +22,21 @@
             [rowHeight]="100"
             [scrollbarV]="true"
             [scrollbarH]="true">
+            <ngx-datatable-column name="Ver" prop="name" [flexGrow]="2">
+              <ng-template
+                  ngx-datatable-cell-template="ngx-datatable-cell-template"
+                  let-rowIndex="rowIndex"
+                  let-value="value"
+                  let-row="row">
+                  <ion-button size="small" (click)="onClickRow(row)">Ver</ion-button>
+              </ng-template>
+          </ngx-datatable-column>
             <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Talla" prop='Talla' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Descri" prop='Descri' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Master" prop='Master' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Bodega" prop='sscc_Bodega' [flexGrow]="5"></ngx-datatable-column>  
         </ngx-datatable>
     </div>
     </ion-col>
