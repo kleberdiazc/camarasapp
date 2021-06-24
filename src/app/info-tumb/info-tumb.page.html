@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      SONGA
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content >
+  <ion-row>
+    <ion-col size="12">
+      <ion-select placeholder="Seleccione Cierre" (ionChange)='cierreChange($event)' interface="action-sheet">
+        <ion-select-option *ngFor="let cierre of cierres"   [value]="cierre.id">{{cierre.descrip}}</ion-select-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row >
+    <ion-col size="12">
+      <div>
+        <ngx-datatable
+            #table
+            class="material"
+            [rows]="rows"
+            columnMode="force"
+            [headerHeight]="20"
+            [footerHeight]="0"
+            [rowHeight]="100"
+            [scrollbarV]="true"
+            [scrollbarH]="true">
+            
+            <ngx-datatable-column name="CodProd" prop='CodProd' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Producto" prop='Producto' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="talla" prop='talla' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Mast" prop='Mast' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Liquidado" prop='Liquidado' [flexGrow]="5"></ngx-datatable-column>  
+        </ngx-datatable>
+    </div>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

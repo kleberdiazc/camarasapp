@@ -139,7 +139,12 @@ const routes: Routes = [
       {
         path: 'temperatura',
         loadChildren: () => import('../temperatura/temperatura.module').then( m => m.TemperaturaPageModule)
+      },
+      {
+        path: 'info-tumb',
+        loadChildren: () => import('../info-tumb/info-tumb.module').then( m => m.InfoTumbPageModule)
       }
+    
     ]
   }
 ];

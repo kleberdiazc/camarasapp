@@ -55,6 +55,11 @@ export class AppComponent {
       title: 'Temperatura',
       url: '/app/temperatura',
       ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Info Tumbada',
+      url: '/app/info-tumb',
+      ionicIcon: 'person-outline'
     }
     ];
   accountPages = [

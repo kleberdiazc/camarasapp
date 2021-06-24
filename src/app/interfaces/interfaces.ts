@@ -83,3 +83,8 @@ export interface Embarques {
   id: number;
   descrip: string;
 }
+
+export interface Cierre {
+  id: number;
+  descrip: string;
+}

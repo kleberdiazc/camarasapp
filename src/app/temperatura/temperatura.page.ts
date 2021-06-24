@@ -103,9 +103,6 @@ export class TemperaturaPage implements OnInit {
     });
   }
 
-  Imprimir() {
-    console.log("imp");
-  }
 
   Cerrar() {
     console.log("Cerrar");
