@@ -23,12 +23,12 @@
         
             <ion-item>
               <ion-label>Embarque</ion-label>
-              <ion-radio value="1"></ion-radio>
+              <ion-radio value="F"></ion-radio>
             </ion-item>
         
             <ion-item>
               <ion-label>Cierre</ion-label>
-              <ion-radio value="2"></ion-radio>
+              <ion-radio value="C"></ion-radio>
             </ion-item>
   
           </ion-radio-group>
@@ -36,12 +36,27 @@
       </ion-col>
     </ion-row>
     <ion-row>
+      <ion-col size="12">
+        <ion-select placeholder="Seleccione Embarque"   formControlName ="emba"  interface="action-sheet">
+            <ion-select-option *ngFor="let emb of embarques"   [value]="emb.id">{{emb.descrip}}</ion-select-option>
+        </ion-select>
+    </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item>
+          <ion-item class="input-item">
             <ion-label>Temperatura  : </ion-label>
-            <ion-input></ion-input>
+            <ion-input  formControlName="temp" type="number" min="-150" max="-0" ></ion-input>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.temp">
+              <div class="error-message" *ngIf="validationsForm.get('temp').hasError(validation.type) && (validationsForm.get('temp').dirty || validationsForm.get('temp').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
       </ion-list>
       </ion-col>
     </ion-row>
@@ -60,9 +75,12 @@
       </div>
     </ion-col>
   </ion-row>
-  
-  <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Grabar</ion-button>
-  <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Cerrar</ion-button>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Grabar</ion-button>
+    </ion-col>
+  </ion-row>
+
   </form>
 
 </ion-content>

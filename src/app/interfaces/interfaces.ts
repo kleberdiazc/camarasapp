@@ -70,3 +70,16 @@ export interface RWDetalleCons{
   Description: string;
   Dt: Validatable;
 }
+
+
+export interface RWEmbarques{
+  Codigo: string;
+  Description: string;
+  Dt: Validatable;
+}
+
+
+export interface Embarques {
+  id: number;
+  descrip: string;
+}
