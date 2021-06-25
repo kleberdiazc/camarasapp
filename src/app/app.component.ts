@@ -61,6 +61,12 @@ export class AppComponent {
       url: '/app/info-tumb',
       ionicIcon: 'person-outline'
     }
+    ,
+    {
+      title: 'Info Tumbada',
+      url: '/app/consult-transac',
+      ionicIcon: 'person-outline'
+    }
     ];
   accountPages = [
   {

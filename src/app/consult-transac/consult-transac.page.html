@@ -1,0 +1,202 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Consulta Transacciones
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="forms-validations-content"  >
+<div [hidden]="false">
+  <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Tipo:</ion-label>
+          <ion-select placeholder=""   formControlName ="Tipo"  interface="action-sheet">
+              <ion-select-option *ngFor="let t of Tipos "   [value]="t.CODIGO">{{t.DESCRIPCION}}</ion-select-option>
+          </ion-select>
+        </ion-item> 
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.Tipo">
+            <div class="error-message" *ngIf="validationsForm.get('Tipo').hasError(validation.type) && (validationsForm.get('Tipo').dirty || validationsForm.get('Tipo').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+    </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Bodega:</ion-label>
+        <ion-select placeholder=""   formControlName ="Bodega"  interface="action-sheet">
+            <ion-select-option *ngFor="let bod of Bodegas"   [value]="bod.CODIGO">{{bod.DESCRIPCION}}</ion-select-option>
+        </ion-select>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.Bodega">
+            <div class="error-message" *ngIf="validationsForm.get('Bodega').hasError(validation.type) && (validationsForm.get('Bodega').dirty || validationsForm.get('Bodega').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Desde</ion-label>
+          <ion-datetime displayFormat="YYYY-MM-DD" formControlName ="Desde" min="2018-01-04" max="2050-08-23"></ion-datetime>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.Desde">
+            <div class="error-message" *ngIf="validationsForm.get('Desde').hasError(validation.type) && (validationsForm.get('Desde').dirty || validationsForm.get('Desde').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+    </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Hasta</ion-label>
+          <ion-datetime displayFormat="YYYY-MM-DD" formControlName ="Hasta" min="2018-01-04" max="2050-08-23"></ion-datetime>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.Hasta">
+            <div class="error-message" *ngIf="validationsForm.get('Hasta').hasError(validation.type) && (validationsForm.get('Hasta').dirty || validationsForm.get('Hasta').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+    </ion-col>
+    </ion-row>
+
+
+    <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Proceso:</ion-label>
+            <ion-select placeholder=""   formControlName ="Proceso"  interface="action-sheet">
+              <ion-select-option *ngFor="let pro of Procesos"   [value]="pro.CODIGO">{{pro.DESCRIPCION}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.Proceso">
+          <div class="error-message" *ngIf="validationsForm.get('Proceso').hasError(validation.type) && (validationsForm.get('Proceso').dirty || validationsForm.get('Proceso').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+            <ion-label>Trans:</ion-label>
+          <ion-select placeholder=""   formControlName ="Trans"  interface="action-sheet">
+              <ion-select-option *ngFor="let tran of Trans"   [value]="tran.CODIGO">{{tran.DESCRIPCION}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.Trans">
+          <div class="error-message" *ngIf="validationsForm.get('Trans').hasError(validation.type) && (validationsForm.get('Trans').dirty || validationsForm.get('Trans').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Seguir</ion-button>
+      </ion-col>
+    </ion-row>
+
+
+  <!--<ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item class="input-item">
+            <ion-label>Temperatura  : </ion-label>
+            <ion-input  formControlName="temp" type="number" min="-150" max="-0" ></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.temp">
+              <div class="error-message" *ngIf="validationsForm.get('temp').hasError(validation.type) && (validationsForm.get('temp').dirty || validationsForm.get('temp').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+      </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item class="input-item">
+          <ion-input type="text" (keydown.enter)="onKeydown($event)" placeholder="sscc" formControlName="sscc" clearInput autocapitalize="off" ></ion-input>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.sscc">
+            <div class="error-message" *ngIf="validationsForm.get('sscc').hasError(validation.type) && (validationsForm.get('sscc').dirty || validationsForm.get('sscc').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ion-col>
+    </ion-row>-->
+
+  </form>
+</div>
+<div [hidden]="true">
+  <ion-row >
+    <ion-col size="12">
+      <div>
+        <ngx-datatable
+            #table
+            class="material"
+            [rows]="rows"
+            columnMode="force"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            [rowHeight]="30"
+            [scrollbarV]="true"
+            [scrollbarH]="true">
+            <ngx-datatable-column name="NUMSEC" prop='NUMSEC' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="NUMTRA" prop='NUMTRA' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column [width]="350" name="FECHA" prop='FECHA' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="TIPO" prop='TIPO' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="ESTADO" prop='ESTADO' [flexGrow]="4"></ngx-datatable-column>
+            <ngx-datatable-column name="OBSERV" prop='OBSERV' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column name="USUARIO" prop='USUARIO' [flexGrow]="3"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button class="submit-btn" expand="block" fill="outline" >Atras</ion-button>
+    </ion-col>
+  </ion-row>
+</div>
+</ion-content>
+
+
+

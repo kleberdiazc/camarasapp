@@ -84,7 +84,41 @@ export interface Embarques {
   descrip: string;
 }
 
+export interface Tipo {
+  CODIGO: number;
+  DESCRIPCION: string;
+}
+
+export interface Bodega {
+  CODIGO: number;
+  DESCRIPCION: string;
+}
+
+export interface Proceso {
+  CODIGO: number;
+  DESCRIPCION: string;
+}
+
+export interface Trans {
+  CODIGO: number;
+  DESCRIPCION: string;
+}
+
 export interface Cierre {
   id: number;
   descrip: string;
+}
+
+
+export interface DetalleCombos {
+  Table: [];
+  Table1: [];
+  Table2: [];
+  Table3: [];
+}
+
+export interface RWCombosCons{
+  Codigo: string;
+  Description: string;
+  Dt: DetalleCombos;
 }

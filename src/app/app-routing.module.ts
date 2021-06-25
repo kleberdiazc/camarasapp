@@ -78,6 +78,7 @@ const routes: Routes = [
     loadChildren: () => import('./detalle-consulta/detalle-consulta.module').then( m => m.DetalleConsultaPageModule)
   }
 
+
 ];
 @NgModule({
   imports: [
