@@ -63,7 +63,7 @@ export class AppComponent {
     }
     ,
     {
-      title: 'Info Tumbada',
+      title: 'Consulta Transacción',
       url: '/app/consult-transac',
       ionicIcon: 'person-outline'
     }

@@ -46,7 +46,30 @@ export class ConsultTransacService {
       param: ListParam,
       conexion: 'PRODUCCION'
     };
+
     
+    
+    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+  }
+
+  ResumenTransac(bodega: string, user: string, tipo: string, desde: string,
+    hasta: string, pros: string,trans:string,lote:string,pedUsr) {
+    const ListParam = [{ "Name": "Bodega", "Type": "Varchar", "Value": bodega },
+                        { "Name": "User", "Type": "Varchar", "Value": user },
+                        { "Name": "Tipo", "Type": "Varchar", "Value": tipo },
+                        { "Name": "Desde", "Type": "Varchar", "Value": desde },
+                        { "Name": "Hasta", "Type": "Varchar", "Value": hasta },
+                        { "Name": "Pros", "Type": "Varchar", "Value": pros },
+                        { "Name": "Trans", "Type": "Varchar", "Value": trans } , 
+                        { "Name": "Lote", "Type": "Varchar", "Value": lote }  ,
+                        { "Name": "PedUsr", "Type": "Varchar", "Value": pedUsr }  
+                        ];
+    const base = {
+      sp: 'SPR_ResumenTransBod',
+      param: ListParam,
+      conexion: 'PRODUCCION'
+    };
+
     return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
   }
 

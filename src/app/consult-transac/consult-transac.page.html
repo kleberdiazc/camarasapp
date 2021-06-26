@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content  class="forms-validations-content"  >
-<div [hidden]="false">
+<div [hidden]="principal">
   <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
     <ion-row>
       <ion-col size="12">
@@ -165,7 +165,7 @@
 
   </form>
 </div>
-<div [hidden]="true">
+<div [hidden]="segundo">
   <ion-row >
     <ion-col size="12">
       <div>
@@ -192,10 +192,50 @@
   </ion-row>
   <ion-row>
     <ion-col size="12">
-      <ion-button class="submit-btn" expand="block" fill="outline" >Atras</ion-button>
+      <ion-button class="submit-btn" (click)="onSiguienteSegundo()" expand="block" fill="outline" >Siguiente</ion-button>
     </ion-col>
   </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button class="submit-btn" (click)="onAtrasSegundo()" expand="block" fill="outline" >Atras</ion-button>
+    </ion-col>
+  </ion-row>
+  
 </div>
+
+<div [hidden]="tercero">
+  <ion-row >
+    <ion-col size="12">
+      <div>
+        <ngx-datatable
+            #table
+            class="material"
+            [rows]="rowsRes"
+            columnMode="force"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            [rowHeight]="30"
+            [scrollbarV]="true"
+            [scrollbarH]="true">
+            <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column [width]="350" name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="4"></ngx-datatable-column>
+            <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column name="USUARIO" prop='USUARIO' [flexGrow]="3"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+    </ion-col>
+  </ion-row>
+    <ion-row>
+    <ion-col size="12">
+      <ion-button class="submit-btn" (click)="onAtrasTercero()" expand="block" fill="outline" >Atras</ion-button>
+    </ion-col>
+  </ion-row>
+  
+</div>
+
 </ion-content>
 
 
