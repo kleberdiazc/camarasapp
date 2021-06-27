@@ -147,7 +147,12 @@ const routes: Routes = [
       {
         path: 'consult-transac',
         loadChildren: () => import('../consult-transac/consult-transac.module').then( m => m.ConsultTransacPageModule)
+      },
+      {
+        path: 'detalle-pallet',
+        loadChildren: () => import('../detalle-pallet/detalle-pallet.module').then( m => m.DetallePalletPageModule)
       }
+    
     
     ]
   }

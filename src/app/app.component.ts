@@ -67,6 +67,12 @@ export class AppComponent {
       url: '/app/consult-transac',
       ionicIcon: 'person-outline'
     }
+    ,
+    {
+      title: 'Detalle Pallet',
+      url: '/app/detalle-pallet',
+      ionicIcon: 'person-outline'
+    }
     ];
   accountPages = [
   {
