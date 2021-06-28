@@ -102,6 +102,10 @@ const routes: Routes = [
       {
         path: 'suministros',
         loadChildren: () => import('../suministros/suministros.module').then( m => m.SuministrosPageModule)
+      },
+      {
+        path: 'parametros',
+        loadChildren: () => import('../parametros/parametros.module').then( m => m.ParametrosPageModule)
       }
     
     

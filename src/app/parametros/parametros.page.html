@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Consulta Transacciones
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col size="12">
+     <ion-item>
+           <ion-label>Detalle Resumido</ion-label>
+           <ion-checkbox slot="start"  [(ngModel)]="resumen" (ionChange)="ResumenChange()" mode="ios"></ion-checkbox>
+     </ion-item>
+   </ion-col>
+ </ion-row>
+ <ion-row>
+  <ion-col size="12">
+   <ion-item>
+         <ion-label>Oculta Nombre de CIA en Etq Pallet</ion-label>
+         <ion-checkbox slot="start"  [(ngModel)]="oculta" (ionChange)="ocultaChange()" mode="ios"></ion-checkbox>
+   </ion-item>
+ </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col size="12">
+   <ion-item>
+         <ion-label>Detalle Inventario</ion-label>
+         <ion-checkbox slot="start" [(ngModel)]="inventario"  (ionChange)="inventarioChange()" mode="ios"></ion-checkbox>
+   </ion-item>
+ </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-button class="submit-btn" type="submit" (click)="Grabar()" expand="block" fill="outline" >Grabar</ion-button>
+  </ion-col>
+</ion-row>
+</ion-content>

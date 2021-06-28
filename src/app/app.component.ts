@@ -77,6 +77,11 @@ export class AppComponent {
       title: 'Suministros',
       url: '/app/suministros',
       ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Parametros',
+      url: '/app/parametros',
+      ionicIcon: 'person-outline'
     }
     ];
   accountPages = [
