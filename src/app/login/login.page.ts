@@ -31,7 +31,7 @@ export class LoginPage {
     public _login: LoginservicesService,
     public loadingController: LoadingController) {
     this.loginForm = new FormGroup({
-      'email': new FormControl('test@test.com', Validators.compose([
+      'email': new FormControl('kdiaz', Validators.compose([
         Validators.required
         //Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),

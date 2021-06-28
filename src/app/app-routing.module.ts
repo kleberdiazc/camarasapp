@@ -29,16 +29,8 @@ const routes: Routes = [
     loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule)
   },
   {
-    path: 'auth/forgot-password',
-    loadChildren: () => import('./forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
-  },
-  {
     path: 'app',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  },
-  {
-    path: 'contact-card',
-    loadChildren: () => import('./contact-card/contact-card.module').then(m => m.ContactCardPageModule)
   },
   {
     path: 'forms-and-validations',
@@ -62,14 +54,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'firebase/auth',
-    loadChildren: () => import('./firebase/auth/firebase-auth.module').then(m => m.FirebaseAuthModule)
-  },
-  {
-    path: 'firebase/crud',
-    loadChildren: () => import('./firebase/crud/firebase-crud.module').then(m => m.FirebaseCrudModule)
-  },
-  {
     path: '**',
     redirectTo: 'page-not-found'
   },
@@ -77,6 +61,7 @@ const routes: Routes = [
     path: 'detalle-consulta',
     loadChildren: () => import('./detalle-consulta/detalle-consulta.module').then( m => m.DetalleConsultaPageModule)
   }
+
 
 
 ];

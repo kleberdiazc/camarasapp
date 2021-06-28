@@ -72,6 +72,11 @@ export class AppComponent {
       title: 'Detalle Pallet',
       url: '/app/detalle-pallet',
       ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Suministros',
+      url: '/app/suministros',
+      ionicIcon: 'person-outline'
     }
     ];
   accountPages = [
