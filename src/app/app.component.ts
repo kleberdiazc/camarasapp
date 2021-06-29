@@ -27,6 +27,25 @@ export class AppComponent {
       ionicIcon: 'list-outline'
     },
     {
+      title: 'Transacciones',
+      url: '/app/transacciones',
+      ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Temperatura',
+      url: '/app/temperatura',
+      ionicIcon: 'person-outline'
+    }
+    ];
+  accountPages = [
+  {
+    title: 'Log In',
+    url: '/auth/login',
+    ionicIcon: 'log-in-outline'
+  }
+  ];
+  consultas = [
+    {
       title: 'Saldos',
       url: '/app/saldos',
       ionicIcon: 'person-outline'
@@ -42,18 +61,8 @@ export class AppComponent {
       ionicIcon: 'person-outline'
     },
     {
-      title: 'Transacciones',
-      url: '/app/transacciones',
-      ionicIcon: 'person-outline'
-    },
-    {
       title: 'Consultas SSCC',
       url: '/app/consultas-sscc',
-      ionicIcon: 'person-outline'
-    },
-    {
-      title: 'Temperatura',
-      url: '/app/temperatura',
       ionicIcon: 'person-outline'
     },
     {
@@ -84,13 +93,7 @@ export class AppComponent {
       ionicIcon: 'person-outline'
     }
     ];
-  accountPages = [
-  {
-    title: 'Log In',
-    url: '/auth/login',
-    ionicIcon: 'log-in-outline'
-  }
-];
+  
 
   constructor(private menServi: AppServicesService,
               private router: Router,

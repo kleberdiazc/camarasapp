@@ -12,6 +12,16 @@
 <ion-content>
   <ion-row>
     <ion-col size="12">
+      <ion-item>
+        <ion-label>MAC</ion-label>
+        <ion-select placeholder="Seleccione Dispositivo"  [(ngModel)]="mac"  interface="action-sheet">
+            <ion-select-option *ngFor="let emb of bluetoothList"   [value]="emb.id">{{emb.bluetoothList}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+  </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
      <ion-item>
            <ion-label>Detalle Resumido</ion-label>
            <ion-checkbox slot="start"  [(ngModel)]="resumen" (ionChange)="ResumenChange()" mode="ios"></ion-checkbox>
