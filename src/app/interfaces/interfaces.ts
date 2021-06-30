@@ -14,7 +14,7 @@ export interface Saldos {
   CJS: string;
   MSTRS: string;
 }
- 
+
 export interface DataCombos {
   CODIGO: string;
   DESCRIPCION: string;
@@ -31,13 +31,46 @@ export interface Tables {
 }
 
 export interface ResultWS {
-  Codigo: string;
+  Codigo: boolean;
   Description: string;
   Dt: Tables;
 }
 
+
+
 export interface TablaCodigo {
   Codigo: string;
+}
+
+
+export interface ClsProducto {
+  id: string;
+  producto: string;
+  talla: number;
+  lote: string;
+  saldo: number;
+  acumulado: number;
+}
+
+export interface tb_DataGrid {
+  sscc: string;
+  num: number;
+  ssccp: string;
+  ubic: string;
+}
+
+export interface tb_DataGrid2 {
+  sscc: string;
+  Tipo: string;
+}
+
+export interface tb_DataGridTumbada {
+  Prod: string,
+  Talla: string,
+  Lote: string,
+  Masters: string,
+  Coches: string,
+  Valida: string
 }
 
 

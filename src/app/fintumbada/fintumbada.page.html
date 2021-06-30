@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Fin. Tumbada
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="margin-top:14px;">
+    <ion-row>
+      <ion-col size="12">
+        <ion-row>
+          <ion-col size="3">
+            <ion-label style="margin-left: 12px;">Cierre</ion-label>
+          </ion-col>
+          <ion-col size="9">
+            <ion-select style="--padding-top: 0px;" interface="action-sheet" [(ngModel)]="cmbCierre"
+              (ionChange)="OnChangeCierre($event)">
+              <ion-select-option *ngFor="let data of dataCombosCierre" value={{data.CODIGO}}>{{data.DESCRIPCION}}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <div>
+          <ngx-datatable #table class="material striped" style="height: 300px; " [rows]="DataGrid" columnMode="force"
+            [headerHeight]="40" [footerHeight]="0" [rowHeight]="30" [scrollbarV]="true" [scrollbarH]="true">
+            <ngx-datatable-column name="Prod" [width]="100" prop='Prod'></ngx-datatable-column>
+            <ngx-datatable-column name="Talla" [width]="100" prop='Talla'></ngx-datatable-column>
+            <ngx-datatable-column name="Lote" [width]="100" prop='Lote'></ngx-datatable-column>
+            <ngx-datatable-column name="Masters" [width]="100" prop='Masters'></ngx-datatable-column>
+            <ngx-datatable-column name="Coches" [width]="200" prop='Coches'></ngx-datatable-column>
+            <ngx-datatable-column name="Valida" [width]="80" prop='Valida'></ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="OnClickNuevo()">Cancelar</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="onClickGrabar()">Guardar</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</ion-content>

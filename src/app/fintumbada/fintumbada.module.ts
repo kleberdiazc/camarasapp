@@ -5,12 +5,14 @@ import { ComponentsModule } from './../components/components.module';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { TransaccionesPage } from './transacciones.page';
 
-const TransaccionesRoutes: Routes = [
+import { FintumbadaPage } from './fintumbada.page';
+
+
+const FintumbadaPageRoutes: Routes = [
   {
     path: '',
-    component: TransaccionesPage
+    component: FintumbadaPage
   }
 ];
 @NgModule({
@@ -18,10 +20,11 @@ const TransaccionesRoutes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(TransaccionesRoutes),
+    RouterModule.forChild(FintumbadaPageRoutes),
     NgxDatatableModule,
     ComponentsModule
   ],
-  declarations: [TransaccionesPage]
+  declarations: [FintumbadaPage]
 })
-export class TransaccionesPageModule { }
+export class FintumbadaPageModule { }
+

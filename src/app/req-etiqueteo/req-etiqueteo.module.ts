@@ -5,12 +5,15 @@ import { ComponentsModule } from './../components/components.module';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { TransaccionesPage } from './transacciones.page';
 
-const TransaccionesRoutes: Routes = [
+
+import { ReqEtiqueteoPage } from './req-etiqueteo.page';
+
+
+const ReqEtiqueteoRoutes: Routes = [
   {
     path: '',
-    component: TransaccionesPage
+    component: ReqEtiqueteoPage
   }
 ];
 @NgModule({
@@ -18,10 +21,10 @@ const TransaccionesRoutes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(TransaccionesRoutes),
+    RouterModule.forChild(ReqEtiqueteoRoutes),
     NgxDatatableModule,
     ComponentsModule
   ],
-  declarations: [TransaccionesPage]
+  declarations: [ReqEtiqueteoPage]
 })
-export class TransaccionesPageModule { }
+export class ReqEtiqueteoPageModule { }
