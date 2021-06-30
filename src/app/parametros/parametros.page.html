@@ -15,7 +15,7 @@
       <ion-item>
         <ion-label>MAC</ion-label>
         <ion-select placeholder="Seleccione Dispositivo"  [(ngModel)]="mac"  interface="action-sheet">
-            <ion-select-option *ngFor="let emb of bluetoothList"   [value]="emb.id">{{emb.bluetoothList}}</ion-select-option>
+            <ion-select-option *ngFor="let emb of bluetoothList"   [value]="emb.id">{{emb.name}}</ion-select-option>
         </ion-select>
       </ion-item>
   </ion-col>

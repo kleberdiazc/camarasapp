@@ -1,7 +1,7 @@
 import { ParametrosService } from './parametros.service';
 import { Component, OnInit } from '@angular/core';
 import { ConsultaSsccService } from '../consulta-sscc/consulta-sscc.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-parametros',
@@ -16,13 +16,28 @@ export class ParametrosPage implements OnInit {
   mac: string = "";
   constructor(private _param: ParametrosService,
     private print: ConsultaSsccService,
-    private alertController:AlertController) { }
+    private alertController: AlertController,
+    public loadingController: LoadingController) { }
 
-  ngOnInit() {
-    this.inventario = (this._param.getvaluesInventario() == 'true');
-    this.oculta = (this._param.getvaluesOculta() == 'true');
-    this.resumen = (this._param.getvaluesResumido() == 'true');
+  async ngOnInit() {
+
+    console.log("BRING DATA", )
+    
+      const loading = await this.loadingController.create({
+        cssClass: 'my-custom-class',
+        message: 'Un momento...',
+        duration: 1500
+      });
+      await loading.present();
+  
+      const { role, data } = await loading.onDidDismiss();
+      console.log('Loading dismissed!');
+  
+    this.inventario = ( this._param.getvaluesInventario() == 'true');
+    this.oculta = ( this._param.getvaluesOculta() == 'true');
+    this.resumen = ( this._param.getvaluesResumido() == 'true');
     this.mac = this._param.getvaluesMac();
+    this.listBTDevice();
 
   }
 
@@ -39,8 +54,14 @@ export class ParametrosPage implements OnInit {
     console.log(this.inventario);
   }
 
-  Grabar() {
-    this._param.ingresar(this.mac,this.resumen, this.oculta, this.inventario);
+   async Grabar() {
+     this._param.ingresar(this.mac, this.resumen, this.oculta, this.inventario);
+     let mno= await this.alertController.create({
+      header:"Sucess "+"Guardado con Exito",
+      buttons:['Ok']
+    });
+    await mno.present();
+
   }
 
   

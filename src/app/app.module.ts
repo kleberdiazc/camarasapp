@@ -11,7 +11,8 @@ import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
 import { environment } from '../environments/environment';
 
-import { IonicStorageModule } from '@ionic/storage-angular';
+import { Drivers, Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular'; 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 
@@ -26,7 +27,10 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
     ComponentsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }
     ),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+      driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+    })
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

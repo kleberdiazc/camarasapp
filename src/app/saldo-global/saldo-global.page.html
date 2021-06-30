@@ -22,13 +22,12 @@
       <div>
         <ngx-datatable
             #table
-            class="material"
+            class="material striped"
             [rows]="rows"
             columnMode="force"
             [headerHeight]="50"
             [footerHeight]="0"
-            [rowHeight]="30"
-            [scrollbarV]="true"
+            [rowHeight]="50"
             [scrollbarH]="true">
             <ngx-datatable-column name="CODIGO" prop='CODIGO' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="DESCRIPCION" prop='DESCRIPCION' [flexGrow]="3"></ngx-datatable-column>

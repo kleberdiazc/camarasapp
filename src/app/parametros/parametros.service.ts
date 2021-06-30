@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Plugins } from '@capacitor/core';
 import { AlertController, Platform } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
 
+
+const { SplashScreen, Storage } = Plugins;
 @Injectable({
   providedIn: 'root'
 })
@@ -12,20 +14,40 @@ export class ParametrosService {
   oculta: string;
   inventario: string;
   mac: string;
+
   constructor(private http: HttpClient,
               public alertController: AlertController,
-              public platform: Platform,
-    private storage: Storage) { this.cargarStorage(); }
+              public platform: Platform) {
+      //this.init(),
+      this.cargarStorage();
+     }
   
   
   
-  
-  
-    private guardar_Storage() {
-      if (this.platform.is('cordova'))  {
-        this.storage.set('resumido', this.resumido);
-        this.storage.set('oculta', this.oculta);
-        this.storage.set('inventario', this.inventario);
+    private  async guardar_Storage() {
+      if (this.platform.is('cordova')) {
+        
+       await  Storage.set({
+          key: 'resumido',
+          value: this.resumido
+        });
+        await Storage.set({
+          key: 'oculta',
+          value: this.oculta
+        });
+        await Storage.set({
+          key: 'inventario',
+          value: this.inventario
+        });
+
+        await Storage.set({
+          key: 'mac',
+          value: this.mac
+        });
+
+         /*this.storage.set('resumido', this.resumido);
+         this.storage.set('oculta', this.oculta);
+         this.storage.set('inventario', this.inventario);*/
       } else {
         if (this.resumido) {
           localStorage.setItem('resumido', this.resumido);
@@ -49,39 +71,70 @@ export class ParametrosService {
       this.inventario = inventario.toString();
       this.mac = mac;
       console.log(resumido.toString());
-     this.guardar_Storage();
-     this.cargarStorage();
+      this.guardar_Storage();
+      this.cargarStorage();
+      
 
   
     }
   
     private cargarStorage() {
-      let promesa = new Promise<void>(( resolve , reject) => {
-        if(this.platform.is('cordova')) {
-          this.storage.get('resumido')
+      let promesa = new Promise<void>(async ( resolve , reject) => {
+        if (this.platform.is('cordova')) {
+          
+          await Storage.get({ key: 'resumido' }).then(resumido => {
+            if (resumido) {
+              this.resumido = resumido.value;
+              console.log("ENTREEEE RESUMIDOOO")
+            }
+          });
+
+          await Storage.get({ key: 'oculta' }).then(oculta => {
+            if (oculta) {
+              this.oculta = oculta.value;
+              console.log("ENTREEEE oculta")
+            }
+          });
+
+          await Storage.get({ key: 'inventario' }).then(inventario => {
+            if (inventario) {
+              this.inventario = inventario.value;
+              console.log("ENTREEEE inventario")
+            }
+          });
+
+          await Storage.get({ key: 'mac' }).then(mac => {
+            if (mac) {
+              this.mac = mac.value;
+            }
+          });
+
+
+         /* await this.storage.get('resumido')
           .then(resumido => {
            if (resumido) {
              this.resumido = resumido;
+             console.log("ENTREEEE RESUMIDOOO")
            }
           });
-          this.storage.get('oculta')
+          await this.storage.get('oculta')
             .then(oculta => {
               if (oculta) {
                 this.oculta = oculta;
               }
             });
-            this.storage.get('inventario')
+          await this.storage.get('inventario')
             .then(inventario => {
              if (inventario) {
                this.inventario = inventario;
              }
             });
-            this.storage.get('mac')
+            await this.storage.get('mac')
             .then(mac => {
              if (mac) {
                this.mac = mac;
              }
-            });
+            });*/
           }
                   
           else {
