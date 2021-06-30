@@ -52,15 +52,16 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'saldo-global',
+        path: 'transacciones',
         children: [
           {
             path: '',
-            loadChildren: () => import('../saldo-global/saldo-global.module').then(m => m.SaldoGlobalPageModule)
+            loadChildren: () => import('../transacciones/transacciones.module').then(m => m.TransaccionesPageModule)
           }
         ]
       },
       {
+
         path: 'transacciones',
         children: [
           {
@@ -85,30 +86,48 @@ const routes: Routes = [
       },
       {
         path: 'temperatura',
-        loadChildren: () => import('../temperatura/temperatura.module').then( m => m.TemperaturaPageModule)
+        loadChildren: () => import('../temperatura/temperatura.module').then(m => m.TemperaturaPageModule)
       },
       {
         path: 'info-tumb',
-        loadChildren: () => import('../info-tumb/info-tumb.module').then( m => m.InfoTumbPageModule)
+        loadChildren: () => import('../info-tumb/info-tumb.module').then(m => m.InfoTumbPageModule)
       },
       {
         path: 'consult-transac',
-        loadChildren: () => import('../consult-transac/consult-transac.module').then( m => m.ConsultTransacPageModule)
+        loadChildren: () => import('../consult-transac/consult-transac.module').then(m => m.ConsultTransacPageModule)
       },
       {
         path: 'detalle-pallet',
-        loadChildren: () => import('../detalle-pallet/detalle-pallet.module').then( m => m.DetallePalletPageModule)
+        loadChildren: () => import('../detalle-pallet/detalle-pallet.module').then(m => m.DetallePalletPageModule)
       },
       {
         path: 'suministros',
-        loadChildren: () => import('../suministros/suministros.module').then( m => m.SuministrosPageModule)
+        loadChildren: () => import('../suministros/suministros.module').then(m => m.SuministrosPageModule)
       },
       {
         path: 'parametros',
-        loadChildren: () => import('../parametros/parametros.module').then( m => m.ParametrosPageModule)
+        loadChildren: () => import('../parametros/parametros.module').then(m => m.ParametrosPageModule)
+      },
+      {
+        path: 'req-etiqueteo',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../req-etiqueteo/req-etiqueteo.module').then(m => m.ReqEtiqueteoPageModule)
+          }
+        ]
       }
-    
-    
+      ,
+      {
+        path: 'fintumbada',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../fintumbada/fintumbada.module').then(m => m.FintumbadaPageModule)
+          }
+        ]
+      }
+
     ]
   }
 ];
@@ -118,6 +137,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
-  providers: [ ]
+  providers: []
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }

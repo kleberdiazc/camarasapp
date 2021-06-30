@@ -35,14 +35,24 @@ export class AppComponent {
       title: 'Temperatura',
       url: '/app/temperatura',
       ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Req. Etiqueteo',
+      url: '/app/req-etiqueteo',
+      ionicIcon: 'person-outline'
+    },
+    {
+      title: 'Fin Tumbada',
+      url: '/app/fintumbada',
+      ionicIcon: 'person-outline'
     }
-    ];
+  ];
   accountPages = [
-  {
-    title: 'Log In',
-    url: '/auth/login',
-    ionicIcon: 'log-in-outline'
-  }
+    {
+      title: 'Log In',
+      url: '/auth/login',
+      ionicIcon: 'log-in-outline'
+    }
   ];
   consultas = [
     {
@@ -92,12 +102,12 @@ export class AppComponent {
       url: '/app/parametros',
       ionicIcon: 'person-outline'
     }
-    ];
-  
+  ];
+
 
   constructor(private menServi: AppServicesService,
-              private router: Router,
-              private _login: LoginservicesService) {
+    private router: Router,
+    private _login: LoginservicesService) {
     this.initializeApp();
     console.log('INICIE');
   }
@@ -111,19 +121,19 @@ export class AppComponent {
       console.log('This is normal in a browser', err);
     }
   }
- /* ngOnInit() {
-    this.appPages = this.menServi.getAll();
-    console.log(this.appPages);
-    console.log('INICIE');
-  }
-  ionViewWillEnter() {
-    this.appPages = this.menServi.getAll();
-    console.log(this.appPages);
-    console.log('INICIE');
+  /* ngOnInit() {
+     this.appPages = this.menServi.getAll();
+     console.log(this.appPages);
+     console.log('INICIE');
+   }
+   ionViewWillEnter() {
+     this.appPages = this.menServi.getAll();
+     console.log(this.appPages);
+     console.log('INICIE');
+ 
+   }
+ */
 
-  }
-*/
-  
 
   openTutorial() {
     // save key to mark the walkthrough as NOT visited because the user wants to check it out
@@ -134,7 +144,6 @@ export class AppComponent {
     this.router.navigateByUrl('walkthrough');
   }
 }
-
 
 /*appPages = [
   {
@@ -158,3 +167,4 @@ export class AppComponent {
     ionicIcon: 'notifications-outline'
   }
   ];*/
+

@@ -6,7 +6,7 @@ import { Saldos } from '../interfaces/interfaces';
 @Component({
   selector: 'app-saldos',
   templateUrl: './saldos.page.html',
-  styleUrls: ['./saldos.page.scss'],
+  styleUrls: ['./saldos.page.scss']
 })
 export class SaldosPage implements OnInit {
   rows:Saldos[] = [];

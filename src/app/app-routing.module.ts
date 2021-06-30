@@ -59,10 +59,8 @@ const routes: Routes = [
   },
   {
     path: 'detalle-consulta',
-    loadChildren: () => import('./detalle-consulta/detalle-consulta.module').then( m => m.DetalleConsultaPageModule)
+    loadChildren: () => import('./detalle-consulta/detalle-consulta.module').then(m => m.DetalleConsultaPageModule)
   }
-
-
 
 
 ];
@@ -76,4 +74,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
+
