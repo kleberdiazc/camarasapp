@@ -48,13 +48,22 @@
         </div>
       </ion-col>
     </ion-row>
-
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-item class="input-item">
+            <ion-label>Usuario  : </ion-label>
+            <ion-input  type="text"  [ngModelOptions]="{standalone: true}"  [(ngModel)]="usuario" ></ion-input>
+          </ion-item>
+      </ion-list>
+      </ion-col>
+    </ion-row>
 
     <ion-row>
       <ion-col size="12">
         <ion-item>
           <ion-label>Desde</ion-label>
-          <ion-datetime displayFormat="YYYY-MM-DD" formControlName ="Desde" min="2018-01-04" max="2050-08-23"></ion-datetime>
+          <ion-datetime displayFormat="YYYY/MM/DD" formControlName ="Desde" min="2018-01-04" max="2050-08-23"></ion-datetime>
         </ion-item>
         <div class="error-container">
           <ng-container *ngFor="let validation of validations.Desde">
@@ -71,7 +80,7 @@
       <ion-col size="12">
         <ion-item>
           <ion-label>Hasta</ion-label>
-          <ion-datetime displayFormat="YYYY-MM-DD" formControlName ="Hasta" min="2018-01-04" max="2050-08-23"></ion-datetime>
+          <ion-datetime displayFormat="YYYY/MM/DD" formControlName ="Hasta" min="2018-01-04" max="2050-08-23"></ion-datetime>
         </ion-item>
         <div class="error-container">
           <ng-container *ngFor="let validation of validations.Hasta">
@@ -123,10 +132,19 @@
     </ion-col>
     </ion-row>
     <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Mostrar LOTES en el resumen</ion-label>
+          <ion-checkbox slot="start" [ngModelOptions]="{standalone: true}"  [(ngModel)]="myBoolean" (ionChange)="onMyBooleanChange()"  mode="ios"></ion-checkbox>
+    </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col size="12">
         <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Seguir</ion-button>
       </ion-col>
     </ion-row>
+    
 
 
   <!--<ion-row>
@@ -171,14 +189,17 @@
       <div>
         <ngx-datatable
             #table
-            class="material"
+            class="material striped"
+            style="height: 300px;"
             [rows]="rows"
             columnMode="force"
             [headerHeight]="50"
             [footerHeight]="0"
-            [rowHeight]="30"
+            [rowHeight]="50"
+            [scrollbarH]="true"
             [scrollbarV]="true"
-            [scrollbarH]="true">
+            [selectionType]="SelectionType.single"
+            (select)="onSelect($event)">
             <ngx-datatable-column name="NUMSEC" prop='NUMSEC' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="NUMTRA" prop='NUMTRA' [flexGrow]="3"></ngx-datatable-column>
             <ngx-datatable-column [width]="350" name="FECHA" prop='FECHA' [flexGrow]="10"></ngx-datatable-column>
@@ -186,6 +207,31 @@
             <ngx-datatable-column name="ESTADO" prop='ESTADO' [flexGrow]="4"></ngx-datatable-column>
             <ngx-datatable-column name="OBSERV" prop='OBSERV' [flexGrow]="3"></ngx-datatable-column>
             <ngx-datatable-column name="USUARIO" prop='USUARIO' [flexGrow]="3"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+    </ion-col>
+  </ion-row>
+  <ion-row >
+    <ion-badge color="primary" mode="ios">Detalle</ion-badge>
+    <ion-col size="12">
+      <div>
+        <ngx-datatable
+            #table
+            class="material striped"
+            style="height: 200px;"
+            [rows]="detalle"
+            columnMode="force"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            [rowHeight]="50"
+            [scrollbarH]="true"
+            [scrollbarV]="true"
+           >
+           <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
+           <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
+           <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="10"></ngx-datatable-column>
+           <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="5"></ngx-datatable-column>
+           <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="4"></ngx-datatable-column>
         </ngx-datatable>
     </div>
     </ion-col>
@@ -211,6 +257,7 @@
             #table
             class="material"
             [rows]="rowsRes"
+            style="height: 400px;"
             columnMode="force"
             [headerHeight]="50"
             [footerHeight]="0"

@@ -17,7 +17,8 @@ export class DetallePalletPage implements OnInit {
   consulta: string;
   rows = [];
   columns = [];
-  loading :any = this.loadingController.create();
+  loading: any = this.loadingController.create();
+  Descripcion = '';
   validations = {
     'sscc': [
       { type: 'required', message: 'sscc es requerido.' }
@@ -57,9 +58,10 @@ export class DetallePalletPage implements OnInit {
       this.isChecked = true;
     }
   
-    onSubmit(values) {
+  onSubmit(values) {
+    if (this.validationsForm.get('sscc').value.length = 20) {
       this.loading = this.presentLoading('Cargando');
-      this._detalle.ConsultarDetallePallet(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
+      this._detalle.ConsultarDetallePallet(this.validationsForm.get('sscc').value.substring(2, 20)).subscribe(async (resp) => {
         this.loading.dismiss();
         console.log(resp);
         if (resp.Codigo.toString() == 'false') {
@@ -77,6 +79,47 @@ export class DetallePalletPage implements OnInit {
       });
      
       console.log(this.validationsForm.get('sscc').value);
+    }
+    else {
+      this.loading = this.presentLoading('Cargando');
+      this._detalle.DetalleTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
+        this.loading.dismiss();
+          
+        if (resp.Codigo.toString() == 'false') {
+          const alert = await this.alertController.create({
+            header: 'Error!',
+            message: resp.Description,
+            buttons: ['OK']
+          });
+          await alert.present();
+            
+        } else {
+  
+          this.rows = resp.Dt.Table;
+            
+        }
+      });
+      this._detalle.getTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
+          
+        if (resp.Codigo.toString() == 'false') {
+          const alert = await this.alertController.create({
+            header: 'Error!',
+            message: resp.Description,
+            buttons: ['OK']
+          });
+          await alert.present();
+            
+        } else {
+  
+          let detalle: [][] = resp.Dt.Table;
+          this.Descripcion = detalle[0]["Tipo"] + " "+ detalle[0]["Resp"] + " "+ detalle[0]["Bod1"]
+          + " "+ detalle[0]["fecha"];
+
+            
+        }
+      });
+    }
+      
       
     }
   

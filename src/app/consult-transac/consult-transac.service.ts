@@ -32,7 +32,8 @@ export class ConsultTransacService {
   
   
   ConsultarTransac(bodega: string, user: string, tipo: string, desde: string,
-    hasta: string, pros: string,trans:string) {
+    hasta: string, pros: string, trans: string) {
+      console.log(bodega,user, tipo,desde,hasta,pros,trans);
     const ListParam = [{ "Name": "Bodega", "Type": "Varchar", "Value": bodega },
                         { "Name": "User", "Type": "Varchar", "Value": user },
                         { "Name": "Tipo", "Type": "Varchar", "Value": tipo },
@@ -53,7 +54,9 @@ export class ConsultTransacService {
   }
 
   ResumenTransac(bodega: string, user: string, tipo: string, desde: string,
-    hasta: string, pros: string,trans:string,lote:string,pedUsr) {
+    hasta: string, pros: string, trans: string, lote: string, pedUsr) {
+    
+    console.log("tipo", tipo);
     const ListParam = [{ "Name": "Bodega", "Type": "Varchar", "Value": bodega },
                         { "Name": "User", "Type": "Varchar", "Value": user },
                         { "Name": "Tipo", "Type": "Varchar", "Value": tipo },
@@ -70,6 +73,22 @@ export class ConsultTransacService {
       conexion: 'PRODUCCION'
     };
 
+    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+  }
+
+  DetalleTransac(NUMTRA: string) {
+    let numero:string = ''+NUMTRA+''
+    
+    const ListParam = [{ "Name": "tran", "Type": "Varchar", "Value": numero }, 
+                        ];
+    const base = {
+      sp: 'spr_dettrans',
+      param: ListParam,
+      conexion: 'PRODUCCION'
+    };
+
+    
+    
     return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
   }
 

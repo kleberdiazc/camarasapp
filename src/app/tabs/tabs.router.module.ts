@@ -126,7 +126,11 @@ const routes: Routes = [
             loadChildren: () => import('../fintumbada/fintumbada.module').then(m => m.FintumbadaPageModule)
           }
         ]
-      }
+      },
+      {
+        path: 'saldo-global',
+        loadChildren: () => import('../saldo-global/saldo-global.module').then(m => m.SaldoGlobalPageModule)
+      },
 
     ]
   }

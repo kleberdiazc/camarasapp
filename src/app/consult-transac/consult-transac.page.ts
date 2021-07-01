@@ -7,7 +7,9 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { LoginservicesService } from '../login/loginservices.service';
 import { TemperaturaService } from '../temperatura/temperatura.service';
 import { ConsultTransacService } from './consult-transac.service';
-
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
+import { SelectionType } from '@swimlane/ngx-datatable';
 @Component({
   selector: 'app-consult-transac',
   templateUrl: './consult-transac.page.html',
@@ -20,6 +22,7 @@ export class ConsultTransacPage implements OnInit {
   Procesos: Proceso[] = [];
   rows = [];
   columns = [];
+  detalle = [];
 
   rowsRes = [];
   columnsRes = [];
@@ -28,8 +31,13 @@ export class ConsultTransacPage implements OnInit {
   validationsForm: FormGroup;
   principal:boolean= false;
   segundo:boolean=true;
-  tercero:boolean=true;
+  tercero: boolean = true;
+  myBoolean = true;
+  usuario: string = '';
+  selected = [];
+  SelectionType = SelectionType;
 
+  private datePipe: DatePipe;
 
   validations = {
     'Tipo': [
@@ -91,11 +99,11 @@ export class ConsultTransacPage implements OnInit {
         Validators.required,
       ])),
       'Proceso': new FormControl('',Validators.compose([
-        Validators.required,
+        //Validators.required,
        // Validators.pattern('^([-+,0-9.]+)')
       ])),
       'Trans': new FormControl('',Validators.compose([
-        Validators.required,
+        //Validators.required,
        // Validators.pattern('^([-+,0-9.]+)')
       ])),
       'Desde': new FormControl('',Validators.compose([
@@ -132,11 +140,17 @@ export class ConsultTransacPage implements OnInit {
   }
   
   onSubmit(values) {
+    let fechaHasta: Date = this.validationsForm.get('Hasta').value;
+    let fechaDesde: Date = this.validationsForm.get('Desde').value;
+    //this.datePipe.transform(fecha,'yyyy/MM/dd')
+    let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
+    let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
+
     this.loading = this.presentLoading('Cargando');
     this._transac.ConsultarTransac(this.validationsForm.get('Bodega').value,
-      this._log.getuser(),
-      this.validationsForm.get('Tipo').value, this.validationsForm.get('Desde').value,
-      this.validationsForm.get('Hasta').value, this.validationsForm.get('Proceso').value,
+      this.usuario,
+      this.validationsForm.get('Tipo').value, desde,
+       hasta, this.validationsForm.get('Proceso').value,
       this.validationsForm.get('Trans').value).subscribe(async(resp) => {
         console.log(resp);
         this.loading.dismiss();
@@ -184,13 +198,48 @@ export class ConsultTransacPage implements OnInit {
     this.principal = true;
   }
 
+  onSelect(e) {
+    console.log(e.selected[0]["NUMTRA"].toString());
+    console.log(this.selected);
+    this.loading = this.presentLoading('Cargando');
+    this._transac.DetalleTransac(e.selected[0]["NUMTRA"]).subscribe(async (resp) => {
+      this.loading.dismiss();
+        
+         if (resp.Codigo.toString() == 'false') {
+          const alert = await this.alertController.create({
+            header: 'Error!',
+            message: resp.Description,
+            buttons: ['OK']
+          });
+          await alert.present();
+          
+        } else {
 
-  getResumen(){
+          this.detalle = resp.Dt.Table;
+          
+         }
+    })
+    //console.log(this.selected[0].tran.toString());
+  }
+
+  getResumen() {
+    let lote: string;
+    if (this.myBoolean) {
+      lote = 'S'
+    } else {
+      lote = 'N'
+    }
+    let fechaHasta: Date = this.validationsForm.get('Hasta').value;
+    let fechaDesde: Date = this.validationsForm.get('Desde').value;
+    //this.datePipe.transform(fecha,'yyyy/MM/dd')
+    let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
+    let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
+
     this._transac.ResumenTransac(this.validationsForm.get('Bodega').value,
-      this._log.getuser(),
-      this.validationsForm.get('Tipo').value, this.validationsForm.get('Desde').value,
-      this.validationsForm.get('Hasta').value, this.validationsForm.get('Proceso').value,
-      this.validationsForm.get('Trans').value,'S','').subscribe(async(resp) => {
+      this.usuario,
+      this.validationsForm.get('Tipo').value,desde,
+      hasta, this.validationsForm.get('Proceso').value,
+      this.validationsForm.get('Trans').value,lote,'').subscribe(async(resp) => {
         console.log(resp);
         this.loading.dismiss();
         
@@ -208,5 +257,8 @@ export class ConsultTransacPage implements OnInit {
          }
       })
 
+  }
+  onMyBooleanChange() {
+    console.log(this.myBoolean);
   }
 }

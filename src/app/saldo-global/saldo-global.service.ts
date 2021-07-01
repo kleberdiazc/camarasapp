@@ -23,5 +23,6 @@ export class SaldoGlobalService {
       };
      
       return  this.http.post<SaldosGlobal[]>('https://web.songa.com/api/Consultas', data);
-    }
+  }
+  
 }

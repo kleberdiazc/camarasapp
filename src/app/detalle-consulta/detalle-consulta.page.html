@@ -14,13 +14,12 @@
       <div>
         <ngx-datatable
             #table
-            class="material"
+            class="material striped"
             [rows]="rows"
             columnMode="force"
-            [headerHeight]="20"
+            [headerHeight]="50"
             [footerHeight]="0"
-            [rowHeight]="100"
-            [scrollbarV]="true"
+            [rowHeight]="50"
             [scrollbarH]="true">
             <ngx-datatable-column name="Ver" prop="name" [flexGrow]="2">
               <ng-template
@@ -110,14 +109,22 @@
         <ion-badge slot="end">22</ion-badge>
       </ion-item>
     </ion-col>  
-    <ion-col size = "5">
-      <ion-button >Barras</ion-button>
+  </ion-row>
+  <ion-row> 
+    <ion-col size = "12">
+      <ion-button (click)="onImprimeBarra()"  expand="block" fill="outline">Barras</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row> 
+    <ion-col size = "12">
+      <ion-button [hidden]="false" (click)="imprime()"  expand="block" fill="outline">Imprimir</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row [hidden]="true"> 
+    <ion-col size = "12">
+      <ion-button  expand="block" (click)="imprime2()" fill="outline">Impri2</ion-button>
     </ion-col>
   </ion-row>
 
-  <ion-row> 
-    <ion-col size = "5">
-      <ion-button >Cerrar</ion-button>
-    </ion-col>
-  </ion-row>
+
 </ion-content>

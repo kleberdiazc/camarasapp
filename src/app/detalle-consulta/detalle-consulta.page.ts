@@ -1,3 +1,4 @@
+import { subscribeOn } from 'rxjs/operators';
 import { DetalleConsultaService } from './detalle-consulta.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -86,4 +87,15 @@ export class DetalleConsultaPage implements OnInit {
   
   }
 
+  onImprimeBarra() {
+    this._detalle.imprimirpall(this.data.sscc);
+  }
+
+  imprime() {
+    
+  }
+
+  imprime2() {
+    
+  }
 }
