@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
+import { URL_CONSULT } from '../config/url.servicios';
 import { RWEmbarques } from '../interfaces/interfaces';
 
 @Injectable({
@@ -24,7 +25,7 @@ export class InfoTumbService {
           conexion: 'PRODUCCION'
       };
      
-      return this.http.post<RWEmbarques>('http://web.songa.com/songaapi/api/Consult', base);
+      return this.http.post<RWEmbarques>(URL_CONSULT, base);
     }
   
     ConsultarDetallesCierre(numero:string) {
@@ -37,7 +38,7 @@ export class InfoTumbService {
           conexion: 'PRODUCCION'
       };
      
-      return this.http.post<RWEmbarques>('http://web.songa.com/songaapi/api/Consult', base);
+      return this.http.post<RWEmbarques>(URL_CONSULT, base);
     }
   
   

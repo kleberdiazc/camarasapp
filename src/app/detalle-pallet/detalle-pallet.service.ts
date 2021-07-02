@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
+import { URL_CONSULT } from '../config/url.servicios';
 import { Valida, RWDetalleCons, RWCombosCons } from '../interfaces/interfaces';
 
 @Injectable({
@@ -27,7 +28,7 @@ export class DetallePalletService {
       };
      
       console.log(sscc)
-      return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
+      return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
   
   DetalleTransac(NUMTRA: string) {
@@ -43,7 +44,7 @@ export class DetallePalletService {
 
     
     
-    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWCombosCons>(URL_CONSULT, base);
   }
 
   getTransac(NUMTRA: string) {
@@ -59,7 +60,7 @@ export class DetallePalletService {
 
     
     
-    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWCombosCons>(URL_CONSULT, base);
   }
 
   

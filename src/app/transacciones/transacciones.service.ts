@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { URL_CONSULT } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -36,13 +37,16 @@ export class TransaccionesService {
 
     const ListParam = [{ "Name": "TIPO", "Type": "Varchar", "Value": "TIPO" }];
 
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
     const base = {
       sp: 'SP_COMBOSTRANSACC_APP',
       param: ListParam,
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getDataMotivo(mov, user) {
@@ -57,7 +61,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getDataChofer(Trans) {
@@ -70,7 +74,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getDataValidaCaja(codigo) {
@@ -83,7 +87,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getGenerarm(prodx, talla, tallavta, user) {
@@ -100,7 +104,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getTipoSSCC(sscc) {
@@ -113,7 +117,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getDetallePallet(sscc) {
@@ -126,7 +130,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getSecuencial(tipo) {
@@ -139,7 +143,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getExistenciaTra(sec) {
@@ -153,7 +157,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getConsultaSSCC(sscc) {
@@ -166,7 +170,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getVerificaLoteIQF(sscc, ref, origen) {
@@ -181,7 +185,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getVerifCuarentena(origen, sscc) {
@@ -195,7 +199,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getValidaPO(codprod1, codsscc1, prod, cod, bodoriPO, boddesPO) {
@@ -213,7 +217,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
 
@@ -271,7 +275,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   ValidaCuarentenaxSSCC(sscc) {
@@ -283,7 +287,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   ValidaSaldoxSSCC(sscc, planta, origen) {
@@ -297,7 +301,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   EnvioCorreoSinSaldo(prod, talla, bodega, User) {
@@ -311,7 +315,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   GrabarSSCCPalletNew(bodega, user) {
@@ -324,7 +328,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getVerificaSaldoSSCC(sscc, planta, bodega) {
@@ -338,7 +342,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   SSCC_GuardaDetMaster(sscc, lote, cantidad) {
@@ -352,7 +356,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   guardadet(ssccPallet, lote, dsscc_numero) {
@@ -366,7 +370,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //IMPRESION MASTERS
@@ -388,7 +392,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //IMPRESION LOTES
@@ -401,7 +405,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //impresion matricial
@@ -414,7 +418,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //impresion MULTIPAGINAS
@@ -429,7 +433,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //impresion pallet
@@ -443,7 +447,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //Ubicacion
@@ -458,7 +462,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   //VALIDO UNIFICACION LOTES
@@ -477,7 +481,7 @@ export class TransaccionesService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
 }

@@ -212,7 +212,6 @@ export class TransaccionesPage implements OnInit {
 
   loadData() {
     this._dataService.getDataInitial().subscribe((resp) => {
-
       if (resp.Codigo) {
         if (Object.keys(resp.Dt).length > 0) {
           this.dataCombosTipo = resp.Dt.Table;

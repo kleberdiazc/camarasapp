@@ -2,6 +2,7 @@ import { Embarques, RWEmbarques, Valida } from './../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
+import { URL_CONSULT } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class TemperaturaService {
           conexion: 'DESAPRODUCCION'
       };
      
-      return this.http.post<RWEmbarques>('http://web.songa.com/songaapi/api/Consult', base);
+      
+      return this.http.post<RWEmbarques>(URL_CONSULT, base);
     }
   
   GrabarFactura(tipo: string, cierre: string, factura: string, temp: string, sscc: string, user: string) {
@@ -43,7 +45,7 @@ export class TemperaturaService {
       conexion: 'DESAPRODUCCION'
     };
     
-    return this.http.post<Valida>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<Valida>('URL_CONSULT', base);
   }
  
   Imprimir(numsec:string,usuario:string) {
@@ -57,7 +59,7 @@ export class TemperaturaService {
       conexion: 'DESAPRODUCCION'
     };
     
-    return this.http.post<Valida>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<Valida>(URL_CONSULT, base);
   }
 
 }

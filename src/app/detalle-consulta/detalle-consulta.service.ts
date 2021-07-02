@@ -5,6 +5,7 @@ import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 import { SaldosGlobal, Valida } from '../interfaces/interfaces';
 import { ParametrosService } from '../parametros/parametros.service';
+import { URL_CONSULT } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class DetalleConsultaService {
           conexion: 'PRODUCCION'
       };
      
-      return this.http.post<Valida>('http://web.songa.com/songaapi/api/Consult', base);
+      return this.http.post<Valida>(URL_CONSULT, base);
     }
   
   
@@ -49,7 +50,7 @@ export class DetalleConsultaService {
       };
      
       console.log(resumido,sscc)
-      return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
+      return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
   
 
@@ -245,7 +246,7 @@ export class DetalleConsultaService {
           conexion: 'PRODUCCION'
       };
      
-      return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
+      return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
 
   obtieneFechaHora() {
@@ -258,6 +259,6 @@ export class DetalleConsultaService {
     conexion: 'PRODUCCION'
     };
 
-    return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
 }

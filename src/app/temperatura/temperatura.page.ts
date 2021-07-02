@@ -98,7 +98,7 @@ export class TemperaturaPage implements OnInit {
 
   BuscarEmbarques() {
     this._temp.ConsultarFacturas().subscribe((resp) => {
-      console.log(resp);
+      console.log('consulta factura',resp);
       this.embarques = resp.Dt.Table;
     });
   }
@@ -106,6 +106,10 @@ export class TemperaturaPage implements OnInit {
 
   Cerrar() {
     console.log("Cerrar");
+  }
+
+  onClick() {
+    this.BuscarEmbarques();
   }
 
 }

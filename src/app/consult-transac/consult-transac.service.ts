@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
+import { URL_CONSULT } from '../config/url.servicios';
 import { RWCombosCons, RWEmbarques, Valida } from '../interfaces/interfaces';
 
 @Injectable({
@@ -25,7 +26,7 @@ export class ConsultTransacService {
       conexion: 'PRODUCCION'
     };
     
-    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWCombosCons>(URL_CONSULT, base);
   }
  
 
@@ -50,7 +51,7 @@ export class ConsultTransacService {
 
     
     
-    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWCombosCons>(URL_CONSULT, base);
   }
 
   ResumenTransac(bodega: string, user: string, tipo: string, desde: string,
@@ -73,7 +74,7 @@ export class ConsultTransacService {
       conexion: 'PRODUCCION'
     };
 
-    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWCombosCons>(URL_CONSULT, base);
   }
 
   DetalleTransac(NUMTRA: string) {
@@ -89,7 +90,7 @@ export class ConsultTransacService {
 
     
     
-    return this.http.post<RWCombosCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWCombosCons>(URL_CONSULT, base);
   }
 
 }

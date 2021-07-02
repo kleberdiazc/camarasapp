@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
 import { Storage } from '@ionic/storage-angular';
+import { URL_CONSULT } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class FintumbadaService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   getDataCierre(cierre) {
@@ -36,7 +37,7 @@ export class FintumbadaService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
   GrabaFinCierre(cierre, user) {
@@ -49,7 +50,7 @@ export class FintumbadaService {
       conexion: 'DESAPRODUCCION'
     };
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
 }
