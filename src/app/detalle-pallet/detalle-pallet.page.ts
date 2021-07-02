@@ -59,7 +59,9 @@ export class DetallePalletPage implements OnInit {
     }
   
   onSubmit(values) {
-    if (this.validationsForm.get('sscc').value.length = 20) {
+    console.log(this.validationsForm.get('sscc').value.length);
+
+    if (this.validationsForm.get('sscc').value.length == 20) {
       this.loading = this.presentLoading('Cargando');
       this._detalle.ConsultarDetallePallet(this.validationsForm.get('sscc').value.substring(2, 20)).subscribe(async (resp) => {
         this.loading.dismiss();
@@ -127,5 +129,14 @@ export class DetallePalletPage implements OnInit {
       console.log(event);
     }
   
+  onImprimir() {
+    let det = this._detalle.imprimir(this.validationsForm.get('sscc').value, this.rows);
+    console.log(det);
+  }
+
+  onImprimir2() {
+    let det = this._detalle.imprimir2(this.validationsForm.get('sscc').value, this.rows);
+    console.log(det);
+  }
 
 }

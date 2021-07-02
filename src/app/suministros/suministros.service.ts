@@ -1,3 +1,4 @@
+import { URL_CONSULT } from './../config/url.servicios';
 import { RWDetalleCons } from './../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -33,10 +34,16 @@ export class SuministrosService {
 
   ConsultarTransac(sello: string, item: string, cantidad: string, origen: string,
     destino: string, planta: string, usuario: string) {
+    
+    let cant: string = cantidad.toString();
+    let items: string = item.toString();
+
+    console.log(sello, item, cant, origen,
+      destino, planta, usuario);
     const ListParam = [{ "Name": "TIPO", "Type": "Varchar", "Value": "T" },
     { "Name": "SELLO", "Type": "Varchar", "Value": sello },
-    { "Name": "ITEM", "Type": "Varchar", "Value": item },
-    { "Name": "CANTIDAD", "Type": "Varchar", "Value": cantidad },
+    { "Name": "ITEM", "Type": "Varchar", "Value": items },
+    { "Name": "CANTIDAD", "Type": "Varchar", "Value": cant },
     { "Name": "BODORI", "Type": "Varchar", "Value": origen },
     { "Name": "BODDES", "Type": "Varchar", "Value": destino },
     { "Name": "PLANTA", "Type": "Varchar", "Value": planta },
@@ -47,7 +54,7 @@ export class SuministrosService {
       param: ListParam,
       conexion: 'DESAPRODUCCION'
     };
-    return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
 
 
@@ -60,7 +67,7 @@ export class SuministrosService {
       param: ListParam,
       conexion: 'DESAPRODUCCION'
     };
-    return this.http.post<RWDetalleCons>('http://web.songa.com/songaapi/api/Consult', base);
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
 
 }

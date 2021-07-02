@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Consulta Transacciones
+      Suministros
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -31,7 +31,7 @@
       <ion-col size="12">
         <ion-item>
           <ion-label>Item:</ion-label>
-          <ion-select placeholder=""   formControlName ="Item"  interface="action-sheet">
+          <ion-select placeholder=""  (ionChange)="change($event)"  formControlName ="Item"  interface="action-sheet">
               <ion-select-option *ngFor="let it of Item"   [value]="it.CODIGO">{{it.DESCRIPCION}}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -66,7 +66,7 @@
         <ion-col size="12">
           <ion-item>
             <ion-label>B.Origen:</ion-label>
-            <ion-select placeholder=""   formControlName ="Origen"  interface="action-sheet">
+            <ion-select placeholder=""  (ionChange)="changeOr($event)"  formControlName ="Origen"  interface="action-sheet">
               <ion-select-option *ngFor="let or of Origen"   [value]="or.CODIGO">{{or.DESCRIPCION}}</ion-select-option>
           </ion-select>
       </ion-item>
@@ -85,7 +85,7 @@
       <ion-col size="12">
         <ion-item>
             <ion-label>B. Destino:</ion-label>
-          <ion-select placeholder=""   formControlName ="Destino"  interface="action-sheet">
+          <ion-select placeholder=""  (ionChange)="changeDes($event)"  formControlName ="Destino"  interface="action-sheet">
               <ion-select-option *ngFor="let des of Destino"   [value]="des.CODIGO">{{des.DESCRIPCION}}</ion-select-option>
           </ion-select>
       </ion-item>
@@ -101,7 +101,12 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Seguir</ion-button>
+        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Guardar</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="submit-btn" (click)="imprimirConsu()" expand="block" fill="outline" [disabled]="!validationsForm.valid">Imprimir</ion-button>
       </ion-col>
     </ion-row>
   </form>

@@ -9,122 +9,155 @@
 
 
 <ion-content>
-  <ion-row >
+ <div [hidden]="primero">
+    <ion-row >
+      <ion-col size="12">
+        <div>
+          <ngx-datatable
+              #table
+              class="material striped"
+              [rows]="rows"
+              columnMode="force"
+              [headerHeight]="50"
+              [footerHeight]="0"
+              [rowHeight]="50"
+              [scrollbarH]="true">
+              <ngx-datatable-column name="Ver" prop="name" [flexGrow]="2">
+                <ng-template
+                    ngx-datatable-cell-template="ngx-datatable-cell-template"
+                    let-rowIndex="rowIndex"
+                    let-value="value"
+                    let-row="row">
+                    <ion-button size="small" (click)="onClickRow(row)">Ver</ion-button>
+                </ng-template>
+            </ngx-datatable-column>
+              <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="Talla" prop='Talla' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="Descri" prop='Descri' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="Master" prop='Master' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="Bodega" prop='sscc_Bodega' [flexGrow]="5"></ngx-datatable-column>  
+          </ngx-datatable>
+      </div>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row>
+      <ion-col size = "12">
+        <ion-list>
+          <ion-item>
+            <ion-label position="fixed">Codigo</ion-label>
+            <ion-input>{{codigo}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">Talla</ion-label>
+            <ion-input>{{talla}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">Descripción</ion-label>
+            <ion-input>{{Descri}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed" >{{tipo}}</ion-label>
+            <ion-input [(ngModel)]="totalcant"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  
+
+    <ion-row>
+      <ion-col size = "6">
+        <ion-list>
+          <ion-item>
+            <ion-label position="fixed">Lote</ion-label>
+            <ion-input>{{Lote}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed" Text="Total">total</ion-label>
+            <ion-input>{{Total}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">Pallet</ion-label>
+            <ion-input>{{Pallet}}</ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col size = "6">
+        <ion-list>
+          <ion-item>
+            <ion-label position="fixed">Bodega</ion-label>
+            <ion-input>{{bodega}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">Saldo</ion-label>
+            <ion-input>{{saldo}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-button (click)="onPopUp()"  expand="block" fill="outline">...</ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row> 
+      <ion-col size = "12">
+        <ion-item>
+          <ion-item>
+            <ion-label type="number" position="fixed" Text="Total">Cantidad</ion-label>
+            <ion-input [(ngModel)]="copias"></ion-input>
+          </ion-item>
+        </ion-item>
+      </ion-col>  
+    </ion-row>
+    <ion-row> 
+      <ion-col size = "12">
+        <ion-button (click)="onImprimeBarra()"  expand="block" fill="outline">Barras</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row> 
+      <ion-col size = "12">
+        <ion-button [hidden]="false" (click)="imprime()"  expand="block" fill="outline">Imprimir</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row [hidden]="true"> 
+      <ion-col size = "12">
+        <ion-button  expand="block" (click)="imprime2()" fill="outline">Impri2</ion-button>
+      </ion-col>
+    </ion-row>
+ </div> 
+<div [hidden]="segundo">
+  <ion-row>
     <ion-col size="12">
       <div>
         <ngx-datatable
             #table
             class="material striped"
-            [rows]="rows"
+            [rows]="saldos"
             columnMode="force"
             [headerHeight]="50"
             [footerHeight]="0"
             [rowHeight]="50"
             [scrollbarH]="true">
-            <ngx-datatable-column name="Ver" prop="name" [flexGrow]="2">
-              <ng-template
-                  ngx-datatable-cell-template="ngx-datatable-cell-template"
-                  let-rowIndex="rowIndex"
-                  let-value="value"
-                  let-row="row">
-                  <ion-button size="small" (click)="onClickRow(row)">Ver</ion-button>
-              </ng-template>
-          </ngx-datatable-column>
-            <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
-            <ngx-datatable-column name="Talla" prop='Talla' [flexGrow]="5"></ngx-datatable-column>
-            <ngx-datatable-column name="Descri" prop='Descri' [flexGrow]="5"></ngx-datatable-column>
-            <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Bodega" prop='Bodega' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Cajas" prop='Cajas' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="Master" prop='Master' [flexGrow]="5"></ngx-datatable-column>
-            <ngx-datatable-column name="Bodega" prop='sscc_Bodega' [flexGrow]="5"></ngx-datatable-column>  
+            <ngx-datatable-column name="bit_codbod" prop='bit_codbod' [flexGrow]="5"></ngx-datatable-column> 
         </ngx-datatable>
     </div>
     </ion-col>
   </ion-row>
-
-
-  <ion-row>
-    <ion-col size = "6">
-      <ion-list>
-        <ion-item>
-          <ion-label position="fixed">Codigo</ion-label>
-          <ion-input>{{codigo}}</ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="fixed">Talla</ion-label>
-          <ion-input>{{talla}}</ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="fixed">Descripción</ion-label>
-          <ion-input>{{Descri}}</ion-input>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col size = "6">
-      <ion-list>
-        <ion-item>
-          <ion-label position="fixed" >{{tipo}}</ion-label>
-          <ion-input>500</ion-input>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
- 
-
-  <ion-row>
-    <ion-col size = "6">
-      <ion-list>
-        <ion-item>
-          <ion-label position="fixed">Lote</ion-label>
-          <ion-input>{{Lote}}</ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="fixed" Text="Total">total</ion-label>
-          <ion-input>{{Total}}</ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="fixed">Pallet</ion-label>
-          <ion-input>{{Pallet}}</ion-input>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col size = "6">
-      <ion-list>
-        <ion-item>
-          <ion-label position="fixed">Bodega</ion-label>
-          <ion-input>{{bodega}}</ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="fixed">Saldo</ion-label>
-          <ion-input>{{saldo}}</ion-input>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-
-
-  <ion-row> 
-    <ion-col size = "5">
-      <ion-item>
-        <ion-label>Cantidad</ion-label>
-        <ion-badge slot="end">22</ion-badge>
-      </ion-item>
-    </ion-col>  
-  </ion-row>
   <ion-row> 
     <ion-col size = "12">
-      <ion-button (click)="onImprimeBarra()"  expand="block" fill="outline">Barras</ion-button>
+      <ion-button (click)="salir()"  expand="block" fill="outline">Salir</ion-button>
     </ion-col>
   </ion-row>
   <ion-row> 
     <ion-col size = "12">
-      <ion-button [hidden]="false" (click)="imprime()"  expand="block" fill="outline">Imprimir</ion-button>
+      <ion-button (click)="Transf()"  expand="block" fill="outline">Transferir</ion-button>
     </ion-col>
   </ion-row>
-  <ion-row [hidden]="true"> 
-    <ion-col size = "12">
-      <ion-button  expand="block" (click)="imprime2()" fill="outline">Impri2</ion-button>
-    </ion-col>
-  </ion-row>
+</div>
 
 
 </ion-content>

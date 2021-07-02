@@ -11,6 +11,7 @@ import { SaldosGlobal } from '../interfaces/interfaces';
 })
 export class DetalleConsultaPage implements OnInit {
   rows = [];
+  saldos = [];
   columns = [];
   total: number = 0;
   sscc: string;
@@ -26,6 +27,11 @@ export class DetalleConsultaPage implements OnInit {
   Pallet: string
   saldo: string;
   bodega: string;
+  totalcant: string;
+  copias: string = "2";
+  primero = false;
+  segundo = false;
+  tal_codigo: string;
 
   constructor(private route:ActivatedRoute,private router:Router,private _detalle:DetalleConsultaService) {
     this.columns = [
@@ -84,11 +90,18 @@ export class DetalleConsultaPage implements OnInit {
     this.Total = row.Master;
     this.saldo = row.Saldo;
     this.bodega = row.sscc_Bodega;
+     this.totalcant = row.Master;
+     this.tal_codigo = row.tal_codigo
   
   }
 
   onImprimeBarra() {
-    this._detalle.imprimirpall(this.data.sscc);
+    if (this.Pallet == '') {
+      this._detalle.imprimirpall(this.Pallet);
+    } else {
+      this._detalle.imprimirpall(this.data.sscc);
+    }
+   
   }
 
   imprime() {
@@ -96,6 +109,22 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   imprime2() {
+    
+  }
+
+  onPopUp() {
+    this.primero = true;
+    this.segundo = false;
+    this._detalle.SaldosTallas(this.codigo, this.Lote, this.tal_codigo, '1').subscribe((resp) => {
+       this.saldos = resp.Dt.Table;
+    });
+  }
+  salir() {
+    this.primero = false;
+    this.segundo = true;
+  }
+
+  Transf() {
     
   }
 }

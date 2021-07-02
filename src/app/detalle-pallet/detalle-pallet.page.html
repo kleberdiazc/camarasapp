@@ -11,7 +11,7 @@
 <ion-content  class="forms-validations-content">
   <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
   <ion-row  class="ion-margin-top">
-    <ion-col size="8">
+    <ion-col size="9">
 
       <ion-item class="input-item">
         <ion-label>SSCC : </ion-label>
@@ -26,21 +26,22 @@
         </ng-container>
       </div>
     </ion-col>
-    <ion-col size = "4">
-      <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Consultar</ion-button>
+    <ion-col size = "3">
+      <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Buscar</ion-button>
     </ion-col>
   </ion-row>
   
   </form>
   <ion-row class="ion-margin-top">
-    <ion-label>Desripcion : {{Descripcion}} </ion-label>
+    <ion-label>Descripción : {{Descripcion}} </ion-label>
   </ion-row>
   <ion-row  class="ion-margin-top">
     <ion-col size="12">
       <div>
         <ngx-datatable
             #table
-            class="material"
+            class="material striped"
+            style="height: 300px;"
             [rows]="rows"
             columnMode="force"
             [headerHeight]="50"
@@ -50,7 +51,7 @@
             [scrollbarH]="true">
             <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="Talla" prop='Talla' [flexGrow]="3"></ngx-datatable-column>
-            <ngx-datatable-column [width]="350" name="Lote" prop='Lote' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="10"></ngx-datatable-column>
             <ngx-datatable-column name="Master" prop='Master' [flexGrow]="5"></ngx-datatable-column>
         </ngx-datatable>
     </div>
@@ -59,10 +60,10 @@
 
   <ion-row>
     <ion-col size = "6">
-      <ion-button class="submit-btn" type="submit" expand="block" fill="outline" >Imprimir</ion-button>
+      <ion-button class="submit-btn" type="submit" (click)="onImprimir()" expand="block" fill="outline" >Imprimir</ion-button>
     </ion-col>
     <ion-col size = "6">
-      <ion-button class="submit-btn" type="submit" expand="block" fill="outline">Imprimir2</ion-button>
+      <ion-button class="submit-btn" type="submit" (click)="onImprimir2()" expand="block" fill="outline">Imprimir2</ion-button>
     </ion-col>
   </ion-row>
 
