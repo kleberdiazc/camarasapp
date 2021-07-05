@@ -77,25 +77,30 @@ export class ReqEtiqueteoPage implements OnInit {
 
   constructor(private _dataService: ReqEtiqueteoService, public alertController: AlertController,
     public loadingController: LoadingController, private _log: LoginservicesService) {
-    this.loadData();
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.showLoading("Cargando...");
+    await this.loadData();
+    this.hideLoading();
   }
 
-  loadData() {
-    this._dataService.getDataInitial("1", this._log.getuser().trim()).subscribe((resp) => {
+  async loadData() {
+    const valor = await new Promise(async (resolve) => {
+      this._dataService.getDataInitial("1", this._log.getuser().trim()).subscribe((resp) => {
 
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
 
-          this.dataCombosOrigen = resp.Dt.Table;
+            this.dataCombosOrigen = resp.Dt.Table;
 
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
         }
-      } else {
-        this.presentAlert("Error", resp.Description);
-      }
+        return resolve(true);
+      });
     });
   }
 

@@ -5,6 +5,7 @@ import { ResultWS, DataCombos, TablaCodigo, ClsProducto, tb_DataGrid } from './.
 import { Dictionary } from './../Class/dictionary';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import { LoginservicesService } from './../login/loginservices.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-transacciones',
@@ -111,6 +112,95 @@ export class TransaccionesPage implements OnInit {
   selected = [];
   SelectionType = SelectionType;
 
+  keyword = "DESCRIPCION";
+
+
+  /*MOVIL*/
+  dataCombosMovilFilter: DataCombos[] = [];
+  SelectMovil = { CODIGO: '', DESCRIPCION: '' };
+
+  /*CHOFER*/
+  dataCombosChoferFilter: DataCombos[] = [];
+  SelectChofer = { CODIGO: '', DESCRIPCION: '' };
+
+
+  /*EVENTOS MOVIL */
+  async selectEventMovil(e) {
+    this.SelectMovil = e;
+    this.cmbMovil = this.SelectMovil.CODIGO;
+    await this.showLoading("Cargando...");
+
+    const valor = await new Promise(async (resolve) => {
+      this._dataService.getDataChofer(e.CODIGO).subscribe((resp) => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            if (resp.Dt.Table.length > 0) {
+              this.respTable = resp.Dt.Table;
+              this.SelectChofer = JSON.parse(JSON.stringify(this.respTable[0]));
+              this.cmbChofer = this.SelectChofer.CODIGO;
+            }
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
+        }
+        return resolve(true);
+      });
+    });
+    this.hideLoading();
+  }
+
+  onEventClearMovil(e) {
+    this.SelectMovil = { CODIGO: '', DESCRIPCION: '' };
+    this.cmbMovil = this.SelectMovil.CODIGO;
+    this.dataCombosMovilFilter.length = 0;
+  }
+
+  onEventclosedMovil(e) {
+    if (Object.values(this.SelectMovil).length !== 2) {
+      this.SelectMovil = { CODIGO: '', DESCRIPCION: '' };
+      this.cmbMovil = this.SelectMovil.CODIGO;
+      this.dataCombosMovilFilter.length = 0;
+    }
+  }
+
+  onChangeMovil(e) {
+    if (e.length > 2) {
+      this.dataCombosMovilFilter = JSON.parse(JSON.stringify(this.dataCombosMovil));
+    } else {
+      this.dataCombosMovilFilter.length = 0;
+    }
+  }
+
+  /*EVENTOS CHOFER*/
+  selectEventChofer(e) {
+    this.SelectChofer = e;
+    this.cmbChofer = this.SelectChofer.CODIGO;
+  }
+
+  onEventClearChofer(e) {
+    this.SelectChofer = { CODIGO: '', DESCRIPCION: '' };
+    this.cmbChofer = this.SelectChofer.CODIGO;
+    this.dataCombosChoferFilter.length = 0;
+  }
+
+  onEventclosedChofer(e) {
+    if (Object.values(this.SelectChofer).length !== 2) {
+      this.SelectChofer = { CODIGO: '', DESCRIPCION: '' };
+      this.cmbChofer = this.SelectChofer.CODIGO;
+      this.dataCombosChoferFilter.length = 0;
+    }
+  }
+
+  onChangeChofer(e) {
+    if (e.length > 3) {
+      this.dataCombosChoferFilter = JSON.parse(JSON.stringify(this.dataCombosChofer));
+    } else {
+      this.dataCombosChoferFilter.length = 0;
+    }
+  }
+
+
+
   async presentAlert(Header, Mensaje) {
     /* const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -196,54 +286,73 @@ export class TransaccionesPage implements OnInit {
   constructor(private _dataService: TransaccionesService, public alertController: AlertController,
     public loadingController: LoadingController, private _log: LoginservicesService) {
 
+
+
+  }
+  async ngOnInit() {
     this.lbOrigen = true;
     this.lbDestino = true;
     this.EnabledCtrTab1 = false;
     this.EnabledCmbConversion = true;
 
-    this.loadData();
+    await this.showLoading("Cargando...");
+    await this.loadData();
     this.OnClickNuevo("");
-
-  }
-  ngOnInit() {
-
+    this.hideLoading();
   }
 
 
+<<<<<<< Updated upstream
   loadData() {
     this._dataService.getDataInitial().subscribe((resp) => {
       if (resp.Codigo) {
         if (Object.keys(resp.Dt).length > 0) {
           this.dataCombosTipo = resp.Dt.Table;
-        }
-      } else {
-        this.presentAlert("Error", resp.Description);
-      }
-    });
-  }
+=======
+  async loadData() {
+    console.log(this._log.getuser());
+    const valor = await new Promise(async (resolve) => {
+      this._dataService.getDataInitial().subscribe((resp) => {
 
-  loadDataMotivo(mov: string) {
-
-    this._dataService.getDataMotivo(mov, this._log.getuser().trim()).subscribe((resp) => {
-      if (resp.Codigo) {
-
-        if (Object.keys(resp.Dt).length > 0) {
-          this.dataCombosMotivo = resp.Dt.Table;
-          this.dataCombosOrigen = resp.Dt.Table1;
-          this.dataCombosDestinoP = resp.Dt.Table1;
-          this.dataCombosReci = resp.Dt.Table2;
-          this.dataCombosMQ = resp.Dt.Table3;
-          this.dataCombosTipoConv = resp.Dt.Table4;
-          this.dataCombosMovil = resp.Dt.Table5;
-          this.dataCombosChofer = resp.Dt.Table6;
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            this.dataCombosTipo = resp.Dt.Table;
+          }
         } else {
           this.presentAlert("Error", resp.Description);
+>>>>>>> Stashed changes
         }
-      }
+        return resolve(true);
+      });
     });
   }
 
-  OnChangeTipo(e) {
+  async loadDataMotivo(mov: string) {
+    const valor = await new Promise(async (resolve) => {
+
+      this._dataService.getDataMotivo(mov, this._log.getuser().trim()).subscribe((resp) => {
+        if (resp.Codigo) {
+
+          if (Object.keys(resp.Dt).length > 0) {
+
+            this.dataCombosMotivo = resp.Dt.Table;
+            this.dataCombosOrigen = resp.Dt.Table1;
+            this.dataCombosDestinoP = resp.Dt.Table1;
+            this.dataCombosReci = resp.Dt.Table2;
+            this.dataCombosMQ = resp.Dt.Table3;
+            this.dataCombosTipoConv = resp.Dt.Table4;
+            this.dataCombosMovil = resp.Dt.Table5;
+            this.dataCombosChofer = resp.Dt.Table6;
+          } else {
+            this.presentAlert("Error", resp.Description);
+          }
+        }
+        return resolve(true);
+      });
+    });
+  }
+
+  async OnChangeTipo(e) {
     this.dataCombosMotivo = null;
     this.cmbMotivo = null;
     this.cmbOrigen = null;
@@ -259,11 +368,12 @@ export class TransaccionesPage implements OnInit {
     if (e.detail.value === "") {
       return;
     }
-
-    this.loadDataMotivo(e.detail.value);
+    await this.showLoading("Cargando...");
+    await this.loadDataMotivo(e.detail.value);
+    this.hideLoading();
   }
 
-  OnChangeMovil(e) {
+  /* OnChangeMovil(e) {
     this._dataService.getDataChofer(e.detail.value).subscribe((resp) => {
       if (resp.Codigo) {
         if (Object.keys(resp.Dt).length > 0) {
@@ -277,7 +387,7 @@ export class TransaccionesPage implements OnInit {
       }
     });
 
-  }
+  } */
 
   OnChangeBodOrigen(e) {
     if (e.detail.value === "") {
@@ -285,11 +395,10 @@ export class TransaccionesPage implements OnInit {
     }
 
     if (this.lbDestino === true) {
-
+      this.LlenarUbicacion(this.cmbOrigen.trim());
       this.EnabledCtrTab1 = true;
       this.tab = "Tab2";
     } else {
-      this.LlenarUbicacion(this.cmbOrigen.trim());
       this.dataCombosDestino = this.dataCombosDestinoP;
     }
   }
@@ -430,6 +539,12 @@ export class TransaccionesPage implements OnInit {
     this.cmbTipoConv = "";
     this.cmbMovil = "";
     this.cmbChofer = "";
+
+    this.SelectMovil = { CODIGO: '', DESCRIPCION: '' };
+    this.dataCombosMovilFilter.length = 0;
+    this.SelectChofer = { CODIGO: '', DESCRIPCION: '' };
+    this.dataCombosChoferFilter.length = 0;
+
     this.cmbUbicacion = "";
     this.lbOrigen = false;
     this.lbDestino = true;
@@ -575,6 +690,8 @@ export class TransaccionesPage implements OnInit {
 
         }
       }
+      if (this.txtFactura === "") { this.txtFactura = "0"; }
+
       const valor = await new Promise(async (resolve) => {
         if (!await this.guardarmov()) {
           return resolve(false);
@@ -599,7 +716,12 @@ export class TransaccionesPage implements OnInit {
     }
   }
 
-  async onEnterSSCC() {
+  onChangeSSCC(e) {
+    //console.log(e);
+    this.onEnterSSCC(e);
+  }
+
+  async onEnterSSCC(txt) {
     try {
 
       let Prodx: string;
@@ -648,8 +770,18 @@ export class TransaccionesPage implements OnInit {
           return;
         }
       }
+      if ((txt.length === 20 && txt.substring(0, 1) !== "]") ||
+        (txt.length === 23 && txt.substring(0, 1) === "]")) {
+        if (txt.length === 23) {
+          this.txtSSCC = txt.substring(5, txt.length);
+        } else {
+          this.txtSSCC = txt.substring(2, txt.length);
+        }
+      } else {
+        return;
+      }
 
-      if ((this.txtScannedValue.length === 20 && this.txtScannedValue.substring(0, 1) !== "]") ||
+      /* if ((this.txtScannedValue.length === 20 && this.txtScannedValue.substring(0, 1) !== "]") ||
         (this.txtScannedValue.length === 23 && this.txtScannedValue.substring(0, 1) === "]")) {
         if (this.txtScannedValue.length === 23) {
           this.txtSSCC = this.txtScannedValue.substring(5, this.txtScannedValue.length);
@@ -658,7 +790,9 @@ export class TransaccionesPage implements OnInit {
         }
       } else {
         return;
-      }
+      } */
+
+      await this.showLoading("Cargando...");
 
       //obtengo el tipo de etiqueta para ya no validar por barras
       const v1 = await new Promise(async (resolve) => {
@@ -687,11 +821,13 @@ export class TransaccionesPage implements OnInit {
       if (!this.ValidarCodigosSSCCxOpcion()) {
         this.txtScannedValue = "";
         setTimeout(() => this.inputSSCC.setFocus(), 300);
+        this.hideLoading();
         return;
       }
       if (this.lblTitSSCC === "C.Pallet" || this.lblTitSSCC === "C.Master") {
         if (this.cmbTipoConv === "R" || this.cmbTipoConv === "CM" || this.cmbTipoConv === "P") {
           if (!this.cargar()) {
+            this.hideLoading();
             return;
           }
         }
@@ -700,6 +836,7 @@ export class TransaccionesPage implements OnInit {
         this.txtScannedValue = "";
         setTimeout(() => this.inputSSCC.setFocus(), 300);
         this.control = false;
+        this.hideLoading();
         return;
       }
 
@@ -712,6 +849,7 @@ export class TransaccionesPage implements OnInit {
                 this.txtScannedValue = "";
                 setTimeout(() => this.inputSSCC.setFocus(), 300);
                 await this.presentAlert("Error", resp.Description);
+
                 return resolve(false);
               }
               if (Object.keys(resp.Dt).length > 0) {
@@ -897,6 +1035,7 @@ export class TransaccionesPage implements OnInit {
           /* if (!v2) {
             return;
           }  */
+          this.hideLoading();
           return;
 
         } catch (error) {
@@ -908,16 +1047,19 @@ export class TransaccionesPage implements OnInit {
 
       try {
         if (!await this.LecturaCodigoBase()) {
+          this.hideLoading();
           return;
         }
         if (this.control) {
           //PALLET
           if (this.cmbTipoConv === "P") {
             if (!await this.generar()) {
+              this.hideLoading();
               return;
             }
           }
           if (!this.control) {
+            this.hideLoading();
             return;
           }
 
@@ -1010,7 +1152,7 @@ export class TransaccionesPage implements OnInit {
         }
         this.txtScannedValue = "";
         setTimeout(() => this.inputSSCC.setFocus(), 300);
-
+        this.hideLoading();
       } catch (error) {
         await this.presentAlert("Error", error);
       }
@@ -1022,6 +1164,8 @@ export class TransaccionesPage implements OnInit {
       setTimeout(() => this.inputSSCC.setFocus(), 300);
       await this.presentAlert("Error", error);
     }
+
+    this.hideLoading();
   }
 
   async ValidarCodigosSSCCxOpcion() {
@@ -1383,6 +1527,7 @@ export class TransaccionesPage implements OnInit {
         const cc = await new Promise(async (resolve) => {
           await this._dataService.getConsultaSSCC(this.txtSSCC).subscribe(async (resp) => {
             if (resp.Codigo) {
+
               if (Object.keys(resp.Dt).length <= 0) {
                 this.presentAlert("Error", "No existe el codigo SSCC");
                 this.txtScannedValue = "";
@@ -1405,7 +1550,7 @@ export class TransaccionesPage implements OnInit {
               this.estado = ds[0]["ESTADO"];
               this.SnInventariado = ds[0]["INVENTARIADO"];
               this.color = ds[0]["COLOR"];
-              this.MIxcolor = ds[0]["pro_MezclaColorxpallet"];
+              this.MIxcolor = (ds[0]["pro_MezclaColorxpallet"] === null ? "" : ds[0]["pro_MezclaColorxpallet"]);
 
               if (this.cmbTipoConv === "R" || this.cmbTipoConv === "P") {
                 if (this.GMixcolor !== "") {
@@ -1444,7 +1589,7 @@ export class TransaccionesPage implements OnInit {
               if (this.cmbTipo === "I") {
                 //LA VALIDACION DE LA BODEGA LA HAGO DENTRO DEL SP
                 const v1 = await new Promise(async (resolve) => {
-                  await this._dataService.getVerificaLoteIQF(this.txtSSCC, (this.txt_referencia === "" ? "0" : ""), this.cmbOrigen).subscribe(async (resp) => {
+                  await this._dataService.getVerificaLoteIQF(this.txtSSCC, (this.txt_referencia.toString().trim() === "" ? "0" : ""), this.cmbOrigen.toString().trim()).subscribe(async (resp) => {
                     if (resp.Codigo) {
                       if (Object.keys(resp.Dt).length > 0) {
 
@@ -1474,7 +1619,7 @@ export class TransaccionesPage implements OnInit {
 
               if (this.cmbTipo === "T") {
                 const v2 = await new Promise(async (resolve) => {
-                  await this._dataService.getVerifCuarentena(this.cmbOrigen, this.txtSSCC).subscribe(async (resp) => {
+                  await this._dataService.getVerifCuarentena(this.cmbOrigen.toString().trim(), this.txtSSCC).subscribe(async (resp) => {
                     if (resp.Codigo) {
                       if (Object.keys(resp.Dt).length > 0) {
                         tbCuarent = resp.Dt.Table;
@@ -1495,9 +1640,9 @@ export class TransaccionesPage implements OnInit {
               }
 
               if (this.cmbTipo === "T") {
-                if (this.cmbDestino.substring(0, 1) === "X" || this.cmbDestino === "CM" || this.cmbDestino === "PL"
-                  || this.cmbDestino === "VA"
-                  || this.cmbDestino === "CS" || this.cmbDestino === "TM" || this.chkCuarentena) {
+                if (this.cmbDestino.substring(0, 1) === "X" || this.cmbDestino.toString().trim() === "CM" || this.cmbDestino.toString().trim() === "PL"
+                  || this.cmbDestino.toString().trim() === "VA"
+                  || this.cmbDestino.toString().trim() === "CS" || this.cmbDestino.toString().trim() === "TM" || this.chkCuarentena) {
                   for (let ic = 0; ic < ds.length; ic++) {
                     if (ds[ic]["autorizado"].toString().trim() !== "S") {
                       if (ds[ic]["sscc_cuarent"].toString().trim() !== "" || ds[ic]["autorizado"].toString().trim() === "N") {
@@ -1518,7 +1663,7 @@ export class TransaccionesPage implements OnInit {
                                 tallasulfito.toString().trim() !== ds[ic]["sscc_talla"].toString().trim()) {
 
                                 if (!await this.presentAlertConfirm("Cuarentena de Sulfitos/Calidad desea Continuar?")) {
-                                  cuaren = ds[ic]["sscc_cuarent"]
+                                  cuaren = ds[ic]["sscc_cuarent"].toString().trim();
                                 }
                                 else {
                                   cuaren = ""
@@ -1649,7 +1794,7 @@ export class TransaccionesPage implements OnInit {
 
               let bodOri: string = "";
               let bodDes: string = "";
-              bodOri = this.cmbOrigen;
+              bodOri = this.cmbOrigen.toString().trim();
               if (this.cmbTipo.toString().trim() === "T") {
                 bodDes = this.cmbDestino.toString().trim();
               }
@@ -1686,6 +1831,7 @@ export class TransaccionesPage implements OnInit {
               }
 
               //VALIDO LOTES UNIFICADOS
+
               const v4 = await new Promise(async (resolve) => {
                 await this._dataService.getValidaUnif(this.cmbTipo.trim(), this.cmbMotivo.trim(), this.txtSSCC.toString().trim(),
                   bodOri, bodDes, (this.txt_referencia.trim() === "" ? "0" : this.txt_referencia.trim())).subscribe(async (resp) => {
@@ -1836,7 +1982,7 @@ export class TransaccionesPage implements OnInit {
                     /* If MsgBox("Producto no consta en esta bodega " & bodega & ". Desea Transferirlo ", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Error de digitacion") = MsgBoxResult.Yes Then */
                     if (await this.presentAlertConfirm("Producto no consta en esta bodega " + this.bodega.trim() + ". Desea Transferirlo?")) {
                       const v8 = await new Promise(async (resolve) => {
-                        await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen + this.cmbUbicacion.trim(), this._log.getuser().trim(),
+                        await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen.toString().trim() + this.cmbUbicacion.trim(), this._log.getuser().trim(),
                           this.cmbMotivo, "N", "", this.txtSSCC).subscribe(async (resp) => {
                             if (!resp.Codigo) {
                               await this.presentAlert("Error", resp.Description);
@@ -1870,7 +2016,7 @@ export class TransaccionesPage implements OnInit {
                 const v9 = await new Promise(async (resolve) => {
                   await this._dataService.ValidaSaldoxSSCC(this.txtSSCC, "1", this.cmbOrigen.trim()).subscribe(async (resp) => {
                     if (resp.Codigo) {
-                      debugger;
+
                       if (Object.keys(resp.Dt).length > 0) {
                         let strRes: [][] = resp.Dt.Table;
                         let valResp: string = "NO";
@@ -2006,11 +2152,19 @@ export class TransaccionesPage implements OnInit {
     let saldo1: number;
     let acum1: number;
     let msgacumulado: number;
-    let saldo: ClsProducto = null;
+    let saldo: ClsProducto = {
+      id: "",
+      producto: "",
+      talla: -1,
+      lote: "",
+      saldo: 0,
+      acumulado: 0
+    };
     try {
       const v1 = await new Promise(async (resolve) => {
         await this._dataService.getVerificaSaldoSSCC(cod, "1", bod).subscribe(async (resp) => {
           if (resp.Codigo) {
+
             if (Object.keys(resp.Dt).length > 0) {
               let strRes: [][] = resp.Dt.Table;
               if (strRes.length > 0) {
@@ -2030,7 +2184,15 @@ export class TransaccionesPage implements OnInit {
                   if (this.colSaldoProd.length > 0) {
 
                     saldo = this.colSaldoProd.find(r => r.id === clave);
-                    if (saldo === null) {
+                    if (saldo === null || saldo === undefined) {
+                      saldo = {
+                        id: "",
+                        producto: "",
+                        talla: -1,
+                        lote: "",
+                        saldo: 0,
+                        acumulado: 0
+                      };
                       saldo.id = clave;
                       saldo.lote = lote1;
                       saldo.producto = produc1;
@@ -2366,7 +2528,7 @@ export class TransaccionesPage implements OnInit {
 
   async LlenarUbicacion(bod) {
     try {
-      this.cmbUbicacion = null;
+      this.cmbUbicacion = "";
       this.dataComboUbicacion = null;
 
       const v1 = await new Promise(async (resolve) => {

@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TransaccionesPage } from './transacciones.page';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 const TransaccionesRoutes: Routes = [
   {
@@ -20,7 +21,8 @@ const TransaccionesRoutes: Routes = [
     IonicModule,
     RouterModule.forChild(TransaccionesRoutes),
     NgxDatatableModule,
-    ComponentsModule
+    ComponentsModule,
+    AutocompleteLibModule
   ],
   declarations: [TransaccionesPage]
 })

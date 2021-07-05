@@ -10,17 +10,19 @@
 <ion-content class="login-content">
   <h2 class="auth-title">
     Bienvenido!
-    <br/>
+    <br />
     Songa Camara
   </h2>
   <form [formGroup]="loginForm" (ngSubmit)="doLogin()">
     <ion-list class="inputs-list" lines="full">
       <ion-item class="input-item">
-        <ion-input type="email" placeholder="Email" formControlName="email" clearInput autocapitalize="off" inputmode="email"></ion-input>
+        <ion-input placeholder="Usuario" [(ngModel)]="Usuario" formControlName="Usuario" clearInput autocapitalize="on">
+        </ion-input>
       </ion-item>
       <div class="error-container">
-        <ng-container *ngFor="let validation of validation_messages.email">
-          <div class="error-message" *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">
+        <ng-container *ngFor="let validation of validation_messages.Usuario">
+          <div class="error-message"
+            *ngIf="loginForm.get('Usuario').hasError(validation.type) && (loginForm.get('Usuario').dirty || loginForm.get('Usuario').touched)">
             <ion-icon name="information-circle-outline"></ion-icon>
             <span>{{ validation.message }}</span>
           </div>
@@ -29,12 +31,14 @@
 
       <ion-item class="input-item">
         <app-show-hide-password>
-          <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="password" placeholder="Password" formControlName="password">
+          </ion-input>
         </app-show-hide-password>
       </ion-item>
       <div class="error-container">
         <ng-container *ngFor="let validation of validation_messages.password">
-          <div class="error-message" *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+          <div class="error-message"
+            *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">
             <ion-icon name="information-circle-outline"></ion-icon>
             <span>{{ validation.message }}</span>
           </div>
@@ -42,7 +46,7 @@
       </div>
     </ion-list>
 
-    <ion-button class="login-btn" type="submit" expand="block" [disabled]="!loginForm.valid">Log In</ion-button>
+    <ion-button class="login-btn" type="submit" expand="block" [disabled]="!loginForm.valid">Ingresar</ion-button>
   </form>
 
   <!--<div class="social-auth-options">

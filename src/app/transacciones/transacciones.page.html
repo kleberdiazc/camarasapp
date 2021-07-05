@@ -14,7 +14,7 @@
   <div>
     <div>
       <ng-container *ngIf="tab === 'Tab1'">
-        <div style="height: 210px;">
+        <div style="height: 190px;">
           <ion-row>
             <ion-col size="6">
               <ion-label class="labelTab1">Tipo</ion-label>
@@ -62,7 +62,7 @@
       </ng-container>
 
       <ng-container *ngIf="tab === 'Tab2'">
-        <div style="height: 210px;">
+        <div style="height: 190px;">
           <ion-row>
             <ion-col size="12">
               <ion-item class="input-item">
@@ -124,7 +124,7 @@
       </ng-container>
 
       <ng-container *ngIf="tab === 'Tab3'">
-        <div style="height: 210px;">
+        <div style="height: 190px;">
           <ion-row>
             <ion-col size="12">
               <ion-row>
@@ -207,81 +207,127 @@
       </ng-container>
 
       <ng-container *ngIf="tab === 'Tab4'">
-        <div style="height: 210px;">
+        <div style="height: 190px;">
           <ion-row>
-            <ion-col size="10">
-              <ion-item>
-                <ion-label>Movil</ion-label>
-                <ion-select disabled={{DisabledControles}} interface="action-sheet" [(ngModel)]="cmbMovil"
+            <ion-col size="3">
+              <ion-label class="labelTab1">Movil</ion-label>
+            </ion-col>
+            <ion-col size="9">
+              <div class="ng-autocomplete">
+                <ng-autocomplete style="height: 30px;" [data]="dataCombosMovilFilter" [(ngModel)]="SelectMovil"
+                  [searchKeyword]="keyword" (selected)='selectEventMovil($event)'
+                  (inputCleared)='onEventClearMovil($event)' (closed)='onEventclosedMovil($event)'
+                  [itemTemplate]="itemTemplateMovil" (inputChanged)='onChangeMovil($event)'>
+                </ng-autocomplete>
+
+                <ng-template #itemTemplateMovil let-item>
+                  <a [innerHTML]="item.DESCRIPCION"></a>
+                </ng-template>
+              </div>
+              <!-- <ion-select disabled={{DisabledControles}} interface="action-sheet" [(ngModel)]="cmbMovil"
                   (ionChange)="OnChangeMovil($event)">
                   <ion-select-option *ngFor="let data of dataCombosMovil" value={{data.CODIGO}}>{{data.DESCRIPCION}}
                   </ion-select-option>
-                </ion-select>
-              </ion-item>
+                </ion-select> -->
             </ion-col>
           </ion-row>
+
+
           <ion-row>
-            <ion-col size="6">
-              <ion-row>
-                <ion-col size="6">
-                  <ion-label style="margin-left: 12px;">Factura.</ion-label>
-                </ion-col>
-                <ion-col size="6">
-                  <ion-input disabled={{DisabledControles}} style="--padding-top: 0px;" [(ngModel)]="txtFactura"
-                    placeholder="" clearInput autocapitalize="off"></ion-input>
-                </ion-col>
-              </ion-row>
-            </ion-col>
-            <ion-col size="6">
+            <ion-col size="12">
               <ion-row>
                 <ion-col size="4">
-                  <ion-label>Sellos.</ion-label>
+                  <ion-label class="labelTab1">Factura.</ion-label>
                 </ion-col>
                 <ion-col size="8">
-                  <ion-input disabled={{DisabledControles}} style="--padding-top: 0px;" [(ngModel)]="txtSelloMovil"
-                    placeholder="" clearInput autocapitalize="off"></ion-input>
+                  <ion-input style="--padding-top: 0px;" [(ngModel)]="txtFactura" placeholder="" clearInput
+                    autocapitalize="off"></ion-input>
                 </ion-col>
               </ion-row>
             </ion-col>
           </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-row>
+                <ion-col size="4">
+                  <ion-label class="labelTab1">Sellos.</ion-label>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-input style="--padding-top: 0px;" [(ngModel)]="txtSelloMovil" placeholder="" clearInput
+                    autocapitalize="off"></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+
           <ion-row>
             <ion-col size="3">
               <ion-label class="labelTab1">Chofer</ion-label>
             </ion-col>
+
+
             <ion-col size="9">
-              <ion-select disabled={{DisabledControles}} interface="action-sheet" value={{cmbChofer}}>
+              <div class="ng-autocomplete">
+                <ng-autocomplete [data]="dataCombosChoferFilter" [(ngModel)]="SelectChofer" [searchKeyword]="keyword"
+                  (selected)='selectEventChofer($event)' (inputCleared)='onEventClearChofer($event)'
+                  (closed)='onEventclosedChofer($event)' [itemTemplate]="itemTemplateChofer"
+                  (inputChanged)='onChangeChofer($event)'>
+                </ng-autocomplete>
+
+                <ng-template #itemTemplateChofer let-item>
+                  <a [innerHTML]="item.DESCRIPCION"></a>
+                </ng-template>
+              </div>
+              <!-- <ion-select disabled={{DisabledControles}} interface="action-sheet" value={{cmbChofer}}>
                 <ion-select-option *ngFor="let data of dataCombosChofer" value={{data.CODIGO}}>{{data.DESCRIPCION}}
                 </ion-select-option>
-              </ion-select>
+              </ion-select> -->
             </ion-col>
           </ion-row>
         </div>
       </ng-container>
+
+      <ion-row>
+        <ion-col size="3">
+          <ion-button class="buttonTabs" (click)="show('Tab1')" expand="full" fill="outline">Generales</ion-button>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button class="buttonTabs" (click)="show('Tab2')" expand="full" fill="outline">Obs.</ion-button>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button class="buttonTabs" (click)="show('Tab3')" expand="full" fill="outline">Especifica</ion-button>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button class="buttonTabs" (click)="show('Tab4')" expand="full" fill="outline">Movil</ion-button>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="show('Tab1')">
+          <ion-label>Generales</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="show('Tab2')">
+          <ion-label>Obs.</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="show('Tab3')">
+          <ion-label>Especifica</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="show('Tab4')">
+
+          <ion-label>Movil</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar> -->
     </div>
 
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button (click)="show('Tab1')">
-        <ion-label>Generales</ion-label>
-      </ion-tab-button>
 
-      <ion-tab-button (click)="show('Tab2')">
-        <ion-label>Obs.</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button (click)="show('Tab3')">
-        <ion-label>Especifica</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button (click)="show('Tab4')">
-
-        <ion-label>Movil</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
     <ion-row>
       <ion-col [hidden]="ctrlTipoEmpaque" size="12">
         <ion-item class="contentbuttonSSCC">
           <ion-label class="labelSSCC">{{lbl_TipoEmpaque}}</ion-label>
-          <ion-button class="buttonSSCC">{{btn_DesEmpaque}}</ion-button>
+          <ion-button class="buttonSSCC" fill="outline">{{btn_DesEmpaque}}</ion-button>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -303,7 +349,7 @@
             <ion-label style="margin-left: 12px;">{{lblTitSSCC}}</ion-label>
           </ion-col>
           <ion-col size="9">
-            <ion-input #inputSSCC style="--padding-top: 0px;" (keyup.enter)="onEnterSSCC()"
+            <ion-input #inputSSCC style="--padding-top: 0px;" (input)='onChangeSSCC($event.target.value)'
               [(ngModel)]="txtScannedValue" clearInput autocapitalize="off">
             </ion-input>
           </ion-col>
@@ -381,8 +427,35 @@
       </ion-col>
     </ion-row>
 
+    <ion-row>
+      <ion-col size="4">
+        <ion-button class="buttonPrincipal" expand="full" (click)="OnClickNuevo('')" fill="outline">
+          <ion-tab-button style="width: 100%;">
+            <ion-icon name="document-outline"></ion-icon>
+            <ion-label>Nuevo.</ion-label>
+          </ion-tab-button>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button class="buttonPrincipal" disabled={{EnabledbtnReimprimir}} expand="full"
+          (click)="OnClickReimprimir()" fill="outline">
+          <ion-tab-button style="width: 100%;">
+            <ion-icon name="print-outline"></ion-icon>
+            <ion-label>Reimp.</ion-label>
+          </ion-tab-button>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button class="buttonPrincipal" expand="full" (click)="OnClickGrabar()" fill="outline">
+          <ion-tab-button style="width: 100%;">
+            <ion-icon name="save-outline"></ion-icon>
+            <ion-label>Grabar</ion-label>
+          </ion-tab-button>
+        </ion-button>
+      </ion-col>
+    </ion-row>
 
-    <ion-tab-bar style="height: 50px;" slot="bottom">
+    <!-- <ion-tab-bar style="height: 50px;" slot="bottom">
       <ion-tab-button (click)="OnClickNuevo('')">
         <ion-icon name="document-outline"></ion-icon>
         <ion-label>Nuevo.</ion-label>
@@ -393,14 +466,10 @@
         <ion-label>Reimp.</ion-label>
       </ion-tab-button>
 
-      <!-- <ion-tab-button (click)="show('Tab3')">
-        <ion-label>C.Pr</ion-label>
-      </ion-tab-button> -->
-
       <ion-tab-button (click)="OnClickGrabar()">
         <ion-icon name="save-outline"></ion-icon>
         <ion-label>Grabar</ion-label>
       </ion-tab-button>
-    </ion-tab-bar>
+    </ion-tab-bar> -->
   </div>
 </ion-content>

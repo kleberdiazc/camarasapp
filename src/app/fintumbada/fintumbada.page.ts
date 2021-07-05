@@ -86,25 +86,30 @@ export class FintumbadaPage implements OnInit {
 
   constructor(private _dataService: FintumbadaService, public alertController: AlertController,
     public loadingController: LoadingController, private _log: LoginservicesService) {
-    this.loadData();
-    console.log(this._log.getuser().trim());
+
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.showLoading("Cargando...");
+    await this.loadData();
+    this.hideLoading();
   }
 
-  loadData() {
-    this._dataService.getDataInitial().subscribe((resp) => {
+  async loadData() {
+    const valor = await new Promise(async (resolve) => {
+      this._dataService.getDataInitial().subscribe((resp) => {
 
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
 
-          this.dataCombosCierre = resp.Dt.Table;
+            this.dataCombosCierre = resp.Dt.Table;
 
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
         }
-      } else {
-        this.presentAlert("Error", resp.Description);
-      }
+        return resolve(true);
+      });
     });
   }
 
