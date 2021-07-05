@@ -45,7 +45,12 @@ export class AppComponent {
       title: 'Fin Tumbada',
       url: '/app/fintumbada',
       ionicIcon: 'person-outline'
-    }
+    },
+    {
+      title: 'Suministros',
+      url: '/app/suministros',
+      ionicIcon: 'person-outline'
+    },
   ];
   accountPages = [
     {
@@ -92,11 +97,7 @@ export class AppComponent {
       url: '/app/detalle-pallet',
       ionicIcon: 'person-outline'
     },
-    {
-      title: 'Suministros',
-      url: '/app/suministros',
-      ionicIcon: 'person-outline'
-    },
+   
     {
       title: 'Parametros',
       url: '/app/parametros',

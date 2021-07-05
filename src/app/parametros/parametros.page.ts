@@ -9,37 +9,47 @@ import { AlertController, LoadingController } from '@ionic/angular';
   styleUrls: ['./parametros.page.scss'],
 })
 export class ParametrosPage implements OnInit {
-  oculta: boolean = true;
-  resumen: boolean = true;
-  inventario: boolean = true;
+  oculta: boolean = false;
+  resumen: boolean = false;
+  inventario: boolean = false;
   bluetoothList: any = [];
   mac: string = "";
+  compareWith : any ;
+MyDefaultYearIdValue : string ;
   constructor(private _param: ParametrosService,
     private print: ConsultaSsccService,
     private alertController: AlertController,
     public loadingController: LoadingController) { }
 
   async ngOnInit() {
-
+    this.listBTDevice();
     console.log("BRING DATA", )
     
       const loading = await this.loadingController.create({
         cssClass: 'my-custom-class',
         message: 'Un momento...',
-        duration: 1500
+        duration: 4000
       });
       await loading.present();
   
       const { role, data } = await loading.onDidDismiss();
       console.log('Loading dismissed!');
   
-    this.inventario = ( this._param.getvaluesInventario() == 'true');
-    this.oculta = ( this._param.getvaluesOculta() == 'true');
-    this.resumen = ( this._param.getvaluesResumido() == 'true');
-    this.mac = this._param.getvaluesMac();
-    this.listBTDevice();
+    this.inventario = ( await this._param.getvaluesInventario() == 'true');
+    this.oculta = (await  this._param.getvaluesOculta() == 'true');
+    this.resumen = (await this._param.getvaluesResumido() == 'true');
+    this.mac = await this._param.getvaluesMac();
+    this.MyDefaultYearIdValue = this.mac;
+    console.log('MAC', this.mac);
+    this.compareWith = this.compareWithFn;
+    //this.mac = this._param.getvaluesMac();
+
 
   }
+
+  compareWithFn(o1, o2) {
+    return o1 === o2;
+  };
 
   ResumenChange() {
     console.log(this.resumen);

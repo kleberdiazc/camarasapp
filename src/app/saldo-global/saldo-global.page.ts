@@ -2,6 +2,7 @@ import { SaldoGlobalService } from './saldo-global.service';
 import { Component, OnInit } from '@angular/core';
 import { SaldosGlobal } from '../interfaces/interfaces';
 import { SelectionType } from '@swimlane/ngx-datatable';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-saldo-global',
@@ -20,8 +21,11 @@ export class SaldoGlobalPage implements OnInit {
   SelectionType = SelectionType;
   principal:boolean= false;
   segundo:boolean=true;
-  tercero:boolean=true;
-  constructor(private _saldoGolbal:SaldoGlobalService) {
+  tercero: boolean = true;
+  loading: any = this.loadingController.create();
+  constructor(private _saldoGolbal: SaldoGlobalService,
+              private alertController: AlertController,
+              public loadingController: LoadingController) {
     
     this.columns = [
       { prop: 'CODIGO',name: 'CODIGO'},
@@ -38,8 +42,9 @@ export class SaldoGlobalPage implements OnInit {
 
   Buscar_Saldos() {
     console.log('click');
+    //this.loading = this.presentLoading('Cargando');
     this._saldoGolbal.getListaSaldosGlobal('','').subscribe((resp) => {
-      console.log(resp);
+      //this.loading.dismiss();
       this.rows = resp;
       //this.temp = [...resp];
       console.log(this.rows);
@@ -53,6 +58,13 @@ export class SaldoGlobalPage implements OnInit {
       
     }); 
   }
+  async presentLoading(mensaje: string) {
+    this.loading = await this.loadingController.create({
+      message: mensaje
+    });
+    return  this.loading.present();
+  }
+
 
   siguiente() {
     this.tercero = true;
@@ -61,7 +73,9 @@ export class SaldoGlobalPage implements OnInit {
     console.log(this.selected[0]["CODIGO"]);
     
     console.log('click');
-    this._saldoGolbal.getListaSaldosGlobal(this.selected[0]["CODIGO"],'').subscribe((resp) => {
+    this.loading = this.presentLoading('Cargando');
+    this._saldoGolbal.getListaSaldosGlobal(this.selected[0]["CODIGO"], '').subscribe((resp) => {
+      this.loading.dismiss();
       console.log(resp);
       this.rows2 = resp;
       //this.temp = [...resp];
@@ -90,7 +104,9 @@ export class SaldoGlobalPage implements OnInit {
     console.log("select2",this.selected2);
     
     console.log('click');
-    this._saldoGolbal.getListaSaldosGlobal('',this.selected2[0]["BOD_CODIGO"]).subscribe((resp) => {
+    this.loading = this.presentLoading('Cargando');
+    this._saldoGolbal.getListaSaldosGlobal('', this.selected2[0]["BOD_CODIGO"]).subscribe((resp) => {
+      this.loading.dismiss();
       console.log(resp);
       this.rows3 = resp;
       //this.temp = [...resp];

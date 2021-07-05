@@ -1,3 +1,4 @@
+import { URL_CONSULTA } from './../../config/url.servicios';
 import { SaldosGlobal } from './../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -22,7 +23,7 @@ export class SaldoGlobalService {
         connection: 'PRODUCCION'
       };
      
-      return  this.http.post<SaldosGlobal[]>('https://web.songa.com/api/Consultas', data);
+      return  this.http.post<SaldosGlobal[]>(URL_CONSULTA, data);
   }
   
 }

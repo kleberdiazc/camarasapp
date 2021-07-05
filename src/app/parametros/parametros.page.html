@@ -4,20 +4,20 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Consulta Transacciones
+      Parametros
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-row>
-    <ion-col size="12">
-      <ion-item>
+    <ion-col size="3" class="ion-margin-top">
         <ion-label>MAC</ion-label>
-        <ion-select placeholder="Seleccione Dispositivo"  [(ngModel)]="mac"  interface="action-sheet">
-            <ion-select-option *ngFor="let emb of bluetoothList"   [value]="emb.id">{{emb.name}}</ion-select-option>
-        </ion-select>
-      </ion-item>
+    </ion-col>    
+    <ion-col size="9">
+      <ion-select placeholder="Seleccione Dispositivo"   [compareWith]="compareWith"    value="{{MyDefaultYearIdValue}}" interface="action-sheet">
+        <ion-select-option *ngFor="let emb of bluetoothList"   [value]="emb.id">{{emb.name}}</ion-select-option>
+    </ion-select>
   </ion-col>
   </ion-row>
   <ion-row>

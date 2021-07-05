@@ -11,7 +11,7 @@
 <ion-content  class="forms-validations-content">
   <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
   <ion-row  class="ion-margin-top">
-    <ion-col size="9">
+    <ion-col size="12">
 
       <ion-item class="input-item">
         <ion-label>SSCC : </ion-label>
@@ -26,7 +26,10 @@
         </ng-container>
       </div>
     </ion-col>
-    <ion-col size = "3">
+    
+  </ion-row>
+  <ion-row>
+    <ion-col size = "12">
       <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Buscar</ion-button>
     </ion-col>
   </ion-row>

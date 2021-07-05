@@ -190,7 +190,7 @@
         <ngx-datatable
             #table
             class="material striped"
-            style="height: 300px;"
+            style="height: 200px;"
             [rows]="rows"
             columnMode="force"
             [headerHeight]="50"
@@ -202,7 +202,7 @@
             (select)="onSelect($event)">
             <ngx-datatable-column name="NUMSEC" prop='NUMSEC' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="NUMTRA" prop='NUMTRA' [flexGrow]="3"></ngx-datatable-column>
-            <ngx-datatable-column [width]="350" name="FECHA" prop='FECHA' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="FECHA" prop='FECHA' [flexGrow]="10"></ngx-datatable-column>
             <ngx-datatable-column name="TIPO" prop='TIPO' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="ESTADO" prop='ESTADO' [flexGrow]="4"></ngx-datatable-column>
             <ngx-datatable-column name="OBSERV" prop='OBSERV' [flexGrow]="3"></ngx-datatable-column>
@@ -212,7 +212,7 @@
     </ion-col>
   </ion-row>
   <ion-row >
-    <ion-badge color="primary" mode="ios">Detalle</ion-badge>
+    <ion-badge class="ion-margin" color="primary" mode="ios">Detalle</ion-badge>
     <ion-col size="12">
       <div>
         <ngx-datatable

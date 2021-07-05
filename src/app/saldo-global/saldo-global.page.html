@@ -4,14 +4,14 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      SONGA
+      Saldos Globales
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div [hidden]="principal">
-  <ion-row>
+  <div [hidden]="principal" >
+  <ion-row [hidden]="true"  >
     <ion-col size="7">
       <ion-list>
         <ion-item class="input-item">
@@ -26,18 +26,20 @@
         </ion-button>
     </ion-col>
 </ion-row>
-  <ion-row >
+  <ion-row class="ion-margin-top">
     <ion-col size="12">
       <div>
         <ngx-datatable
             #table
             class="material striped"
             [rows]="rows"
+            style="height: 300px;"
             columnMode="force"
             [headerHeight]="50"
             [footerHeight]="0"
             [rowHeight]="50"
             [scrollbarH]="true"
+            [scrollbarV]="true"
             [selected]="selected" 
             [selectionType]="SelectionType.single">
             <ngx-datatable-column name="CODIGO" prop='CODIGO' [flexGrow]="5"></ngx-datatable-column>
@@ -53,7 +55,7 @@
     <ion-col size="12">
       <ion-item class="input-item">
         <ion-label>Total Masters:</ion-label>
-        <ion-input type="number" [(ngModel)]="total" placeholder="Total Libras"  ></ion-input>
+        <ion-input  [readonly]="true" type="number" [(ngModel)]="total" placeholder="Total Libras"  ></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -68,18 +70,20 @@
   </div>
 
   <div [hidden]="segundo">
-    <ion-row >
+    <ion-row class="ion-margin-top">
       <ion-col size="12">
         <div>
           <ngx-datatable
               #table
               class="material striped"
               [rows]="rows2"
+              style="height: 300px;"
               columnMode="force"
               [headerHeight]="50"
               [footerHeight]="0"
               [rowHeight]="50"
               [scrollbarH]="true"
+              [scrollbarV]="true"
               [selected]="selected2" 
               [selectionType]="SelectionType.single">
               <ngx-datatable-column name="BOD_CODIGO" prop='BOD_CODIGO' [flexGrow]="5"></ngx-datatable-column>
@@ -106,18 +110,20 @@
   </div>
 
   <div [hidden]="tercero">
-    <ion-row >
+    <ion-row class="ion-margin-top">
       <ion-col size="12">
         <div>
           <ngx-datatable
               #table
               class="material striped"
               [rows]="rows3"
+              style="height: 400px;"
               columnMode="force"
               [headerHeight]="50"
               [footerHeight]="0"
               [rowHeight]="50"
               [scrollbarH]="true"
+              [scrollbarV]="true"
               [selected]="selected3" 
               [selectionType]="SelectionType.single">
               <ngx-datatable-column name="PRODUC" prop='PRODUC' [flexGrow]="5"></ngx-datatable-column>

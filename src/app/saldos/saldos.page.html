@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      SONGA
+      Saldos
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,7 +12,7 @@
 <ion-content>
   <ion-row>
     <ion-col size="12">
-      <ion-button (click)="Buscar_Saldos()" expand="block">
+      <ion-button (click)="Buscar_Saldos()" expand="block" fill="outline">
         <ion-icon name="search" size="large"></ion-icon>
       </ion-button>
     </ion-col>
@@ -20,7 +20,7 @@
   <ion-row>
     <ion-col size="12">
       <div>
-        <ngx-datatable #table class="material striped" [rows]="rows" columnMode="force" [headerHeight]="50"
+        <ngx-datatable #table class="material striped"   style="height: 500px;" [rows]="rows" columnMode="force" [headerHeight]="50"
           [footerHeight]="0" [rowHeight]="30" [scrollbarV]="true" [scrollbarH]="true">
           <ngx-datatable-column name="BODEGA" prop='BODEGA' [flexGrow]="5"></ngx-datatable-column>
           <ngx-datatable-column name="Ubica" prop='Ubica' [flexGrow]="3"></ngx-datatable-column>

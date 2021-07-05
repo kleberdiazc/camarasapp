@@ -1,6 +1,7 @@
 import { SaldosService } from './saldos.service';
 import { Component, OnInit } from '@angular/core';
 import { Saldos } from '../interfaces/interfaces';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 
 @Component({
@@ -11,7 +12,10 @@ import { Saldos } from '../interfaces/interfaces';
 export class SaldosPage implements OnInit {
   rows:Saldos[] = [];
   columns = [];
-  constructor(private _saldos:SaldosService) {
+  loading: any = this.loadingController.create();
+  constructor(private _saldos: SaldosService,
+              private alertController: AlertController,
+              public loadingController: LoadingController,) {
     this.columns = [
       { prop: 'BODEGA',name: 'BODEGA'},
       { prop: 'Ubica', name:'Ubica' },
@@ -22,14 +26,21 @@ export class SaldosPage implements OnInit {
       { prop: 'MSTRS', name: 'MSTRS' },
     ]
   }
-
+  async presentLoading(mensaje: string) {
+    this.loading = await this.loadingController.create({
+      message: mensaje
+    });
+    return  this.loading.present();
+  }
 
   ngOnInit() {
   }
  
   Buscar_Saldos() {
     console.log('click');
+    this.loading = this.presentLoading('Cargando');
     this._saldos.getListaSaldos('5009', -1, '').subscribe((resp) => {
+      this.loading.dismiss();
       console.log(resp);
       this.rows = resp;
       //this.temp = [...resp];

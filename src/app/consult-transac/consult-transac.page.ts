@@ -36,7 +36,7 @@ export class ConsultTransacPage implements OnInit {
   usuario: string = '';
   selected = [];
   SelectionType = SelectionType;
-
+  myDate: String = new Date().toISOString();
   private datePipe: DatePipe;
 
   validations = {
@@ -106,11 +106,11 @@ export class ConsultTransacPage implements OnInit {
         //Validators.required,
        // Validators.pattern('^([-+,0-9.]+)')
       ])),
-      'Desde': new FormControl('',Validators.compose([
+      'Desde': new FormControl(this.myDate,Validators.compose([
         Validators.required,
        // Validators.pattern('^([-+,0-9.]+)')
       ])),
-      'Hasta': new FormControl('',Validators.compose([
+      'Hasta': new FormControl(this.myDate,Validators.compose([
         Validators.required,
        // Validators.pattern('^([-+,0-9.]+)')
         ]))
@@ -120,6 +120,7 @@ export class ConsultTransacPage implements OnInit {
   
   ngOnInit() {
     this.consultarCombos();
+    
   }
 
   async presentLoading(mensaje: string) {

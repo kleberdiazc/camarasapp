@@ -22,7 +22,7 @@ export class DetallePalletService {
                       ];
 
       const base = {
-          sp: 'SPR_DetPallet',
+          sp: 'SPR_DetPallet_ionic',
           param: ListParam,
           conexion: 'PRODUCCION'
       };
