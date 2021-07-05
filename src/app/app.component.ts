@@ -21,35 +21,31 @@ export class AppComponent {
   selectedPath: string;
   componentes: Observable<Componente[]>;
   appPages = [
-    {
-      title: 'Categories',
-      url: '/app/categories',
-      ionicIcon: 'list-outline'
-    },
+    
     {
       title: 'Transacciones',
       url: '/app/transacciones',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Temperatura',
       url: '/app/temperatura',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Req. Etiqueteo',
       url: '/app/req-etiqueteo',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Fin Tumbada',
       url: '/app/fintumbada',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Suministros',
       url: '/app/suministros',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
   ];
   accountPages = [
@@ -59,57 +55,73 @@ export class AppComponent {
       ionicIcon: 'log-in-outline'
     }
   ];
+
+  config = [
+    {
+      
+        title: 'Parametros',
+        url: '/app/parametros',
+        ionicIcon: 'construct-outline'
+      
+    }
+  ];
+
+  home = [
+    {
+      title: 'Inicio',
+      url: '/app/categories',
+      ionicIcon: 'Home-outline'
+    }
+  ];
+
   consultas = [
     {
       title: 'Saldos',
       url: '/app/saldos',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Consulta SSCC',
       url: '/app/consulta-sscc',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Saldo Global',
       url: '/app/saldo-global',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Consultas SSCC',
       url: '/app/consultas-sscc',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     },
     {
       title: 'Info Tumbada',
       url: '/app/info-tumb',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     }
     ,
     {
       title: 'Consulta Transacción',
       url: '/app/consult-transac',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     }
     ,
     {
       title: 'Detalle Pallet',
       url: '/app/detalle-pallet',
-      ionicIcon: 'person-outline'
-    },
-   
-    {
-      title: 'Parametros',
-      url: '/app/parametros',
-      ionicIcon: 'person-outline'
+      ionicIcon: 'caret-forward-outline'
     }
+   
+    
   ];
 
-
+  user = '';
   constructor(private menServi: AppServicesService,
     private router: Router,
     private _login: LoginservicesService) {
     this.initializeApp();
+    this.user = this._login.getuser()
     console.log('INICIE');
   }
 
@@ -144,6 +156,12 @@ export class AppComponent {
     });
     this.router.navigateByUrl('walkthrough');
   }
+
+
+  cerrarSesion() {
+    this._login.cerrar_sesion();
+    this.router.navigateByUrl('/auth/login');
+  }
 }
 
 /*appPages = [
@@ -155,7 +173,7 @@ export class AppComponent {
   {
     title: 'Profile',
     url: '/app/user',
-    ionicIcon: 'person-outline'
+    ionicIcon: 'caret-forward-outline'
   },
   {
     title: 'Contact Card',

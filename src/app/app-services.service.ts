@@ -1,3 +1,4 @@
+import { URL_CONSULTA } from './../config/url.servicios';
 import { LoginservicesService } from './login/loginservices.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -21,7 +22,7 @@ export class AppServicesService {
       parameters : 'user:' + this.log.id_usuario + ':Varchar|',
       connection: 'PRODUCCION'
     };
-    const url = 'https://web.songa.com/api/Consultas';
+    const url = 'URL_CONSULTA';
    
   
     return  this.http.post<Componente[]>(url, data);
