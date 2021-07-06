@@ -14,83 +14,105 @@ export class ParametrosPage implements OnInit {
   inventario: boolean = false;
   bluetoothList: any = [];
   mac: string = "";
-  compareWith : any ;
-MyDefaultYearIdValue : string ;
+  MyDefaultMacValue: string;
+  loading: any = null;
+
   constructor(private _param: ParametrosService,
     private print: ConsultaSsccService,
     private alertController: AlertController,
     public loadingController: LoadingController) { }
 
-  async ngOnInit() {
-    this.listBTDevice();
-    console.log("BRING DATA", )
-    
-      const loading = await this.loadingController.create({
-        cssClass: 'my-custom-class',
-        message: 'Un momento...',
-        duration: 4000
+  async showLoading(mensaje) {
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
       });
-      await loading.present();
-  
-      const { role, data } = await loading.onDidDismiss();
-      console.log('Loading dismissed!');
-  
-    this.inventario = ( await this._param.getvaluesInventario() == 'true');
-    this.oculta = (await  this._param.getvaluesOculta() == 'true');
+      await this.loading.present();
+      return resolve(true);
+    });
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
+
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+  async ngOnInit() {
+    await this.showLoading("Cargando..");
+
+    await this.listBTDevice();
+    /* console.log("BRING DATA",) */
+
+    /* const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Un momento...',
+      duration: 4000
+    });
+    await loading.present(); */
+
+    /* const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!'); */
+
+    this.inventario = (await this._param.getvaluesInventario() == 'true');
+    this.oculta = (await this._param.getvaluesOculta() == 'true');
     this.resumen = (await this._param.getvaluesResumido() == 'true');
     this.mac = await this._param.getvaluesMac();
-    this.MyDefaultYearIdValue = this.mac;
-    console.log('MAC', this.mac);
-    this.compareWith = this.compareWithFn;
+    this.MyDefaultMacValue = this.mac;
+    //console.log('MAC', this.mac);
     //this.mac = this._param.getvaluesMac();
 
+    this.hideLoading();
 
   }
 
-  compareWithFn(o1, o2) {
-    return o1 === o2;
-  };
 
-  ResumenChange() {
-    console.log(this.resumen);
-  }
+  async Grabar() {
 
-  ocultaChange() {
-    console.log(this.oculta);
-  }
-
-
-  inventarioChange() {
-    console.log(this.inventario);
-  }
-
-   async Grabar() {
-     this._param.ingresar(this.mac, this.resumen, this.oculta, this.inventario);
-     let mno= await this.alertController.create({
-      header:"Sucess "+"Guardado con Exito",
-      buttons:['Ok']
+    this._param.ingresar(this.mac, this.resumen, this.oculta, this.inventario);
+    let mno = await this.alertController.create({
+      header: "Sucess " + "Guardado con Exito",
+      buttons: ['Ok']
     });
     await mno.present();
 
   }
 
-  
-  listBTDevice()
-  {
-    this.print.searchBt().then(datalist=>{
-      
-      this.bluetoothList = datalist;
-      
 
-    },async err=>{
-      console.log("ERROR",err);
-      let mno= await this.alertController.create({
-        header:"ERROR "+err,
-        buttons:['Dismiss']
+  async listBTDevice() {
+    const valor = await new Promise(async (resolve) => {
+      this.print.searchBt().then(datalist => {
+        this.bluetoothList = datalist;
+
+      }, async err => {
+        this.presentAlert("ERROR", err);
+
       });
-      await mno.present();
-    })
-
+      return resolve(true);
+    });
   }
 
 }

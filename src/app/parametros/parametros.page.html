@@ -12,41 +12,42 @@
 <ion-content>
   <ion-row>
     <ion-col size="3" class="ion-margin-top">
-        <ion-label>MAC</ion-label>
-    </ion-col>    
+      <ion-label>MAC</ion-label>
+    </ion-col>
     <ion-col size="9">
-      <ion-select placeholder="Seleccione Dispositivo"   [compareWith]="compareWith"    value="{{MyDefaultYearIdValue}}" interface="action-sheet">
-        <ion-select-option *ngFor="let emb of bluetoothList"   [value]="emb.id">{{emb.name}}</ion-select-option>
-    </ion-select>
-  </ion-col>
+      <ion-select placeholder="Seleccione Dispositivo" value="{{MyDefaultMacValue}}" [(ngModel)]="mac"
+        interface="action-sheet">
+        <ion-select-option *ngFor="let emb of bluetoothList" value={{emb.id}}>{{emb.name}}</ion-select-option>
+      </ion-select>
+    </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="12">
-     <ion-item>
-           <ion-label>Detalle Resumido</ion-label>
-           <ion-checkbox slot="start"  [(ngModel)]="resumen" (ionChange)="ResumenChange()" mode="ios"></ion-checkbox>
-     </ion-item>
-   </ion-col>
- </ion-row>
- <ion-row>
-  <ion-col size="12">
-   <ion-item>
-         <ion-label>Oculta Nombre de CIA en Etq Pallet</ion-label>
-         <ion-checkbox slot="start"  [(ngModel)]="oculta" (ionChange)="ocultaChange()" mode="ios"></ion-checkbox>
-   </ion-item>
- </ion-col>
-</ion-row>
-<ion-row>
-  <ion-col size="12">
-   <ion-item>
-         <ion-label>Detalle Inventario</ion-label>
-         <ion-checkbox slot="start" [(ngModel)]="inventario"  (ionChange)="inventarioChange()" mode="ios"></ion-checkbox>
-   </ion-item>
- </ion-col>
-</ion-row>
-<ion-row>
-  <ion-col>
-    <ion-button class="submit-btn" type="submit" (click)="Grabar()" expand="block" fill="outline" >Grabar</ion-button>
-  </ion-col>
-</ion-row>
+      <ion-item>
+        <ion-label>Detalle Resumido</ion-label>
+        <ion-checkbox slot="start" [(ngModel)]="resumen" mode="ios"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-item>
+        <ion-label>Oculta Nombre de CIA en Etq Pallet</ion-label>
+        <ion-checkbox slot="start" [(ngModel)]="oculta" mode="ios"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-item>
+        <ion-label>Detalle Inventario</ion-label>
+        <ion-checkbox slot="start" [(ngModel)]="inventario" mode="ios"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button class="submit-btn" type="submit" (click)="Grabar()" expand="block" fill="outline">Grabar</ion-button>
+    </ion-col>
+  </ion-row>
 </ion-content>

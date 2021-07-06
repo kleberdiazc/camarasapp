@@ -5,7 +5,7 @@ import { ResultWS, DataCombos, TablaCodigo, ClsProducto, tb_DataGrid } from './.
 import { Dictionary } from './../Class/dictionary';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import { LoginservicesService } from './../login/loginservices.service';
-
+import { ParametrosService } from './../parametros/parametros.service';
 
 @Component({
   selector: 'app-transacciones',
@@ -284,7 +284,8 @@ export class TransaccionesPage implements OnInit {
   }
 
   constructor(private _dataService: TransaccionesService, public alertController: AlertController,
-    public loadingController: LoadingController, private _log: LoginservicesService) {
+    public loadingController: LoadingController, private _log: LoginservicesService
+    , private _param: ParametrosService) {
 
 
 
@@ -2315,6 +2316,11 @@ export class TransaccionesPage implements OnInit {
             if (resp.Codigo) {
               if (Object.keys(resp.Dt).length > 0) {
                 let strRes: [][] = resp.Dt.Table;
+                /* PRINT */
+                if (strRes.length > 0) {
+                  //console.log(strRes[0]["Printer"]);
+                  await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                }
               }
             } else {
               await this.presentAlert("Error", resp.Description);
@@ -2347,6 +2353,11 @@ export class TransaccionesPage implements OnInit {
           if (resp.Codigo) {
             if (Object.keys(resp.Dt).length > 0) {
               let strRes: [][] = resp.Dt.Table;
+              /* PRINT */
+              if (strRes.length > 0) {
+                //console.log(strRes[0]["Printer"]);
+                await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+              }
             }
           } else {
             await this.presentAlert("Error", resp.Description);
@@ -2412,6 +2423,7 @@ export class TransaccionesPage implements OnInit {
                     "PRINT" + "\n";
                   console.log(imp);
                   /* Retorno = Print(Buffer.ToString) */
+                  await this._dataService.printer(imp, await this._param.getvaluesMac());
                   imp = "";
                   if (DetInv) {
                     imp = imp + "! 0 200 200 800 1" + "\n" + "LABEL" + "\n" + "CONTRAST 0" + "\n" +
@@ -2476,7 +2488,8 @@ export class TransaccionesPage implements OnInit {
                 "BT OFF" + "\n" +
                 "PRINT" + "\n";
 
-              console.log(imp);
+              /* console.log(imp); */
+              await this._dataService.printer(imp, await this._param.getvaluesMac());
               /* Retorno = Print(Buffer.ToString) */
               imp = "";
             }
@@ -2504,7 +2517,10 @@ export class TransaccionesPage implements OnInit {
             if (Object.keys(resp.Dt).length > 0) {
               let strRes: [][] = resp.Dt.Table;
               /* PRINT */
-              console.log(strRes[0]["Printer"]);
+              if (strRes.length > 0) {
+                //console.log(strRes[0]["Printer"]);
+                await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+              }
             }
           } else {
             await this.presentAlert("Error", resp.Description);

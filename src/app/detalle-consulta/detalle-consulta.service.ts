@@ -19,62 +19,62 @@ export class DetalleConsultaService {
     public platform: Platform,
     public loadingController: LoadingController,
     private _param: ParametrosService,) { }
-  
-  
-    ValidarConsulta(consulta:string,sscc:string) {
 
-      const ListParam = [{ "Name": "TIPO", "Type": "Varchar", "Value": consulta },
-                         { "Name": "SSCC", "Type": "Varchar", "Value": sscc }
-                      ];
 
-      const base = {
-          sp: 'SP_CONSULTA_GEN',
-          param: ListParam,
-          conexion: 'PRODUCCION'
-      };
-     
-      return this.http.post<Valida>(URL_CONSULT, base);
-    }
-  
-  
-  ConsultarDetalle(resumido:string,sscc:string) {
+  ValidarConsulta(consulta: string, sscc: string) {
 
-      const ListParam = [{ "Name": "codigo", "Type": "Varchar", "Value": sscc },
-                         { "Name": "resumido", "Type": "Varchar", "Value": resumido }
-                      ];
+    const ListParam = [{ "Name": "TIPO", "Type": "Varchar", "Value": consulta },
+    { "Name": "SSCC", "Type": "Varchar", "Value": sscc }
+    ];
 
-      const base = {
-          sp: 'spr_ConsultarDetallenew',
-          param: ListParam,
-          conexion: 'PRODUCCION'
-      };
-     
-      console.log(resumido,sscc)
-      return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+    const base = {
+      sp: 'SP_CONSULTA_GEN',
+      param: ListParam,
+      conexion: 'PRODUCCION'
+    };
+
+    return this.http.post<Valida>(URL_CONSULT, base);
   }
-  
+
+
+  ConsultarDetalle(resumido: string, sscc: string) {
+
+    const ListParam = [{ "Name": "codigo", "Type": "Varchar", "Value": sscc },
+    { "Name": "resumido", "Type": "Varchar", "Value": resumido }
+    ];
+
+    const base = {
+      sp: 'spr_ConsultarDetallenew',
+      param: ListParam,
+      conexion: 'PRODUCCION'
+    };
+
+    console.log(resumido, sscc)
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+  }
+
 
 
   SaldosTallas(codigo, lote, talla, planta) {
     console.log(codigo, lote, talla, planta);
     let tal = talla.toString();
     const ListParam = [{ "Name": "bit_produc", "Type": "Varchar", "Value": codigo },
-                        { "Name": "bit_lote", "Type": "Varchar", "Value": lote },
-                        { "Name": "bit_codtal", "Type": "Varchar", "Value": tal },
-                        { "Name": "bit_planta", "Type": "Varchar", "Value": planta }
-                      ];
+    { "Name": "bit_lote", "Type": "Varchar", "Value": lote },
+    { "Name": "bit_codtal", "Type": "Varchar", "Value": tal },
+    { "Name": "bit_planta", "Type": "Varchar", "Value": planta }
+    ];
 
-      const base = {
-          sp: 'spr_SaldosxProdTallote',
-          param: ListParam,
-          conexion: 'PRODUCCION'
-      };
-     
-      return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+    const base = {
+      sp: 'spr_SaldosxProdTallote',
+      param: ListParam,
+      conexion: 'PRODUCCION'
+    };
+
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
 
   imprimirpall(sscc) {
-    
+
 
     this.obtieneFechaHora().subscribe((resp) => {
       let fecha = [];
@@ -92,7 +92,7 @@ export class DetalleConsultaService {
           buttons: ['OK']
         });
         await alert.present();
-        
+
       } else {
         if (resp.Dt.Table.length = 0) {
           const alert = await this.alertController.create({
@@ -102,9 +102,9 @@ export class DetalleConsultaService {
           });
           await alert.present();
         } else {
-          let inventario = (this._param.getvaluesInventario() == 'true');
-          let oculta = (this._param.getvaluesOculta() == 'true');
-          let resumen = (this._param.getvaluesResumido() == 'true');
+          let inventario = (await this._param.getvaluesInventario() == 'true');
+          let oculta = (await this._param.getvaluesOculta() == 'true');
+          let resumen = (await this._param.getvaluesResumido() == 'true');
           let mac = this._param.getvaluesMac();
           let prod = resp.Dt.Table; //OBTENER EL DATO PROD
           let cadena;
@@ -126,7 +126,7 @@ export class DetalleConsultaService {
               'PRINT' + '\n'
           }
           else {
-            
+
             cadena = '! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + 'CONTRAST 0' + '\n' +
               'TONE 0' + '\n' +
               'SPEED 5' + '\n' +
@@ -143,7 +143,7 @@ export class DetalleConsultaService {
 
 
         }
-        
+
       }
     });
 
@@ -178,7 +178,7 @@ export class DetalleConsultaService {
           buttons: ['OK']
         });
         await alert.present();
-        
+
       } else {
         if (resp.Dt.Table.length = 0) {
           const alert = await this.alertController.create({
@@ -188,67 +188,67 @@ export class DetalleConsultaService {
           });
           await alert.present();
         } else {
-          let inventario = (this._param.getvaluesInventario() == 'true');
-          let oculta = (this._param.getvaluesOculta() == 'true');
-          let resumen = (this._param.getvaluesResumido() == 'true');
+          let inventario = (await this._param.getvaluesInventario() == 'true');
+          let oculta = (await this._param.getvaluesOculta() == 'true');
+          let resumen = (await this._param.getvaluesResumido() == 'true');
           let mac = this._param.getvaluesMac();
           let prod = resp.Dt.Table; //OBTENER EL DATO PROD
           let cadena;
           if (oculta = true) {
             if (inventario = true) {
-              cadena = '! 0 200 200 800 1' + '\n' + "LABEL" + '\n' + "CONTRAST 0" + '\n' + 
-                        'TONE 0' + '\n' +
-                        'SPEED 5' + '\n' +
-                        'PAGE-WIDTH 560' + '\n' +
-                        'BAR-SENSE' + '\n' +
-                        ';// PAGE 0000000005600800' + '\n' +
-                        'T 7 1 65 14 ' + '\n' + 
-                        'T 0 2 104 57 ' + '\n' + 
-                        'T 7 0 184 84 ' + '\n' + 
-                        'T 7 0 194 115 Detalle '+ sscc + '\n' + '\n' + 
-                        'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + '\n'
+              cadena = '! 0 200 200 800 1' + '\n' + "LABEL" + '\n' + "CONTRAST 0" + '\n' +
+                'TONE 0' + '\n' +
+                'SPEED 5' + '\n' +
+                'PAGE-WIDTH 560' + '\n' +
+                'BAR-SENSE' + '\n' +
+                ';// PAGE 0000000005600800' + '\n' +
+                'T 7 1 65 14 ' + '\n' +
+                'T 0 2 104 57 ' + '\n' +
+                'T 7 0 184 84 ' + '\n' +
+                'T 7 0 194 115 Detalle ' + sscc + '\n' + '\n' +
+                'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + '\n'
             }
             else {
-              
-              cadena = '! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + 'CONTRAST 0' + '\n' + 
-              'TONE 0' + '\n' + 
-              'SPEED 5' + '\n' + 
-              'PAGE-WIDTH 560' + '\n' + 
-              'BAR-SENSE' + '\n' + 
-              ';// PAGE 0000000005600800' + '\n' + 
-              'T 7 1 65 14 ' + '\n' + 
-              'T 0 2 104 57 ' + '\n' + 
-              'T 7 0 184 84 ' + '\n' + 
-              'T 7 0 194 115         '+ sscc + '\n' + '\n' + 
-              'T 7 0 22 135                                             ' + '\n'
+
+              cadena = '! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + 'CONTRAST 0' + '\n' +
+                'TONE 0' + '\n' +
+                'SPEED 5' + '\n' +
+                'PAGE-WIDTH 560' + '\n' +
+                'BAR-SENSE' + '\n' +
+                ';// PAGE 0000000005600800' + '\n' +
+                'T 7 1 65 14 ' + '\n' +
+                'T 0 2 104 57 ' + '\n' +
+                'T 7 0 184 84 ' + '\n' +
+                'T 7 0 194 115         ' + sscc + '\n' + '\n' +
+                'T 7 0 22 135                                             ' + '\n'
             }
 
           } else {
             if (inventario = true) {
-              cadena='! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + "CONTRAST 0" + '\n' + 
-                      'TONE 0' + '\n' + 
-                      'SPEED 5' + '\n' + 
-                      'PAGE-WIDTH 560' + '\n' + 
-                      'BAR-SENSE' + '\n' + 
-                      ';// PAGE 0000000005600800' + '\n' + 
-                      'T 7 0 194 115 Detalle ' + sscc + '\n' + '\n' + 
-                      'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + '\n'
+              cadena = '! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + "CONTRAST 0" + '\n' +
+                'TONE 0' + '\n' +
+                'SPEED 5' + '\n' +
+                'PAGE-WIDTH 560' + '\n' +
+                'BAR-SENSE' + '\n' +
+                ';// PAGE 0000000005600800' + '\n' +
+                'T 7 0 194 115 Detalle ' + sscc + '\n' + '\n' +
+                'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + '\n'
             } else {
-              cadena = '! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + 'CONTRAST 0' + '\n' + 
-              'TONE 0' + '\n' + 
-              'SPEED 5' + '\n' + 
-              'PAGE-WIDTH 560' + '\n' + 
-              'BAR-SENSE' + '\n' + 
-              ';// PAGE 0000000005600800' + '\n' + 
-              'T 7 1 194 115 '+ sscc + '\n' + '\n' +
-              'T 7 0 22 135                                           ' + '\n'
+              cadena = '! 0 200 200 800 1' + '\n' + 'LABEL' + '\n' + 'CONTRAST 0' + '\n' +
+                'TONE 0' + '\n' +
+                'SPEED 5' + '\n' +
+                'PAGE-WIDTH 560' + '\n' +
+                'BAR-SENSE' + '\n' +
+                ';// PAGE 0000000005600800' + '\n' +
+                'T 7 1 194 115 ' + sscc + '\n' + '\n' +
+                'T 7 0 22 135                                           ' + '\n'
             }
           }
-         
+
 
 
         }
-        
+
       }
     });
 
@@ -257,25 +257,25 @@ export class DetalleConsultaService {
 
   consultaCajas(sscc) {
     const ListParam = [{ "Name": "sscc", "Type": "Varchar", "Value": sscc }
-                      ];
-
-      const base = {
-          sp: 'sp_consultacajas',
-          param: ListParam,
-          conexion: 'PRODUCCION'
-      };
-     
-      return this.http.post<RWDetalleCons>(URL_CONSULT, base);
-  }
-
-  obtieneFechaHora() {
-    const ListParam = [ 
     ];
 
     const base = {
-    sp: 'Spr_FechaMoviles',
-    param: ListParam,
-    conexion: 'PRODUCCION'
+      sp: 'sp_consultacajas',
+      param: ListParam,
+      conexion: 'PRODUCCION'
+    };
+
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+  }
+
+  obtieneFechaHora() {
+    const ListParam = [
+    ];
+
+    const base = {
+      sp: 'Spr_FechaMoviles',
+      param: ListParam,
+      conexion: 'PRODUCCION'
     };
 
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);

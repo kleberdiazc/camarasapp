@@ -3,6 +3,7 @@ import { ReqEtiqueteoService } from './req-etiqueteo.service';
 import { AlertController, LoadingController, IonInput } from '@ionic/angular';
 import { ResultWS, DataCombos, TablaCodigo, ClsProducto, tb_DataGrid2 } from './../interfaces/interfaces';
 import { LoginservicesService } from './../login/loginservices.service';
+import { ParametrosService } from '../parametros/parametros.service';
 
 @Component({
   selector: 'app-req-etiqueteo',
@@ -76,7 +77,8 @@ export class ReqEtiqueteoPage implements OnInit {
   }
 
   constructor(private _dataService: ReqEtiqueteoService, public alertController: AlertController,
-    public loadingController: LoadingController, private _log: LoginservicesService) {
+    public loadingController: LoadingController, private _log: LoginservicesService
+    , private _param: ParametrosService) {
 
   }
 
@@ -174,7 +176,8 @@ export class ReqEtiqueteoPage implements OnInit {
       this.presentAlert("Error", error);
     }
   }
-  OnClickNuevo() {
+  async OnClickNuevo() {
+
     this.txtScannedValue = "";
     this.txtSSCC = "";
     this.cmbOrigen = "";
@@ -305,7 +308,8 @@ export class ReqEtiqueteoPage implements OnInit {
               "ENDML" + "\n" +
               "PRINT";
 
-            console.log(print);
+            //console.log(print);
+            await this._dataService.printer(print, await this._param.getvaluesMac());
             /* Retorno = Print(Buffer.ToString) */
 
           }

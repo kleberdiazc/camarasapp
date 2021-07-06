@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
-import { Storage } from '@ionic/storage-angular';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { URL_CONSULT } from '../config/url.servicios';
 
 @Injectable({
@@ -14,8 +14,25 @@ export class ReqEtiqueteoService {
     public alertController: AlertController,
     public platform: Platform,
     public loadingController: LoadingController,
-    private storage: Storage) { }
+    private btSerial: BluetoothSerial) { }
 
+
+  connectBT(address) {
+    return this.btSerial.connect(address);
+  }
+
+  printer(data, address) {
+    let xyz = this.connectBT(address).subscribe(async data => {
+      this.btSerial.write(data).then(async dataz => {
+        xyz.unsubscribe();
+        return 1;
+      }, async errx => {
+        return 0;
+      });
+    }, async err => {
+      return -1;
+    });
+  }
 
   getDataInitial(planta, user) {
     const ListParam = [{ "Name": "PLANTA", "Type": "Varchar", "Value": planta },
