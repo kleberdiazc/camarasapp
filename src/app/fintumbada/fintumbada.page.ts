@@ -173,7 +173,7 @@ export class FintumbadaPage implements OnInit {
       await this.showLoading("Grabando...");
 
       const v1 = await new Promise(async (resolve) => {
-        this._dataService.GrabaFinCierre(this.cmbCierre, this._log.getuser().trim()).subscribe(async (resp) => {
+        this._dataService.GrabaFinCierre(this.cmbCierre, await this._log.getuser()).subscribe(async (resp) => {
           if (resp.Codigo) {
             await this.presentAlert("Información", "Cierre finalizado con éxito");
             this.OnClickNuevo();

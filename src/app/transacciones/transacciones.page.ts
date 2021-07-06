@@ -5,7 +5,7 @@ import { ResultWS, DataCombos, TablaCodigo, ClsProducto, tb_DataGrid } from './.
 import { Dictionary } from './../Class/dictionary';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import { LoginservicesService } from './../login/loginservices.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 
 @Component({
   selector: 'app-transacciones',
@@ -302,15 +302,8 @@ export class TransaccionesPage implements OnInit {
   }
 
 
-<<<<<<< Updated upstream
-  loadData() {
-    this._dataService.getDataInitial().subscribe((resp) => {
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
-          this.dataCombosTipo = resp.Dt.Table;
-=======
+
   async loadData() {
-    console.log(this._log.getuser());
     const valor = await new Promise(async (resolve) => {
       this._dataService.getDataInitial().subscribe((resp) => {
 
@@ -320,7 +313,7 @@ export class TransaccionesPage implements OnInit {
           }
         } else {
           this.presentAlert("Error", resp.Description);
->>>>>>> Stashed changes
+
         }
         return resolve(true);
       });
@@ -330,7 +323,7 @@ export class TransaccionesPage implements OnInit {
   async loadDataMotivo(mov: string) {
     const valor = await new Promise(async (resolve) => {
 
-      this._dataService.getDataMotivo(mov, this._log.getuser().trim()).subscribe((resp) => {
+      this._dataService.getDataMotivo(mov, await this._log.getuser()).subscribe((resp) => {
         if (resp.Codigo) {
 
           if (Object.keys(resp.Dt).length > 0) {
@@ -481,8 +474,7 @@ export class TransaccionesPage implements OnInit {
     this.tab = tab;
   }
 
-  OnClickNuevo(tipo) {
-
+  async OnClickNuevo(tipo) {
     this.tb_detalle.length = 0;
     this.DataGrid.length = 0;
 
@@ -875,7 +867,7 @@ export class TransaccionesPage implements OnInit {
                     //aqui debo cambiar la condicion de que si la tabla del grid esta en 0
                     if (this.tb_detalle.length === 0) {
                       const v2_1 = await new Promise(async (resolve) => {
-                        this._dataService.getGenerarm(Prodx, Talla, Tallavta, this._log.getuser()).subscribe(async (resp) => {
+                        this._dataService.getGenerarm(Prodx, Talla, Tallavta, await this._log.getuser()).subscribe(async (resp) => {
                           if (resp.Codigo) {
                             if (resp.Dt !== undefined) {
                               if (resp.Dt.Table.length > 0) {
@@ -1475,8 +1467,8 @@ export class TransaccionesPage implements OnInit {
             (this.txt_referencia === "" ? "0" : this.txt_referencia),
             this.txt_Doc, this.chkConversion,
             (this.cmbTipoConv === null || this.cmbTipoConv === "" ? "" : this.dataCombosTipoConv.find(s => s.CODIGO === this.cmbTipoConv)["DESCRIPCION"].toString().trim()),
-            this._log.getuser().trim(),
-            (this.cmbReci === null || this.cmbReci === "" ? this._log.getuser().trim() : this.cmbReci.toString().trim()),
+            await this._log.getuser(),
+            (this.cmbReci === null || this.cmbReci === "" ? await this._log.getuser() : this.cmbReci.toString().trim()),
             (this.cmbMovil === null ? "" : this.cmbMovil.toString().trim()), this.txtSelloMovil,
             (this.cmbChofer === null ? "" : this.cmbChofer.toString().trim()),
             this.txtFactura, (this.cmbMQ === null ? "" : this.cmbMQ.toString().trim()), XML).subscribe(async (resp) => {
@@ -1880,7 +1872,7 @@ export class TransaccionesPage implements OnInit {
                             motivo = ver(prue) */
                         if (await this.presentAlertConfirm("Código se encuentra agrupado en pallet " + SSCCPadre.toString().trim() + ". Desea Desarmarlo?")) {
                           const v5 = await new Promise(async (resolve) => {
-                            await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen, this._log.getuser().trim(), this.cmbMotivo, "S", "Desarme", this.txtSSCC).subscribe(async (resp) => {
+                            await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen, await this._log.getuser(), this.cmbMotivo, "S", "Desarme", this.txtSSCC).subscribe(async (resp) => {
                               if (!resp.Codigo) {
                                 await this.presentAlert("Error", resp.Description);
                                 this.txtScannedValue = "";
@@ -1920,7 +1912,7 @@ export class TransaccionesPage implements OnInit {
 
                       if (await this.presentAlertConfirm("Código se encuentra agrupado en pallet " + SSCCPadre.toString().trim() + ". Desea Desarmarlo?")) {
                         const v6 = await new Promise(async (resolve) => {
-                          await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen, this._log.getuser().trim(), this.cmbMotivo, "S",
+                          await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen, await this._log.getuser(), this.cmbMotivo, "S",
                             "Desarme", this.txtSSCC).subscribe(async (resp) => {
                               if (!resp.Codigo) {
                                 await this.presentAlert("Error", resp.Description);
@@ -1982,7 +1974,7 @@ export class TransaccionesPage implements OnInit {
                     /* If MsgBox("Producto no consta en esta bodega " & bodega & ". Desea Transferirlo ", MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Error de digitacion") = MsgBoxResult.Yes Then */
                     if (await this.presentAlertConfirm("Producto no consta en esta bodega " + this.bodega.trim() + ". Desea Transferirlo?")) {
                       const v8 = await new Promise(async (resolve) => {
-                        await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen.toString().trim() + this.cmbUbicacion.trim(), this._log.getuser().trim(),
+                        await this._dataService.GeneraMovimientosAuto("1", this.cmbOrigen.toString().trim() + this.cmbUbicacion.trim(), await this._log.getuser(),
                           this.cmbMotivo, "N", "", this.txtSSCC).subscribe(async (resp) => {
                             if (!resp.Codigo) {
                               await this.presentAlert("Error", resp.Description);
@@ -2030,7 +2022,7 @@ export class TransaccionesPage implements OnInit {
                             await this.presentAlert("Error", "No existe Saldo");
                             this.txtScannedValue = "";
                             setTimeout(() => this.inputSSCC.setFocus(), 300);
-                            this._dataService.EnvioCorreoSinSaldo(this.prod, this.tallas, "NNNN", this._log.getuser().trim()).subscribe((resp) => {
+                            this._dataService.EnvioCorreoSinSaldo(this.prod, this.tallas, "NNNN", await this._log.getuser()).subscribe((resp) => {
                             });
                             return resolve(false);
                           }
@@ -2109,7 +2101,7 @@ export class TransaccionesPage implements OnInit {
       }
 
       const v1 = await new Promise(async (resolve) => {
-        await this._dataService.GrabarSSCCPalletNew(bodega, this._log.getuser().trim()).subscribe(async (resp) => {
+        await this._dataService.GrabarSSCCPalletNew(bodega, await this._log.getuser()).subscribe(async (resp) => {
           if (resp.Codigo) {
             if (Object.keys(resp.Dt).length > 0) {
               let strRes: [][] = resp.Dt.Table;
@@ -2176,7 +2168,7 @@ export class TransaccionesPage implements OnInit {
                   saldo1 = strRes[ii]["Saldo"].toString().trim();
                   if (saldo1 < acum1) {
                     this.presentAlert("Error", "No existe saldo para el lote " + lote1);
-                    this._dataService.EnvioCorreoSinSaldo(produc1, talla1, lote1, this._log.getuser().trim()).subscribe((resp) => {
+                    this._dataService.EnvioCorreoSinSaldo(produc1, talla1, lote1, await this._log.getuser()).subscribe((resp) => {
                     });
                     return resolve(false);
                   }
@@ -2205,7 +2197,7 @@ export class TransaccionesPage implements OnInit {
                       if (saldo1 < saldo.acumulado + acum1) {
                         msgacumulado = saldo.acumulado + acum1;
                         this.presentAlert("Error", "No existe saldo lote " + lote1 + " Saldo: " + saldo1.toString() + " Acumulado:" + msgacumulado.toString());
-                        this._dataService.EnvioCorreoSinSaldo(produc1.trim(), talla1.trim(), lote1.trim(), this._log.getuser().trim()).subscribe((resp) => { });
+                        this._dataService.EnvioCorreoSinSaldo(produc1.trim(), talla1.trim(), lote1.trim(), await this._log.getuser()).subscribe((resp) => { });
                         return resolve(false);
                       }
                       saldo.acumulado = saldo.acumulado + acum1;
@@ -2319,7 +2311,7 @@ export class TransaccionesPage implements OnInit {
     try {
       const v1 = await new Promise(async (resolve) => {
         await this._dataService.getDataImpresionMaster("MASTER", this.num1, this.descri, this.detTalla, this.sscc, this.CantLote,
-          this.detLoteImp, this.prod, this._log.getuser().trim(), this.Caduca).subscribe(async (resp) => {
+          this.detLoteImp, this.prod, await this._log.getuser(), this.Caduca).subscribe(async (resp) => {
             if (resp.Codigo) {
               if (Object.keys(resp.Dt).length > 0) {
                 let strRes: [][] = resp.Dt.Table;
@@ -2532,7 +2524,7 @@ export class TransaccionesPage implements OnInit {
       this.dataComboUbicacion = null;
 
       const v1 = await new Promise(async (resolve) => {
-        this._dataService.getUbicacion("1", bod, this._log.getuser().trim()).subscribe(async (resp) => {
+        this._dataService.getUbicacion("1", bod, await this._log.getuser()).subscribe(async (resp) => {
           if (resp.Codigo) {
             if (Object.keys(resp.Dt).length > 0) {
               this.dataComboUbicacion = resp.Dt.Table;

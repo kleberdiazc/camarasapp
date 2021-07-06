@@ -88,7 +88,7 @@ export class ReqEtiqueteoPage implements OnInit {
 
   async loadData() {
     const valor = await new Promise(async (resolve) => {
-      this._dataService.getDataInitial("1", this._log.getuser().trim()).subscribe((resp) => {
+      this._dataService.getDataInitial("1", await this._log.getuser()).subscribe((resp) => {
 
         if (resp.Codigo) {
           if (Object.keys(resp.Dt).length > 0) {
@@ -125,7 +125,7 @@ export class ReqEtiqueteoPage implements OnInit {
 
       const v1 = await new Promise(async (resolve) => {
 
-        this._dataService.getDataSSCC(this.txtSSCC, "1", this._log.getuser().trim()).subscribe(async (resp) => {
+        this._dataService.getDataSSCC(this.txtSSCC, "1", await this._log.getuser()).subscribe(async (resp) => {
           if (resp.Codigo) {
 
             if (Object.keys(resp.Dt).length > 0) {
@@ -209,7 +209,7 @@ export class ReqEtiqueteoPage implements OnInit {
       let dataSoli: string = "";
       const v1 = await new Promise(async (resolve) => {
 
-        this._dataService.GrabaMovimiento(xml, this._log.getuser().trim(), this.cmbOrigen).subscribe(async (resp) => {
+        this._dataService.GrabaMovimiento(xml, await this._log.getuser(), this.cmbOrigen).subscribe(async (resp) => {
 
           if (resp.Codigo) {
             if (Object.keys(resp.Dt).length > 0) {

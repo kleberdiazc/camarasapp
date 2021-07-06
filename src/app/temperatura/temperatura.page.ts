@@ -16,14 +16,14 @@ export class TemperaturaPage implements OnInit {
   validationsForm: FormGroup;
   isChecked: boolean;
   myBoolean = true;
-  embarques:Embarques[] = []
+  embarques: Embarques[] = []
   consulta: string;
   Emb: string;
   tipo: string = 'F';
   validations = {
     'sscc': [
       { type: 'required', message: 'sscc es requerido.' },
-      
+
     ],
     'temp': [
       { type: 'required', message: 'Temperatura es requerido.' }
@@ -33,32 +33,32 @@ export class TemperaturaPage implements OnInit {
       { type: 'required', message: 'Temperatura es requerido.' }
     ]
   };
-  constructor( private router : Router,
+  constructor(private router: Router,
     private alertController: AlertController,
     private _temp: TemperaturaService,
-    private _log :LoginservicesService) {
-      this.validationsForm = new FormGroup({
-      'sscc': new FormControl('',Validators.compose([
-       Validators.required
-      //Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+    private _log: LoginservicesService) {
+    this.validationsForm = new FormGroup({
+      'sscc': new FormControl('', Validators.compose([
+        Validators.required
+        //Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
-      'temp': new FormControl('',Validators.compose([
+      'temp': new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('^([-+,0-9.]+)')
       ])),
-      'emba': new FormControl('',Validators.compose([
+      'emba': new FormControl('', Validators.compose([
         Validators.required,
-       // Validators.pattern('^([-+,0-9.]+)')
-        ])),
-      });
+        // Validators.pattern('^([-+,0-9.]+)')
+      ])),
+    });
 
 
-    }
+  }
 
   ngOnInit() {
     this.BuscarEmbarques();
   }
-  
+
   OnChangeRad(event) {
     const state: string = event.target.value;
     console.log(state);
@@ -70,10 +70,10 @@ export class TemperaturaPage implements OnInit {
     console.log(event);
   }
 
-  onSubmit(values) {
+  async onSubmit(values) {
     this._temp.GrabarFactura(this.tipo, '0', this.validationsForm.get('emba').value, this.validationsForm.get('temp').value.toString()
-    ,this.validationsForm.get('sscc').value
-      , this._log.getuser()).subscribe(async(resp) => {
+      , this.validationsForm.get('sscc').value
+      , await this._log.getuser()).subscribe(async (resp) => {
         console.log(resp);
         if (resp.Codigo.toString() == 'false') {
           const alert = await this.alertController.create({
@@ -82,7 +82,7 @@ export class TemperaturaPage implements OnInit {
             buttons: ['OK']
           });
           await alert.present();
-          
+
         } else {
           const alert = await this.alertController.create({
             header: 'Guardado Exitoso!!',
@@ -90,15 +90,15 @@ export class TemperaturaPage implements OnInit {
             buttons: ['OK']
           });
           await alert.present();
-          
-         }
-    })
+
+        }
+      })
 
   }
 
   BuscarEmbarques() {
     this._temp.ConsultarFacturas().subscribe((resp) => {
-      console.log('consulta factura',resp);
+      console.log('consulta factura', resp);
       this.embarques = resp.Dt.Table;
     });
   }

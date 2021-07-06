@@ -3,6 +3,7 @@ import { AppServicesService } from './app-services.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
+import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Componente } from './interfaces/interfaces';
 
@@ -21,7 +22,7 @@ export class AppComponent {
   selectedPath: string;
   componentes: Observable<Componente[]>;
   appPages = [
-    
+
     {
       title: 'Transacciones',
       url: '/app/transacciones',
@@ -50,19 +51,20 @@ export class AppComponent {
   ];
   accountPages = [
     {
-      title: 'Log In',
+      title: 'Log Out',
       url: '/auth/login',
-      ionicIcon: 'log-in-outline'
+      ionicIcon: 'log-in-outline',
+      pathMatch: 'full'
     }
   ];
 
   config = [
     {
-      
-        title: 'Parametros',
-        url: '/app/parametros',
-        ionicIcon: 'construct-outline'
-      
+
+      title: 'Parametros',
+      url: '/app/parametros',
+      ionicIcon: 'construct-outline'
+
     }
   ];
 
@@ -112,23 +114,31 @@ export class AppComponent {
       url: '/app/detalle-pallet',
       ionicIcon: 'caret-forward-outline'
     }
-   
-    
+
+
   ];
 
-  user = '';
+  user: string = "";
   constructor(private menServi: AppServicesService,
     private router: Router,
-    private _login: LoginservicesService) {
+    private _login: LoginservicesService,
+    private navCtrl: NavController) {
     this.initializeApp();
-    this.user = this._login.getuser()
-    console.log('INICIE');
+
+
+  }
+
+
+
+  async onTitleChange(e) {
+    //console.log(this._login.getuser());
+    this.user = await this._login.getuser();
   }
 
   async initializeApp() {
     try {
       //this.appPages = this.menServi.getAll();
-      console.log(this.appPages);
+      this.user = await this._login.getuser();
       await SplashScreen.hide();
     } catch (err) {
       console.log('This is normal in a browser', err);
@@ -160,7 +170,9 @@ export class AppComponent {
 
   cerrarSesion() {
     this._login.cerrar_sesion();
-    this.router.navigateByUrl('/auth/login');
+    //this.router.navigate(['/'], { state: { updateInfos: true } });
+    this.navCtrl.navigateRoot('/');
+    //this.router.navigateByUrl('/');
   }
 }
 
