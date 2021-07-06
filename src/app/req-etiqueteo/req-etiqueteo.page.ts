@@ -83,6 +83,7 @@ export class ReqEtiqueteoPage implements OnInit {
   }
 
   async ngOnInit() {
+    console.log("cargando req");
     await this.showLoading("Cargando...");
     await this.loadData();
     this.hideLoading();

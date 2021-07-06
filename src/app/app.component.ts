@@ -1,9 +1,9 @@
 import { LoginservicesService } from './login/loginservices.service';
 import { AppServicesService } from './app-services.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Componente } from './interfaces/interfaces';
 
@@ -19,6 +19,7 @@ const { SplashScreen, Storage } = Plugins;
   ]
 })
 export class AppComponent {
+
   selectedPath: string;
   componentes: Observable<Componente[]>;
   appPages = [
@@ -122,7 +123,8 @@ export class AppComponent {
   constructor(private menServi: AppServicesService,
     private router: Router,
     private _login: LoginservicesService,
-    private navCtrl: NavController) {
+    private navCtrl: NavController,
+    private menu: MenuController) {
     this.initializeApp();
 
 
@@ -167,11 +169,12 @@ export class AppComponent {
     this.router.navigateByUrl('walkthrough');
   }
 
-
-  cerrarSesion() {
+  async cerrarSesion() {
     this._login.cerrar_sesion();
     //this.router.navigate(['/'], { state: { updateInfos: true } });
-    this.navCtrl.navigateRoot('/');
+    //debugger;
+    this.menu.enable(false);
+    this.navCtrl.navigateRoot(['/']);
     //this.router.navigateByUrl('/');
   }
 }
