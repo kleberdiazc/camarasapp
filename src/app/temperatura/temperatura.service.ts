@@ -27,7 +27,21 @@ export class TemperaturaService {
      
       
       return this.http.post<RWEmbarques>(URL_CONSULT, base);
-    }
+  }
+  
+  ConsultarCierre() {
+
+    const ListParam = [];
+
+    const base = {
+        sp: 'sp_obtieneCierres',
+        param: ListParam,
+        conexion: 'DESAPRODUCCION'
+    };
+   
+    
+    return this.http.post<RWEmbarques>(URL_CONSULT, base);
+  }
   
   GrabarFactura(tipo: string, cierre: string, factura: string, temp: string, sscc: string, user: string) {
     console.log(tipo, cierre, factura, temp, sscc, user);

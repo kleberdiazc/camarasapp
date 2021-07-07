@@ -17,9 +17,12 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   isChecked: boolean;
   myBoolean = true;
   embarques: Embarques[] = []
+  Cierres:[] = []
   consulta: string;
   Emb: string;
   tipo: string = 'F';
+  hideFactura: boolean = false;
+  hideCierre:boolean = false
   validations = {
     'sscc': [
       { type: 'required', message: 'sscc es requerido.' },
@@ -30,6 +33,9 @@ export class TemperaturaPage implements OnInit,OnDestroy {
     ]
     ,
     'emba': [
+      { type: 'required', message: 'Temperatura es requerido.' }
+    ],
+    'Cierre': [
       { type: 'required', message: 'Temperatura es requerido.' }
     ]
   };
@@ -47,7 +53,11 @@ export class TemperaturaPage implements OnInit,OnDestroy {
         Validators.pattern('^([-+,0-9.]+)')
       ])),
       'emba': new FormControl('', Validators.compose([
-        Validators.required,
+        //Validators.required,
+        // Validators.pattern('^([-+,0-9.]+)')
+      ])),
+      'Cierre': new FormControl('', Validators.compose([
+        //Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
       ])),
     });
@@ -57,6 +67,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.BuscarEmbarques();
+    this.BuscaCierres();
     console.log("entre");
   }
 
@@ -67,6 +78,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   }
   ionViewWillEnter() {
     this.BuscarEmbarques();
+    this.BuscaCierres();
   }
 
 
@@ -74,6 +86,14 @@ export class TemperaturaPage implements OnInit,OnDestroy {
     const state: string = event.target.value;
     console.log(state);
     this.tipo = state;
+    if (this.tipo == 'F') {
+      this.hideFactura = false;
+      this.hideCierre = true;
+    }
+    if(this.tipo == 'C') {
+      this.hideFactura = true;
+      this.hideCierre = false;
+    }
 
   }
 
@@ -82,7 +102,8 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   }
 
   async onSubmit(values) {
-    this._temp.GrabarFactura(this.tipo, '0', this.validationsForm.get('emba').value, this.validationsForm.get('temp').value.toString()
+    if (this.tipo == 'F') {
+      this._temp.GrabarFactura(this.tipo, '0', this.validationsForm.get('emba').value, this.validationsForm.get('temp').value.toString()
       , this.validationsForm.get('sscc').value
       , await this._log.getuser()).subscribe(async (resp) => {
         console.log(resp);
@@ -103,7 +124,33 @@ export class TemperaturaPage implements OnInit,OnDestroy {
           await alert.present();
 
         }
-      })
+      });
+    }
+    if(this.tipo == 'C') {
+      this._temp.GrabarFactura(this.tipo, this.validationsForm.get('Cierres').value, '0', this.validationsForm.get('temp').value.toString()
+      , this.validationsForm.get('sscc').value
+      , await this._log.getuser()).subscribe(async (resp) => {
+        console.log(resp);
+        if (resp.Codigo.toString() == 'false') {
+          const alert = await this.alertController.create({
+            header: 'Error!',
+            message: resp.Description,
+            buttons: ['OK']
+          });
+          await alert.present();
+
+        } else {
+          const alert = await this.alertController.create({
+            header: 'Guardado Exitoso!!',
+            message: 'La transacción se ha realizado con exito.',
+            buttons: ['OK']
+          });
+          await alert.present();
+
+        }
+      });
+    }
+
 
   }
 
@@ -111,6 +158,13 @@ export class TemperaturaPage implements OnInit,OnDestroy {
     this._temp.ConsultarFacturas().subscribe((resp) => {
       console.log('consulta factura', resp);
       this.embarques = resp.Dt.Table;
+    });
+  }
+
+  BuscaCierres() {
+    this._temp.ConsultarCierre().subscribe((resp) => {
+      console.log('consulta factura', resp);
+      this.Cierres = resp.Dt.Table;
     });
   }
 

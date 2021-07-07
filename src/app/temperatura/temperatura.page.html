@@ -14,7 +14,7 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          <ion-radio-group name="consulta" (ionChange)="OnChangeRad($event)">
+          <ion-radio-group name="consulta"  (ionChange)="OnChangeRad($event)">
             <ion-list-header>
               <ion-label>
                 Tipo
@@ -36,11 +36,16 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="12">
+      <ion-col [hidden] = "hideFactura" size="12">
         <ion-select placeholder="Seleccione Embarque"   formControlName ="emba"  interface="action-sheet">
             <ion-select-option *ngFor="let emb of embarques"   [value]="emb.id">{{emb.descrip}}</ion-select-option>
         </ion-select>
-    </ion-col>
+      </ion-col>
+      <ion-col [hidden] = "hideCierre" size="12">
+        <ion-select placeholder="Seleccione Cierre"   formControlName ="Cierre"  interface="action-sheet">
+            <ion-select-option *ngFor="let cie of Cierres"   [value]="cie.id">{{cie.descrip}}</ion-select-option>
+        </ion-select>
+      </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
