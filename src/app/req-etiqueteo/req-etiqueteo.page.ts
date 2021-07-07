@@ -83,7 +83,7 @@ export class ReqEtiqueteoPage implements OnInit {
   }
 
   async ngOnInit() {
-    console.log("cargando req");
+
     await this.showLoading("Cargando...");
     await this.loadData();
     this.hideLoading();
@@ -107,14 +107,28 @@ export class ReqEtiqueteoPage implements OnInit {
     });
   }
 
-  async onEnterSSCC() {
+  onChangeSSCC(e) {
+    this.onEnterSSCC(e);
+  }
+  async onEnterSSCC(txt) {
     try {
-      if ((this.txtScannedValue.length === 20 && this.txtScannedValue.substring(0, 1) !== "]") ||
+      /* if ((this.txtScannedValue.length === 20 && this.txtScannedValue.substring(0, 1) !== "]") ||
         (this.txtScannedValue.length === 23 && this.txtScannedValue.substring(0, 1) === "]")) {
         if (this.txtScannedValue.length === 23) {
           this.txtSSCC = this.txtScannedValue.substring(5, this.txtScannedValue.length);
         } else {
           this.txtSSCC = this.txtScannedValue.substring(2, this.txtScannedValue.length);
+        }
+      } else {
+        return;
+      } */
+
+      if ((txt.length === 20 && txt.substring(0, 1) !== "]") ||
+        (txt.length === 23 && txt.substring(0, 1) === "]")) {
+        if (txt.length === 23) {
+          this.txtSSCC = txt.substring(5, txt.length);
+        } else {
+          this.txtSSCC = txt.substring(2, txt.length);
         }
       } else {
         return;
@@ -125,6 +139,7 @@ export class ReqEtiqueteoPage implements OnInit {
         return;
       }
 
+      await this.showLoading("Cargando...");
 
       const v1 = await new Promise(async (resolve) => {
 
@@ -166,6 +181,7 @@ export class ReqEtiqueteoPage implements OnInit {
         });
       });
 
+      this.hideLoading();
       if (!v1) {
         return;
       }
@@ -211,10 +227,11 @@ export class ReqEtiqueteoPage implements OnInit {
       xml = xml + "</Tabla>";
       let dataPrint: [][];
       let dataSoli: string = "";
+      console.log("Grabando 1");
       const v1 = await new Promise(async (resolve) => {
 
         this._dataService.GrabaMovimiento(xml, await this._log.getuser(), this.cmbOrigen).subscribe(async (resp) => {
-
+          console.log("Grabando 3");
           if (resp.Codigo) {
             if (Object.keys(resp.Dt).length > 0) {
               for (let i = 0; i < Object.keys(resp.Dt).length; i++) {
@@ -266,12 +283,12 @@ export class ReqEtiqueteoPage implements OnInit {
               i = i + 1;
               if (index === 0) {
                 i = 0;
-                s = s + v[index].toString() + "/" + "\n";
+                s = s + v[index].toString() + "/" + String.fromCharCode(13) + String.fromCharCode(10);
               }
               else {
                 s = s + v[index].toString() + "/";
                 if (i % 3 === 0) {
-                  s = s + "\n";
+                  s = s + String.fromCharCode(13) + String.fromCharCode(10);
                 }
               }
             }
@@ -282,34 +299,34 @@ export class ReqEtiqueteoPage implements OnInit {
               i = i + 1;
               if (index === 0) {
                 i = 0;
-                lotes = lotes + v[index].toString() + "/" + "\n";
+                lotes = lotes + v[index].toString() + "/" + String.fromCharCode(13) + String.fromCharCode(10);
               }
               else {
                 lotes = lotes + v[index].toString() + "/";
                 if (i % 3 === 0) {
-                  s = s + "\n";
+                  s = s + String.fromCharCode(13) + String.fromCharCode(10);
                 }
               }
             }
 
-            let print = "! 0 200 200 830 2" + "\n" + "LABEL" + "\n" + "CONTRAST 0" + "\n" +
-              "TONE 0" + "\n" +
-              "SPEED 5" + "\n" +
-              "JOURNAL" + "\n" +
-              "PAGE-WIDTH 560" + "\n" +
-              "GAP-SENSE" + "\n" +
-              ";// PAGE 0000000005600800" + "\n" +
-              "ML 47" + "\n" +
-              "T 4 0 15 44 SOLICIT.(S): " + s + "\n" +
-              "ENDML" + "\n" +
-              "T 4 0 15 180 TALLA: " + data[x]["Talla"].toString() + "\n" +
-              "T 4 0 15 260 PRODUCTO: " + data[x]["CodProd"].toString() + "\n" +
-              "ML 47" + "\n" +
-              "T 4 0 15 340 LOTE(S): " + lotes + "\n" +
-              "ENDML" + "\n" +
-              "PRINT";
+            let print = "! 0 200 200 830 2" + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "TONE 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "SPEED 5" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "JOURNAL" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "PAGE-WIDTH 560" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "GAP-SENSE" + String.fromCharCode(13) + String.fromCharCode(10) +
+              ";// PAGE 0000000005600800" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "ML 47" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "T 4 0 15 44 SOLICIT.(S): " + s + String.fromCharCode(13) + String.fromCharCode(10) +
+              "ENDML" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "T 4 0 15 180 TALLA: " + data[x]["Talla"].toString() + String.fromCharCode(13) + String.fromCharCode(10) +
+              "T 4 0 15 260 PRODUCTO: " + data[x]["CodProd"].toString() + String.fromCharCode(13) + String.fromCharCode(10) +
+              "ML 47" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "T 4 0 15 340 LOTE(S): " + lotes + String.fromCharCode(13) + String.fromCharCode(10) +
+              "ENDML" + String.fromCharCode(13) + String.fromCharCode(10) +
+              "PRINT" + String.fromCharCode(13) + String.fromCharCode(10);
 
-            //console.log(print);
+            console.log(print);
             await this._dataService.printer(print, await this._param.getvaluesMac());
             /* Retorno = Print(Buffer.ToString) */
 

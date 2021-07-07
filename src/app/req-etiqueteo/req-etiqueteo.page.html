@@ -40,7 +40,7 @@
             <ion-label style="margin-left: 12px;">SSCC</ion-label>
           </ion-col>
           <ion-col size="9">
-            <ion-input #inputSSCC style="--padding-top: 0px;" (keyup.enter)="onEnterSSCC()"
+            <ion-input #inputSSCC style="--padding-top: 0px;" (input)='onChangeSSCC($event.target.value)'
               [(ngModel)]="txtScannedValue" clearInput autocapitalize="off">
             </ion-input>
           </ion-col>

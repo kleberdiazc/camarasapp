@@ -2310,6 +2310,9 @@ export class TransaccionesPage implements OnInit {
 
   async imprimirMaster() {
     try {
+      await this.showLoading("Imprimiendo...");
+      let rsPrint: any = false;
+
       const v1 = await new Promise(async (resolve) => {
         await this._dataService.getDataImpresionMaster("MASTER", this.num1, this.descri, this.detTalla, this.sscc, this.CantLote,
           this.detLoteImp, this.prod, await this._log.getuser(), this.Caduca).subscribe(async (resp) => {
@@ -2319,7 +2322,10 @@ export class TransaccionesPage implements OnInit {
                 /* PRINT */
                 if (strRes.length > 0) {
                   //console.log(strRes[0]["Printer"]);
-                  await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                  rsPrint = await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                  if (rsPrint) {
+                    await this.presentAlert("Información", "Impresión realizada");
+                  }
                 }
               }
             } else {
@@ -2337,14 +2343,17 @@ export class TransaccionesPage implements OnInit {
   async imprimirLote() {
     try {
 
+      await this.showLoading("Imprimiendo...");
       let lotes: string = "";
       let salto: number = 100;
+      let rsPrint: any = false;
+
       Object.keys(this.DetLote.items).forEach(element => {
         if (Object.keys(this.DetLote.items).length >= 5) {
-          lotes = lotes + "T 7 7 100 " + salto.toString() + element + " - " + this.DetLote.items[element].toString() + " \n";
+          lotes = lotes + "T 7 7 100 " + salto.toString() + " " + element + " - " + this.DetLote.items[element].toString() + String.fromCharCode(13) + String.fromCharCode(10);
           salto = salto + 50;
         } else {
-          lotes = lotes + "T 4 2 100 " + salto.toString() + element + " - " + this.DetLote.items[element].toString() + " \n";
+          lotes = lotes + "T 4 2 100 " + salto.toString() + " " + element + " - " + this.DetLote.items[element].toString() + String.fromCharCode(13) + String.fromCharCode(10);
           salto = salto + 100;
         }
       });
@@ -2356,7 +2365,10 @@ export class TransaccionesPage implements OnInit {
               /* PRINT */
               if (strRes.length > 0) {
                 //console.log(strRes[0]["Printer"]);
-                await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                rsPrint = await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                if (rsPrint) {
+                  await this.presentAlert("Información", "Impresión realizada");
+                }
               }
             }
           } else {
@@ -2373,6 +2385,8 @@ export class TransaccionesPage implements OnInit {
 
   async ImprimirMultipaginas(Numero, Tipo) {
     try {
+      await this.showLoading("Imprimiendo...");
+
       let imp: string = "";
       let salto: number = 170;
       let DetInv: boolean = false;
@@ -2381,7 +2395,9 @@ export class TransaccionesPage implements OnInit {
       let DatoAnt: string = "";
       let primera: boolean = true;
       let TotMas: number = 0;
+      let rsPrint: any = false;
 
+      DetInv = (await this._param.getvaluesInventario() == 'true');
 
       if (this.chkMatricial) {
         const v1 = await new Promise(async (resolve) => {
@@ -2394,7 +2410,7 @@ export class TransaccionesPage implements OnInit {
             return resolve(true);
           });
         });
-
+        this.hideLoading();
         return;
       }
 
@@ -2404,45 +2420,55 @@ export class TransaccionesPage implements OnInit {
 
             if (Object.keys(resp.Dt).length > 0) {
               let ds: [][] = resp.Dt.Table;
-
-              imp = "! 0 200 200 800 1" + "\n" + "LABEL" + "\n" + "CONTRAST 0" + "\n" +
-                "TONE 0" + "\n" +
-                "SPEED 5" + "\n" +
-                "PAGE-WIDTH 560" + "\n" +
-                "PAGE-HEIGHT 800" + "\n" +
-                "BAR-SENSE" + "\n" +
-                ";// PAGE 0000000005600800" + "\n" +
-                "T 7 0 22 145                                          " + "\n" +
-                "T 7 0 65 84 [" + Numero + "]" + "\n"
+              /* await this._dataService.printer2(ds[0]["PRINTER"], await this._param.getvaluesMac());
+              return resolve(true); */
+              let tamano = "! 0 200 200 800 1"
+              if (ds.length > 0) {
+                tamano = ds[0]["tamano"].toString().trim();
+              }
+              imp = tamano + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "TONE 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "SPEED 5" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "PAGE-WIDTH 560" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "PAGE-HEIGHT 800" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "BAR-SENSE" + String.fromCharCode(13) + String.fromCharCode(10) +
+                ";// PAGE 0000000005600800" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "T 7 0 22 145                                          " + String.fromCharCode(13) + String.fromCharCode(10) +
+                "T 7 0 65 84 [" + Numero + "]" + String.fromCharCode(13) + String.fromCharCode(10)
 
               for (let index = 0; index < ds.length; index++) {
                 if (salto >= 750) {
-                  imp = imp + "BT OFF" + "\n" +
-                    "BT 0 1 0" + "\n" +
-                    "BT OFF" + "\n" +
-                    "PRINT" + "\n";
+                  imp = imp + "BT OFF" + String.fromCharCode(13) + String.fromCharCode(10) +
+                    "BT 0 1 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                    "BT OFF" + String.fromCharCode(13) + String.fromCharCode(10) +
+                    "PRINT" + String.fromCharCode(13) + String.fromCharCode(10);
                   console.log(imp);
                   /* Retorno = Print(Buffer.ToString) */
-                  await this._dataService.printer(imp, await this._param.getvaluesMac());
+                  rsPrint = await this._dataService.printer(imp, await this._param.getvaluesMac());
+
+                  if (!rsPrint) {
+                    return resolve(true);
+                  }
+
                   imp = "";
                   if (DetInv) {
-                    imp = imp + "! 0 200 200 800 1" + "\n" + "LABEL" + "\n" + "CONTRAST 0" + "\n" +
-                      "TONE 0" + "\n" +
-                      "SPEED 5" + "\n" +
-                      "PAGE-WIDTH 560" + "\n" +
-                      "PAGE-HEIGHT 800" + "\n" +
-                      "BAR-SENSE" + "\n" +
-                      ";// PAGE 0000000005600800" + "\n" +
-                      "T 7 0 22 145 Producto              lote  Cajas   Mstr" + "\n";
+                    imp = imp + tamano + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "TONE 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "SPEED 5" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "PAGE-WIDTH 560" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "PAGE-HEIGHT 800" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "BAR-SENSE" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      ";// PAGE 0000000005600800" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "T 7 0 22 145 Producto              lote  Cajas   Mstr" + String.fromCharCode(13) + String.fromCharCode(10);
                   } else {
-                    imp = imp + "! 0 200 200 800 1" + "\n" + "LABEL" + "\n" + "CONTRAST 0" + "\n" +
-                      "TONE 0" + "\n" +
-                      "SPEED 5" + "\n" +
-                      "PAGE-WIDTH 560" + "\n" +
-                      "PAGE-HEIGHT 800" + "\n" +
-                      "BAR-SENSE" + "\n" +
-                      ";// PAGE 0000000005600800" + "\n" +
-                      "T 7 0 22 145                                          " + "\n";
+                    imp = imp + tamano + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "TONE 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "SPEED 5" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "PAGE-WIDTH 560" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "PAGE-HEIGHT 800" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "BAR-SENSE" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      ";// PAGE 0000000005600800" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "T 7 0 22 145                                          " + String.fromCharCode(13) + String.fromCharCode(10);
                   }
                   salto = 170;
                 }
@@ -2458,40 +2484,44 @@ export class TransaccionesPage implements OnInit {
                 Descripcion = Descripcion + " " + Talla.trim();
                 if (DatoAnt !== Descripcion) {
                   if (!primera) {
-                    imp = imp + "T 7 0 290 " + salto.toString() + "      ->" + "\n" +
-                      "T 7 0 445 " + salto.toString() + TotMas.toString() + "\n";
+                    imp = imp + "T 7 0 290 " + salto.toString() + "      ->" + String.fromCharCode(13) + String.fromCharCode(10) +
+                      "T 7 0 445 " + salto.toString() + " " + TotMas.toString() + String.fromCharCode(13) + String.fromCharCode(10);
 
                     TotMas = 0;
                     salto = salto + 30;
                   }
                   DatoAnt = Descripcion;
-                  imp = imp + "T 7 0 25 " + salto.toString() + Descripcion + "\n";
+                  imp = imp + "T 7 0 25 " + salto.toString() + " " + Descripcion + String.fromCharCode(13) + String.fromCharCode(10);
                   primera = false;
                   salto = salto + 30;
                 }
 
-                imp = imp + "T 0 2 290 " + salto.toString() + ds[index]["tcd_lote"].toString().trim() + "\n" +
-                  "T 0 2 390 " + salto.toString() + ds[index]["cajas"].toString().trim() + "\n" +
-                  "T 0 2 445 " + salto.toString() + ds[index]["master"].toString().trim() + "\n";
+                imp = imp + "T 0 2 290 " + salto.toString() + " " + ds[index]["tcd_lote"].toString().trim() + String.fromCharCode(13) + String.fromCharCode(10) +
+                  "T 0 2 390 " + salto.toString() + " " + ds[index]["cajas"].toString().trim() + String.fromCharCode(13) + String.fromCharCode(10) +
+                  "T 0 2 445 " + salto.toString() + " " + ds[index]["master"].toString().trim() + String.fromCharCode(13) + String.fromCharCode(10);
 
                 TotMas = TotMas + Number(ds[index]["master"]);
                 salto = salto + 30;
               }
 
-              imp = imp + "T 7 0 290 " + salto.toString() + "      ->" + "\n" +
-                "T 7 0 445 " + salto.toString() + TotMas.toString() + "\n"
+              imp = imp + "T 7 0 290 " + salto.toString() + "      ->" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "T 7 0 445 " + salto.toString() + " " + TotMas.toString() + String.fromCharCode(13) + String.fromCharCode(10)
 
               primera = false;
               TotMas = 0;
-              imp = imp + "BT OFF" + "\n" +
-                "BT 0 1 0" + "\n" +
-                "BT OFF" + "\n" +
-                "PRINT" + "\n";
+              imp = imp + "BT OFF" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "BT 0 1 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "BT OFF" + String.fromCharCode(13) + String.fromCharCode(10) +
+                "PRINT" + String.fromCharCode(13) + String.fromCharCode(10);
 
               /* console.log(imp); */
-              await this._dataService.printer(imp, await this._param.getvaluesMac());
+              rsPrint = await this._dataService.printer(imp, await this._param.getvaluesMac());
               /* Retorno = Print(Buffer.ToString) */
               imp = "";
+
+              if (rsPrint) {
+                await this.presentAlert("Información", "Impresión realizada");
+              }
             }
 
           } else {
@@ -2505,11 +2535,16 @@ export class TransaccionesPage implements OnInit {
     } catch (error) {
       await this.presentAlert("Error", error);
     }
+
+    this.hideLoading();
   }
 
   async imprimirpall(pallet) {
     try {
-      let OcultaTitulo: string = "S";
+
+      await this.showLoading("Imprimiendo...");
+      let OcultaTitulo: string = ((await this._param.getvaluesOculta() == 'true') ? "S" : "");
+      let rsPrint: any = false;
 
       const v1 = await new Promise(async (resolve) => {
         await this._dataService.getImpresionPallet(pallet, OcultaTitulo).subscribe(async (resp) => {
@@ -2518,8 +2553,11 @@ export class TransaccionesPage implements OnInit {
               let strRes: [][] = resp.Dt.Table;
               /* PRINT */
               if (strRes.length > 0) {
-                //console.log(strRes[0]["Printer"]);
-                await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                console.log(strRes[0]["Printer"]);
+                rsPrint = await this._dataService.printer(strRes[0]["Printer"], await this._param.getvaluesMac());
+                if (rsPrint) {
+                  await this.presentAlert("Información", "Impresión realizada");
+                }
               }
             }
           } else {

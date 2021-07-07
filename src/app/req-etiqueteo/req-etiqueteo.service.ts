@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { URL_CONSULT } from '../config/url.servicios';
+import { URL_CONSULT, URL_TRANSACIMAGEN } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +14,42 @@ export class ReqEtiqueteoService {
     public alertController: AlertController,
     public platform: Platform,
     public loadingController: LoadingController,
-    private btSerial: BluetoothSerial) { }
+    private btSerial: BluetoothSerial
+    , private alertCtrl: AlertController) { }
 
 
   connectBT(address) {
     return this.btSerial.connect(address);
   }
 
-  printer(data, address) {
-    let xyz = this.connectBT(address).subscribe(async data => {
-      this.btSerial.write(data).then(async dataz => {
-        xyz.unsubscribe();
-        return 1;
-      }, async errx => {
-        return 0;
+  async printer(dataPrint, address) {
+    return new Promise(async (resolve) => {
+      let xyz = await this.connectBT(address).subscribe(async data => {
+        if (data === "OK") {
+          await this.btSerial.write(dataPrint).then(async dataz => {
+            xyz.unsubscribe();
+            return resolve(true);
+          }, async errx => {
+            xyz.unsubscribe();
+            let mno = await this.alertCtrl.create({
+              header: "Error Impresión ",
+              message: errx,
+              buttons: ['OK']
+            });
+            await mno.present();
+
+            return resolve(false);
+          });
+        }
+      }, async err => {
+        let mno = await this.alertCtrl.create({
+          header: "Error Conexión ",
+          message: err,
+          buttons: ['OK']
+        });
+        await mno.present();
+        return resolve(false);
       });
-    }, async err => {
-      return -1;
     });
   }
 
@@ -78,8 +97,9 @@ export class ReqEtiqueteoService {
     formdata.append("param", JSON.stringify(base));
     formdata.append("paramImagen", "{}");
 
+    console.log("Grabando 2");
 
-    return this.http.post<ResultWS>('http://web.songa.com/songaapi/api/TransacImagen', formdata);
+    return this.http.post<ResultWS>(URL_TRANSACIMAGEN, formdata);
   }
 
 }
