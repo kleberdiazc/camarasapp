@@ -3,6 +3,7 @@ import { DetalleConsultaService } from './detalle-consulta.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { SaldosGlobal } from '../interfaces/interfaces';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle-consulta',
@@ -30,10 +31,12 @@ export class DetalleConsultaPage implements OnInit {
   totalcant: string;
   copias: string = "2";
   primero = false;
-  segundo = false;
+  segundo = true;
   tal_codigo: string;
-
-  constructor(private route:ActivatedRoute,private router:Router,private _detalle:DetalleConsultaService) {
+  loading :any = this.loadingController.create();
+  constructor(private route: ActivatedRoute,
+    private router: Router, private _detalle: DetalleConsultaService,
+    public loadingController: LoadingController,) {
     this.columns = [
       { prop: 'Cod',name: 'Cod'},
       { prop: 'Talla', name:'Talla' },
@@ -61,7 +64,9 @@ export class DetalleConsultaPage implements OnInit {
     } else {
       resum = 'N';
     }
+    this.loading = this.presentLoading('Cargando');
     this._detalle.ConsultarDetalle(resum, this.data.sscc).subscribe((resp) => {
+      this.loading.dismiss();
       console.log('DETALLE', resp);
       console.log('DETALLE', resp.Dt.Table);
        this.rows = resp.Dt.Table;
@@ -79,6 +84,13 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  async presentLoading(mensaje: string) {
+    this.loading = await this.loadingController.create({
+      message: mensaje
+    });
+    return  this.loading.present();
   }
 
    onClickRow(row) {

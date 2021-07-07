@@ -37,14 +37,16 @@ export class SaldoGlobalPage implements OnInit {
   }
 
   ngOnInit() {
-    this.Buscar_Saldos();
+    //this.Buscar_Saldos();
   }
+
+  
 
   Buscar_Saldos() {
     console.log('click');
-    //this.loading = this.presentLoading('Cargando');
+    this.loading = this.presentLoading('Cargando');
     this._saldoGolbal.getListaSaldosGlobal('','').subscribe((resp) => {
-      //this.loading.dismiss();
+      this.loading.dismiss();
       this.rows = resp;
       //this.temp = [...resp];
       console.log(this.rows);

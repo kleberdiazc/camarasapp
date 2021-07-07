@@ -58,8 +58,9 @@ export class DetalleConsultaService {
   SaldosTallas(codigo, lote, talla, planta) {
     console.log(codigo, lote, talla, planta);
     let tal = talla.toString();
+    let lotee = lote.toString();
     const ListParam = [{ "Name": "bit_produc", "Type": "Varchar", "Value": codigo },
-    { "Name": "bit_lote", "Type": "Varchar", "Value": lote },
+    { "Name": "bit_lote", "Type": "Varchar", "Value": lotee },
     { "Name": "bit_codtal", "Type": "Varchar", "Value": tal },
     { "Name": "bit_planta", "Type": "Varchar", "Value": planta }
     ];

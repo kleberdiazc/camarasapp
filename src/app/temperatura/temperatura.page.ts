@@ -1,7 +1,7 @@
 import { LoginservicesService } from './../login/loginservices.service';
 import { Embarques, Tables } from './../interfaces/interfaces';
 import { TemperaturaService } from './temperatura.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -12,7 +12,7 @@ import { DetalleConsultaService } from '../detalle-consulta/detalle-consulta.ser
   templateUrl: './temperatura.page.html',
   styleUrls: ['./temperatura.page.scss'],
 })
-export class TemperaturaPage implements OnInit {
+export class TemperaturaPage implements OnInit,OnDestroy {
   validationsForm: FormGroup;
   isChecked: boolean;
   myBoolean = true;
@@ -57,7 +57,18 @@ export class TemperaturaPage implements OnInit {
 
   ngOnInit() {
     this.BuscarEmbarques();
+    console.log("entre");
   }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    console.log("destrui");
+  }
+  ionViewWillEnter() {
+    this.BuscarEmbarques();
+  }
+
 
   OnChangeRad(event) {
     const state: string = event.target.value;

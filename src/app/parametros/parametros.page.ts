@@ -89,6 +89,9 @@ export class ParametrosPage implements OnInit {
 
   }
 
+  async Refrescar() {
+    await this.listBTDevice();
+  }
 
   async Grabar() {
 

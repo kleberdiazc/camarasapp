@@ -26,6 +26,12 @@
         </ion-button>
     </ion-col>
 </ion-row>
+
+<ion-row class="ion-margin-top">
+  <ion-col size="12">
+    <ion-button  expand="block" (click)="Buscar_Saldos()" fill="outline" >Buscar</ion-button>
+  </ion-col>
+</ion-row>
   <ion-row class="ion-margin-top">
     <ion-col size="12">
       <div>
@@ -54,8 +60,10 @@
   <ion-row>
     <ion-col size="12">
       <ion-item class="input-item">
-        <ion-label>Total Masters:</ion-label>
-        <ion-input  [readonly]="true" type="number" [(ngModel)]="total" placeholder="Total Libras"  ></ion-input>
+        <ion-label>Total Masters  :  </ion-label>
+        <ion-input  [readonly]="true" type="number" >
+          {{ total | number:'1.2-2' }}
+        </ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -70,6 +78,7 @@
   </div>
 
   <div [hidden]="segundo">
+   
     <ion-row class="ion-margin-top">
       <ion-col size="12">
         <div>
