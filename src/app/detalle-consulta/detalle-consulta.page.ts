@@ -227,20 +227,12 @@ export class DetalleConsultaPage implements OnInit {
     });
   }
   async presentAlert(Header, Mensaje) {
-    /* const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: Header,
-      message: Mensaje,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-
-    const { role } = await alert.onDidDismiss(); */
     this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
     return new Promise(async (resolve) => {
       const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
+        cssClass: css,
         header: Header,
         message: Mensaje,
         buttons: [{

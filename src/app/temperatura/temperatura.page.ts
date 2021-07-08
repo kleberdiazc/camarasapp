@@ -109,6 +109,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
         console.log(resp);
         if (resp.Codigo.toString() == 'false') {
           const alert = await this.alertController.create({
+            cssClass: 'variant-alert-error',
             header: 'Error!',
             message: resp.Description,
             buttons: ['OK']
@@ -117,6 +118,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
 
         } else {
           const alert = await this.alertController.create({
+            cssClass: 'variant-alert-success',
             header: 'Guardado Exitoso!!',
             message: 'La transacción se ha realizado con exito.',
             buttons: ['OK']
@@ -133,6 +135,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
         console.log(resp);
         if (resp.Codigo.toString() == 'false') {
           const alert = await this.alertController.create({
+            cssClass: 'variant-alert-error',
             header: 'Error!',
             message: resp.Description,
             buttons: ['OK']
@@ -141,6 +144,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
 
         } else {
           const alert = await this.alertController.create({
+            cssClass: 'variant-alert-success',
             header: 'Guardado Exitoso!!',
             message: 'La transacción se ha realizado con exito.',
             buttons: ['OK']
