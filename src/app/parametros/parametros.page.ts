@@ -65,17 +65,8 @@ export class ParametrosPage implements OnInit {
     await this.showLoading("Cargando..");
 
     await this.listBTDevice();
-    /* console.log("BRING DATA",) */
 
-    /* const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Un momento...',
-      duration: 4000
-    });
-    await loading.present(); */
 
-    /* const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!'); */
 
     this.inventario = (await this._param.getvaluesInventario() == 'true');
     this.oculta = (await this._param.getvaluesOculta() == 'true');
@@ -90,7 +81,14 @@ export class ParametrosPage implements OnInit {
   }
 
   async Refrescar() {
+    this.MyDefaultMacValue = null;
+    this.mac = "";
+
+    await this.showLoading("Cargando..");
     await this.listBTDevice();
+    this.mac = await this._param.getvaluesMac();
+    this.MyDefaultMacValue = this.mac;
+    this.hideLoading();
   }
 
   async Grabar() {
@@ -108,13 +106,13 @@ export class ParametrosPage implements OnInit {
   async listBTDevice() {
     const valor = await new Promise(async (resolve) => {
       this.print.searchBt().then(datalist => {
-        this.bluetoothList = datalist;
-
+        this.bluetoothList = JSON.parse(JSON.stringify(datalist));
+        return resolve(true);
       }, async err => {
         this.presentAlert("ERROR", err);
-
+        return resolve(true);
       });
-      return resolve(true);
+
     });
   }
 

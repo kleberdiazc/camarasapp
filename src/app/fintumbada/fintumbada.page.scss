@@ -13,3 +13,17 @@ ion-content{
   ion-input{
     box-shadow: 0 4px 6px -6px #222;
   }
+
+  .ccssbuttonSave{
+    --border-width: 1px;
+    --border-color: #239B56;
+    --color:white;
+    background-color: #239B56;
+  }
+  
+  .ccssbuttonNew{
+    --border-width: 1px;
+  --border-color: #AEB6BF;
+  --color:white;
+  background-color: #AEB6BF;
+  }

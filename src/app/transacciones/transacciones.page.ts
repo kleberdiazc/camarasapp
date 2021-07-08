@@ -685,6 +685,12 @@ export class TransaccionesPage implements OnInit {
       }
       if (this.txtFactura === "") { this.txtFactura = "0"; }
 
+
+      if (this.DataGrid.length <= 0) {
+        this.presentAlert("Advertencia", "No hay detalle para grabar");
+        return;
+      }
+
       const valor = await new Promise(async (resolve) => {
         if (!await this.guardarmov()) {
           return resolve(false);

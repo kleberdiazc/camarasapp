@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar class="toolbarCustom" color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -74,7 +74,7 @@
           </ion-row>
           <ion-row>
             <ion-col size="12">
-              <ion-label class="labelTab1">Reci.</ion-label>
+              <ion-label class="labelTab1">Responsable</ion-label>
               <ion-item>
                 <ion-select disabled={{DisabledControles}} interface="action-sheet" [(ngModel)]="cmbReci">
                   <ion-select-option *ngFor="let data of dataCombosReci" value={{data.CODIGO}}>{{data.DESCRIPCION}}
@@ -429,7 +429,7 @@
 
     <ion-row>
       <ion-col size="4">
-        <ion-button class="buttonPrincipal" expand="full" (click)="OnClickNuevo('')" fill="outline">
+        <ion-button class="buttonPrincipalNuevo" expand="full" (click)="OnClickNuevo('')" fill="outline">
           <ion-tab-button style="width: 100%;">
             <ion-icon name="document-outline"></ion-icon>
             <ion-label>Nuevo.</ion-label>
@@ -437,7 +437,7 @@
         </ion-button>
       </ion-col>
       <ion-col size="4">
-        <ion-button class="buttonPrincipal" disabled={{EnabledbtnReimprimir}} expand="full"
+        <ion-button class="buttonPrincipalReimp" disabled={{EnabledbtnReimprimir}} expand="full"
           (click)="OnClickReimprimir()" fill="outline">
           <ion-tab-button style="width: 100%;">
             <ion-icon name="print-outline"></ion-icon>
@@ -446,7 +446,7 @@
         </ion-button>
       </ion-col>
       <ion-col size="4">
-        <ion-button class="buttonPrincipal" expand="full" (click)="OnClickGrabar()" fill="outline">
+        <ion-button class="buttonPrincipalSave" expand="full" (click)="OnClickGrabar()" fill="outline">
           <ion-tab-button style="width: 100%;">
             <ion-icon name="save-outline"></ion-icon>
             <ion-label>Grabar</ion-label>
