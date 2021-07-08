@@ -19,9 +19,10 @@ export class FintumbadaPage implements OnInit {
   async presentAlert(Header, Mensaje) {
 
     this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
     return new Promise(async (resolve) => {
       const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
+        cssClass: css,
         header: Header,
         message: Mensaje,
         buttons: [{
