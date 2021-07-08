@@ -255,7 +255,7 @@
       <div>
         <ngx-datatable
             #table
-            class="material"
+            class="material striped"
             [rows]="rowsRes"
             style="height: 400px;"
             columnMode="force"
@@ -266,7 +266,7 @@
             [scrollbarH]="true">
             <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
-            <ngx-datatable-column [width]="350" name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column  name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
             <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="4"></ngx-datatable-column>
             <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="3"></ngx-datatable-column>

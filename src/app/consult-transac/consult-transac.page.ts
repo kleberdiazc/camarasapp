@@ -26,6 +26,7 @@ export class ConsultTransacPage implements OnInit {
 
   rowsRes = [];
   columnsRes = [];
+  temp = [];
 
   loading :any = this.loadingController.create();
   validationsForm: FormGroup;
@@ -118,11 +119,18 @@ export class ConsultTransacPage implements OnInit {
   }
   
   
-  ngOnInit() {
-    this.consultarCombos();
-    
+  async ngOnInit() {
+    await this.presentLoading("Cargando...");
+    await this.consultarCombos();
+    this.hideLoading();
   }
+  hideLoading() {
 
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
   async presentLoading(mensaje: string) {
     this.loading = await this.loadingController.create({
       message: mensaje
@@ -130,14 +138,19 @@ export class ConsultTransacPage implements OnInit {
     return  this.loading.present();
   }
   
-  consultarCombos() {
+  async consultarCombos() {
+    const valor = await new Promise(async (resolve) => {
     this._transac.ConsultarBodegas("1").subscribe((resp => {
+
       console.log(resp);
       this.Tipos = resp.Dt.Table;
       this.Bodegas = resp.Dt.Table1;
       this.Procesos = resp.Dt.Table2;
       this.Trans = resp.Dt.Table3;
+      return resolve(true);
     }));
+      
+  });
   }
   
   onSubmit(values) {
@@ -179,11 +192,13 @@ export class ConsultTransacPage implements OnInit {
     
   }
 
-  onSiguienteSegundo(){
+  async onSiguienteSegundo(){
     this.tercero = false;
     this.segundo = true;
     this.principal = true;
-    this.getResumen();
+    await this.presentLoading("Cargando...");
+    await this.getResumen();
+    this.hideLoading();
 
   }
 
@@ -199,31 +214,43 @@ export class ConsultTransacPage implements OnInit {
     this.principal = true;
   }
 
-  onSelect(e) {
-    console.log(e.selected[0]["NUMTRA"].toString());
-    console.log(this.selected);
-    this.loading = this.presentLoading('Cargando');
-    this._transac.DetalleTransac(e.selected[0]["NUMTRA"]).subscribe(async (resp) => {
-      this.loading.dismiss();
-        
-         if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-          
-        } else {
-
-          this.detalle = resp.Dt.Table;
-          
-         }
-    })
+  async onSelect(e) {
+    
+    await this.presentLoading("Cargando...");
+    await this.setselect(e);
+    this.hideLoading();
     //console.log(this.selected[0].tran.toString());
   }
 
-  getResumen() {
+
+  async setselect(e) {
+    const valor = await new Promise(async (resolve) => {
+      console.log(e.selected[0]["NUMTRA"].toString());
+      console.log(this.selected);
+      //this.loading = this.presentLoading('Cargando');
+      this._transac.DetalleTransac(e.selected[0]["NUMTRA"]).subscribe(async (resp) => {
+        //this.loading.dismiss();
+          
+           if (resp.Codigo.toString() == 'false') {
+            const alert = await this.alertController.create({
+              header: 'Error!',
+              message: resp.Description,
+              buttons: ['OK']
+            });
+            await alert.present();
+            
+          } else {
+  
+            this.detalle = resp.Dt.Table;
+            
+           }
+      })
+      return resolve(true);
+      });
+  }
+
+  async getResumen() {
+    const valor = await new Promise(async (resolve) => {
     let lote: string;
     if (this.myBoolean) {
       lote = 'S'
@@ -242,7 +269,7 @@ export class ConsultTransacPage implements OnInit {
       hasta, this.validationsForm.get('Proceso').value,
       this.validationsForm.get('Trans').value,lote,'').subscribe(async(resp) => {
         console.log(resp);
-        this.loading.dismiss();
+        //this.loading.dismiss();
         
          if (resp.Codigo.toString() == 'false') {
           const alert = await this.alertController.create({
@@ -253,10 +280,13 @@ export class ConsultTransacPage implements OnInit {
           await alert.present();
           
         } else {
-          this.rows = resp.Dt.Table;
+           this.rowsRes = resp.Dt.Table;
+          
           
          }
       })
+      return resolve(true);
+      });
 
   }
   onMyBooleanChange() {
