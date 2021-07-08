@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { SaldosGlobal, Valida } from '../interfaces/interfaces';
 import { ParametrosService } from '../parametros/parametros.service';
 import { URL_CONSULT } from '../config/url.servicios';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,46 @@ export class DetalleConsultaService {
   horaMovil = "";
   formaPallet = "";
   constructor(private http: HttpClient,
-    public alertController: AlertController,
+    public alertCtrl: AlertController,
     public platform: Platform,
     public loadingController: LoadingController,
-    private _param: ParametrosService,) { }
+    private btSerial: BluetoothSerial,
+    private _param: ParametrosService) { }
 
-
+    connectBT(address) {
+      return this.btSerial.connect(address);
+    }
+  
+    async printer(dataPrint, address) {
+      return new Promise(async (resolve) => {
+        let xyz = await this.connectBT(address).subscribe(async data => {
+          if (data === "OK") {
+            await this.btSerial.write(dataPrint).then(async dataz => {
+              xyz.unsubscribe();
+              return resolve(true);
+            }, async errx => {
+              xyz.unsubscribe();
+              let mno = await this.alertCtrl.create({
+                header: "Error Impresión ",
+                message: errx,
+                buttons: ['OK']
+              });
+              await mno.present();
+  
+              return resolve(false);
+            });
+          }
+        }, async err => {
+          let mno = await this.alertCtrl.create({
+            header: "Error Conexión ",
+            message: err,
+            buttons: ['OK']
+          });
+          await mno.present();
+          return resolve(false);
+        });
+      });
+    }
   ValidarConsulta(consulta: string, sscc: string) {
 
     const ListParam = [{ "Name": "TIPO", "Type": "Varchar", "Value": consulta },
@@ -87,7 +122,7 @@ export class DetalleConsultaService {
 
     this.consultaCajas(sscc).subscribe(async (resp) => {
       if (resp.Codigo.toString() == 'false') {
-        const alert = await this.alertController.create({
+        const alert = await this.alertCtrl.create({
           header: 'Error!',
           message: resp.Description,
           buttons: ['OK']
@@ -96,7 +131,7 @@ export class DetalleConsultaService {
 
       } else {
         if (resp.Dt.Table.length = 0) {
-          const alert = await this.alertController.create({
+          const alert = await this.alertCtrl.create({
             header: 'Error!',
             message: 'No existen el codigo SSCC',
             buttons: ['OK']
@@ -173,7 +208,7 @@ export class DetalleConsultaService {
 
     this.consultaCajas(sscc).subscribe(async (resp) => {
       if (resp.Codigo.toString() == 'false') {
-        const alert = await this.alertController.create({
+        const alert = await this.alertCtrl.create({
           header: 'Error!',
           message: resp.Description,
           buttons: ['OK']
@@ -182,7 +217,7 @@ export class DetalleConsultaService {
 
       } else {
         if (resp.Dt.Table.length = 0) {
-          const alert = await this.alertController.create({
+          const alert = await this.alertCtrl.create({
             header: 'Error!',
             message: 'No existen el codigo SSCC',
             buttons: ['OK']

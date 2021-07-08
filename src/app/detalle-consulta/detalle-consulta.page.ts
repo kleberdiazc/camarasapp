@@ -3,7 +3,8 @@ import { DetalleConsultaService } from './detalle-consulta.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { SaldosGlobal } from '../interfaces/interfaces';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { ParametrosService } from '../parametros/parametros.service';
 
 @Component({
   selector: 'app-detalle-consulta',
@@ -36,7 +37,9 @@ export class DetalleConsultaPage implements OnInit {
   loading :any = this.loadingController.create();
   constructor(private route: ActivatedRoute,
     private router: Router, private _detalle: DetalleConsultaService,
-    public loadingController: LoadingController,) {
+    public loadingController: LoadingController,
+    private alertController: AlertController,
+    private _param: ParametrosService) {
     this.columns = [
       { prop: 'Cod',name: 'Cod'},
       { prop: 'Talla', name:'Talla' },
@@ -107,15 +110,158 @@ export class DetalleConsultaPage implements OnInit {
   
   }
 
-  onImprimeBarra() {
+  async onImprimeBarra() {
+    let fechaMovil;
+    let horaMovil;
+    let formaPallet;
+    let sscc = this.router.getCurrentNavigation().extras.state.sscc;
+    
     if (this.Pallet == '') {
-      this._detalle.imprimirpall(this.Pallet);
+      sscc = this.Pallet ;
     } else {
-      this._detalle.imprimirpall(this.data.sscc);
+      sscc = this.data.sscc;
     }
+
+    try {
+      await this.showLoading("Imprimiendo...");
+      let rsPrint: any = false;
+      this._detalle.obtieneFechaHora().subscribe((resp) => {
+        let fecha = [];
+        fecha = resp.Dt.Table;
+        fechaMovil = fecha[0]["fecha"];
+        horaMovil = fecha[0]["hora"];
+        formaPallet = fecha[0]["FechaFormatPallet"];
+      });
+
+      this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
+        if (resp.Codigo.toString() == 'false') {
+          const alert = await this.alertController.create({
+            header: 'Error!',
+            message: resp.Description,
+            buttons: ['OK']
+          });
+          await alert.present();
+  
+        } else {
+          if (resp.Dt.Table.length = 0) {
+            const alert = await this.alertController.create({
+              header: 'Error!',
+              message: 'No existen el codigo SSCC',
+              buttons: ['OK']
+            });
+            await alert.present();
+          } else {
+            let oculta = (await this._param.getvaluesOculta() == 'true');
+            let prod = resp.Dt.Table; //OBTENER EL DATO PROD
+            let cadena;
+            if (oculta = true) {
+              cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10)  + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10)  + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10)  + 'PEED 5' + String.fromCharCode(13) + String.fromCharCode(10) 
+              'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                '// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'T90 7 1 35 625 ' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'T90 0 2 100 586 ' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'T90 7 0 138 495 ' + String.fromCharCode(13) + String.fromCharCode(10)  + formaPallet + "\n" +
+                '90 7 1 204 555 (00)' + String.fromCharCode(13) + String.fromCharCode(10)  + sscc + String.fromCharCode(13) + String.fromCharCode(10) 
+              'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'VB 128 2 0 200 288 625 00' + String.fromCharCode(13) + String.fromCharCode(10)  + sscc + "\n" +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10) 
+            }
+            else {
+  
+              cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10)  + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10)  + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'T90 7 1 204 555 (00)' + sscc + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10)  +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10)  + "PRINT" + String.fromCharCode(13) + String.fromCharCode(10) 
+            }
+
+            console.log(cadena);
+            rsPrint =  await this._detalle.printer(cadena, await this._param.getvaluesMac());
+             if (rsPrint) {
+                await this.presentAlert("Información", "Impresión realizada");
+             }
+  
+  
+          }
+  
+        }
+      })
+      
+    } catch (error) {
+      await this.presentAlert("Error", error);
+    }
+    this.hideLoading();
+
+
+    
    
   }
 
+
+  async showLoading(mensaje) {
+    /* this.loading = this.loadingController.create({
+      message: 'This Loader will Not AutoHide'
+    }).then((res) => {
+      res.present();
+    }); */
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+      });
+      await this.loading.present();
+      return resolve(true);
+    });
+  }
+  async presentAlert(Header, Mensaje) {
+    /* const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: Header,
+      message: Mensaje,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss(); */
+    this.hideLoading();
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
   imprime() {
     
   }
