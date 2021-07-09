@@ -23,6 +23,9 @@ export class SaldoGlobalPage implements OnInit {
   segundo:boolean=true;
   tercero: boolean = true;
   loading: any = this.loadingController.create();
+  codigo: string = '';
+  bodega : string = '';
+  
   constructor(private _saldoGolbal: SaldoGlobalService,
               private alertController: AlertController,
               public loadingController: LoadingController) {
@@ -40,7 +43,14 @@ export class SaldoGlobalPage implements OnInit {
     //this.Buscar_Saldos();
   }
 
-  
+  ionViewDidEnter() {
+    this.rows = [];
+    this.codigo = '';
+    this.bodega = '';
+    this.rows2 = [];
+    this.rows3 = [];
+    this.total = 0.0;
+  }
 
   Buscar_Saldos() {
     console.log('click');
@@ -68,29 +78,37 @@ export class SaldoGlobalPage implements OnInit {
   }
 
 
-  siguiente() {
+  async onSelect(e) {
+    
+    this.codigo = this.selected[0]["CODIGO"];
+    //console.log(this.selected[0].tran.toString());
+  }
+
+  async onSelectvw2(e) {
+    this.bodega = this.selected2[0]["BOD_CODIGO"];
+  }
+
+  async siguiente() {
     this.tercero = true;
     this.segundo = false;
     this.principal = true;
-    console.log(this.selected[0]["CODIGO"]);
+    await this.presentLoading("Cargando...");
+    await this.getlistaSaldo();
+    this.hideLoading();
     
-    console.log('click');
+  }
+
+  async getlistaSaldo() {
+    const valor = await new Promise(async (resolve) => {
     this.loading = this.presentLoading('Cargando');
     this._saldoGolbal.getListaSaldosGlobal(this.selected[0]["CODIGO"], '').subscribe((resp) => {
       this.loading.dismiss();
       console.log(resp);
       this.rows2 = resp;
-      //this.temp = [...resp];
       console.log(this.rows2);
-      /*let suma = 0;
-      this.rows.forEach(element => {
-        suma = suma + element.MASTER
-      });
-
-      console.log(suma);
-      this.total = suma;*/
-      
-    }); 
+    });
+    return resolve(true);
+  });
   }
 
   atrasPrimero() {
@@ -99,27 +117,24 @@ export class SaldoGlobalPage implements OnInit {
     this.principal = false;
   }
 
-  tercero2() {
+  async tercero2() {
     this.tercero = false;
     this.segundo = true;
     this.principal = true;
     console.log("select2",this.selected2);
-    
-    console.log('click');
-    this.loading = this.presentLoading('Cargando');
+    await this.presentLoading("Cargando...");
+    await this. getlista3();
+    this.hideLoading();
+   
+  }
+  async getlista3() {
+    const valor = await new Promise(async (resolve) => {
     this._saldoGolbal.getListaSaldosGlobal('', this.selected2[0]["BOD_CODIGO"]).subscribe((resp) => {
-      this.loading.dismiss();
       console.log(resp);
       this.rows3 = resp;
-      //this.temp = [...resp];
       console.log(this.rows3);
-      /*let suma = 0;
-      this.rows.forEach(element => {
-        suma = suma + element.MASTER
-      });
-
-      console.log(suma);
-      this.total = suma;*/
+      return resolve(true);
+    });
       
     }); 
   }
@@ -128,5 +143,13 @@ export class SaldoGlobalPage implements OnInit {
     this.tercero = true;
     this.segundo = false;
     this.principal = true;
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
   }
 }

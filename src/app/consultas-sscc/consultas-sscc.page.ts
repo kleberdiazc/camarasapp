@@ -46,7 +46,18 @@ export class ConsultasSsccPage implements OnInit {
     return  this.loading.present();
   }
   
-  onSubmit(values) {
+  async onSubmit(values) {
+    
+    await this.presentLoading("Cargando...");
+    await this. bringData();
+    this.hideLoading();
+   
+   
+    
+  }
+
+  async bringData() {
+
     let navigationExtras: NavigationExtras = {
       state: {
         sscc: this.validationsForm.get('sscc').value.substring(2, 20),
@@ -54,9 +65,8 @@ export class ConsultasSsccPage implements OnInit {
         consulta: this.consulta
       }
     }
-    this.loading = this.presentLoading('Cargando');
+    const valor = await new Promise(async (resolve) => {
     this._detalle.ValidarConsulta(this.consulta, this.validationsForm.get('sscc').value).subscribe(async (resp) => {
-      this.loading.dismiss();
       console.log(resp);
       if (resp.Codigo.toString() == 'false') {
         const alert = await this.alertController.create({
@@ -72,10 +82,17 @@ export class ConsultasSsccPage implements OnInit {
         
        }
     });
-   
-    
+    return resolve(true);
+  });
   }
 
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
   onKeydown(event) {
     console.log(event);
   }

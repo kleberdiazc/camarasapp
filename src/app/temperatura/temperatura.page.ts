@@ -21,8 +21,8 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   consulta: string;
   Emb: string;
   tipo: string = 'F';
-  hideFactura: boolean = false;
-  hideCierre:boolean = false
+  hideFactura: boolean = true;
+  hideCierre: boolean = true;
   validations = {
     'sscc': [
       { type: 'required', message: 'sscc es requerido.' },

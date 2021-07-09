@@ -47,11 +47,12 @@
             [scrollbarH]="true"
             [scrollbarV]="true"
             [selected]="selected" 
+            (select)="onSelect($event)"
             [selectionType]="SelectionType.single">
-            <ngx-datatable-column name="CODIGO" prop='CODIGO' [flexGrow]="5"></ngx-datatable-column>
-            <ngx-datatable-column name="DESCRIPCION" prop='DESCRIPCION' [flexGrow]="3"></ngx-datatable-column>
-            <ngx-datatable-column name="MASTER" prop='MASTER' [flexGrow]="10"></ngx-datatable-column>
-            <ngx-datatable-column name="LIBRAS" prop='LIBRAS' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="CODIGO" prop='CODIGO' [width]="80" ></ngx-datatable-column>
+            <ngx-datatable-column name="DESCRIPCION" prop='DESCRIPCION' [width]="120" ></ngx-datatable-column>
+            <ngx-datatable-column name="MASTER" prop='MASTER' [width]="100" ></ngx-datatable-column>
+            <ngx-datatable-column name="LIBRAS" prop='LIBRAS'[width]="100"  ></ngx-datatable-column>
         </ngx-datatable>
     </div>
     </ion-col>
@@ -70,7 +71,7 @@
 
   <ion-row>
     <ion-col size="12">
-      <ion-button  expand="block" (click)="siguiente()" fill="outline" >Siguiente</ion-button>
+      <ion-button  expand="block"   [disabled]="codigo==''" (click)="siguiente()" fill="outline" >Siguiente</ion-button>
     </ion-col>
   </ion-row>
   
@@ -94,11 +95,12 @@
               [scrollbarH]="true"
               [scrollbarV]="true"
               [selected]="selected2" 
+              (select)="onSelectvw2($event)"
               [selectionType]="SelectionType.single">
-              <ngx-datatable-column name="BOD_CODIGO" prop='BOD_CODIGO' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="BOD_DESCRI" prop='BOD_DESCRI' [flexGrow]="3"></ngx-datatable-column>
-              <ngx-datatable-column name="MASTER" prop='MASTER' [flexGrow]="10"></ngx-datatable-column>
-              <ngx-datatable-column name="LIBRAS" prop='LIBRAS' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="BOD_CODIGO" prop='BOD_CODIGO'[width]="50" ></ngx-datatable-column>
+              <ngx-datatable-column name="BOD_DESCRI" prop='BOD_DESCRI' [width]="120" ></ngx-datatable-column>
+              <ngx-datatable-column name="MASTER" prop='MASTER' [width]="80" ></ngx-datatable-column>
+              <ngx-datatable-column name="LIBRAS" prop='LIBRAS' [width]="100"></ngx-datatable-column>
           </ngx-datatable>
       </div>
       </ion-col>
@@ -106,7 +108,7 @@
 
     <ion-row>
       <ion-col size="12">
-        <ion-button  expand="block" (click)="tercero2()" fill="outline" >Siguiente</ion-button>
+        <ion-button  expand="block"   [disabled]="bodega==''" (click)="tercero2()" fill="outline" >Siguiente</ion-button>
       </ion-col>
     </ion-row>
 
@@ -135,10 +137,10 @@
               [scrollbarV]="true"
               [selected]="selected3" 
               [selectionType]="SelectionType.single">
-              <ngx-datatable-column name="PRODUC" prop='PRODUC' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="TAL_DESCRI" prop='TAL_DESCRI' [flexGrow]="3"></ngx-datatable-column>
-              <ngx-datatable-column name="MASTER" prop='MASTER' [flexGrow]="10"></ngx-datatable-column>
-              <ngx-datatable-column name="LIBRAS" prop='LIBRAS' [flexGrow]="5"></ngx-datatable-column>
+              <ngx-datatable-column name="PRODUC" prop='PRODUC' [width]="210"></ngx-datatable-column>
+              <ngx-datatable-column name="TAL_DESCRI" prop='TAL_DESCRI' [width]="80"></ngx-datatable-column>
+              <ngx-datatable-column name="MASTER" prop='MASTER' [width]="100"></ngx-datatable-column>
+              <ngx-datatable-column name="LIBRAS" prop='LIBRAS' [width]="100"></ngx-datatable-column>
           </ngx-datatable>
       </div>
       </ion-col>
@@ -146,7 +148,7 @@
 
     <ion-row>
       <ion-col size="12">
-        <ion-button  expand="block" (click)="atrasSegundo()" fill="outline" >Atras</ion-button>
+        <ion-button  expand="block"  [disabled]="bodega==''" (click)="atrasSegundo()" fill="outline" >Atras</ion-button>
       </ion-col>
     </ion-row>
   </div>

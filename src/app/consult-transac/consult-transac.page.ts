@@ -281,7 +281,7 @@ export class ConsultTransacPage implements OnInit {
           
         } else {
            this.rowsRes = resp.Dt.Table;
-          
+           console.log(resp.Dt.Table);
           
          }
       })
