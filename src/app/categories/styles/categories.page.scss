@@ -32,9 +32,9 @@
 
       .category-title {
         margin: auto;
-        text-transform: uppercase;
+        //text-transform: uppercase;
         font-weight: 400;
-        font-size: 18px;
+        font-size: 14px;
         letter-spacing: 1px;
         padding: calc((var(--page-margin) / 4) * 3) var(--page-margin);
         color: var(--ion-color-lightest);
@@ -44,13 +44,18 @@
     }
   }
 
+  .Leyenda {
+    --page-category-background: #2a5791d8;
+    --page-category-background-rgb: rgb(30, 57, 92);
+  }
+
   .travel-category {
     --page-category-background: #00AFFF;
     --page-category-background-rgb: 0,175,255;
   }
 
   .fashion-category {
-    --page-category-background: #cb328f;
+    --page-category-background: #1e395c;
     --page-category-background-rgb: 203,50,143;
   }
 

@@ -91,6 +91,12 @@ export class FintumbadaPage implements OnInit {
   }
 
   async ngOnInit() {
+    /* await this.showLoading("Cargando...");
+    await this.loadData();
+    this.hideLoading(); */
+  }
+
+  async ionViewDidEnter() {
     await this.showLoading("Cargando...");
     await this.loadData();
     this.hideLoading();

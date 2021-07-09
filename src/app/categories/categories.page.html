@@ -4,11 +4,72 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      SONGA
+      Inicio
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
- 
+  <ion-row class="categories-list">
+    <ion-col class="category-item Leyenda" size="6">
+      <app-image-shell [display]="'cover'" class="category-cover" animation="spinner"
+        [src]="'./assets/sample-images/categories/Transacciones.png'">
+        <app-aspect-ratio [ratio]="{w:1, h:1}">
+          <a class="category-anchor" [routerLink]="['/app/transacciones']">
+            <h2 class="category-title">Transacciones</h2>
+          </a>
+        </app-aspect-ratio>
+      </app-image-shell>
+    </ion-col>
+    <ion-col class="category-item Leyenda" size="6">
+      <app-image-shell [display]="'cover'" class="category-cover" animation="spinner"
+        [src]="'./assets/sample-images/categories/Temperatura.png'">
+        <app-aspect-ratio [ratio]="{w:1, h:1}">
+          <a class="category-anchor" [routerLink]="['/app/temperatura']">
+            <h2 class="category-title">Temperatura</h2>
+          </a>
+        </app-aspect-ratio>
+      </app-image-shell>
+    </ion-col>
+    <ion-col class="category-item Leyenda" size="6">
+      <app-image-shell [display]="'cover'" class="category-cover" animation="spinner"
+        [src]="'./assets/sample-images/categories/Reetiqueteo.PNG'">
+        <app-aspect-ratio [ratio]="{w:1, h:1}">
+          <a class="category-anchor" [routerLink]="['/app/req-etiqueteo']">
+            <h2 class="category-title">Req. Etiqueteo</h2>
+          </a>
+        </app-aspect-ratio>
+      </app-image-shell>
+    </ion-col>
+    <ion-col class="category-item Leyenda" size="6">
+      <app-image-shell [display]="'cover'" class="category-cover" animation="spinner"
+        [src]="'./assets/sample-images/categories/FinTumbada.png'">
+        <app-aspect-ratio [ratio]="{w:1, h:1}">
+          <a class="category-anchor" [routerLink]="['/app/fintumbada']">
+            <h2 class="category-title">Fin Tumbada</h2>
+          </a>
+        </app-aspect-ratio>
+      </app-image-shell>
+    </ion-col>
+    <ion-col class="category-item Leyenda" size="6">
+      <app-image-shell [display]="'cover'" class="category-cover" animation="spinner"
+        [src]="'./assets/sample-images/categories/Consultasscc.png'">
+        <app-aspect-ratio [ratio]="{w:1, h:1}">
+          <a class="category-anchor" [routerLink]="['/app/consultas-sscc']">
+            <h2 class="category-title">Consulta SSCC</h2>
+          </a>
+        </app-aspect-ratio>
+      </app-image-shell>
+    </ion-col>
+    <ion-col class="category-item Leyenda" size="6">
+      <app-image-shell [display]="'cover'" class="category-cover" animation="spinner"
+        [src]="'./assets/sample-images/categories/Saldos.PNG'">
+        <app-aspect-ratio [ratio]="{w:1, h:1}">
+          <a class="category-anchor" [routerLink]="['/app/saldos']">
+            <h2 class="category-title">Saldos</h2>
+          </a>
+        </app-aspect-ratio>
+      </app-image-shell>
+    </ion-col>
+  </ion-row>
 </ion-content>
