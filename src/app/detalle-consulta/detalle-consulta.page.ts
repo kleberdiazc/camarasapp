@@ -66,7 +66,7 @@ export class DetalleConsultaPage implements OnInit {
 
   async ngOnInit() {
 
-    this.loading = await this.showLoading('Cargando');
+    //this.loading = await this.showLoading('Cargando');
 
     let resum;
 
@@ -75,21 +75,32 @@ export class DetalleConsultaPage implements OnInit {
     } else {
       resum = 'N';
     }
-
-    this._detalle.ConsultarDetalle(resum, this.data.sscc).subscribe((resp) => {
-
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
-          this.rows = JSON.parse(JSON.stringify(resp.Dt.Table));
+    const valor = await new Promise(async (resolve) => {
+      this._detalle.ConsultarDetalle(resum, this.data.sscc).subscribe((resp) => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            let dt: [][] = resp.Dt.Table;
+            if (resp.Dt.Table.length > 0) {
+              this.rows = resp.Dt.Table;
+            }
+            else {
+              this.presentAlert("Información", dt[0]["INFO"].toString());
+              return resolve(true);
+            }
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
         }
-      } else {
-        this.presentAlert("Error", resp.Description);
-      }
+    
+        //this.rows = JSON.parse(JSON.stringify(resp.Dt.Table));
+        
 
 
-      this.hideLoading();
+        return resolve(true);
+      });
     });
-    this.hideLoading();
+      
   }
 
   /* async presentLoading(mensaje: string) {

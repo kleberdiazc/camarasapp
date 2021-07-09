@@ -71,20 +71,80 @@ export class InfoTumbPage implements OnInit {
     const valor = await new Promise(async (resolve) => {
     this._info.ConsultarCierres().subscribe((resp) => {
       console.log(resp);
-      this.cierres = resp.Dt.Table;
+      if (resp.Codigo) {
+        if (Object.keys(resp.Dt).length > 0) {
+          let dt: [][] = resp.Dt.Table;
+          if (resp.Dt.Table.length > 0) {
+            this.cierres = resp.Dt.Table;
+            return resolve(true);
+          } else {
+            this.presentAlert("Error", "No Existen Datos Para Mostrar");
+            return resolve(true);
+          }
+        }
+      } else {
+        this.presentAlert("Error", resp.Description);
+        return resolve(true);
+      }
     });
     return resolve(true);
     });
   }
 
-  cierreChange(event) {
-    const state: string = event.target.value;
-    console.log(state);
-    this.loading = this.presentLoading('Cargando');
-    this._info.ConsultarDetallesCierre(state.toString()).subscribe((resp) => {
-      this.rows = resp.Dt.Table;
-      this.loading.dismiss();
-    })
+  async cierreChange(event) {
+    await this.presentLoading("Cargando...");
+    await this.consultarDetalles(event);
+    //this.hideLoading();
+  }
+
+  async consultarDetalles(event) {
+    const valor = await new Promise(async (resolve) => {
+      const state: string = event.target.value;
+      console.log(state);
+      //this.loading = this.presentLoading('Cargando');
+      this._info.ConsultarDetallesCierre(state.toString()).subscribe(async(resp) => {
+        
+          console.log(resp);
+          this.loading.dismiss();
+
+          if (resp.Codigo) {
+            if (Object.keys(resp.Dt).length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              if (resp.Dt.Table.length > 0) {
+                this.rows = resp.Dt.Table;
+                return resolve(true);
+              } else {
+                this.presentAlert("Error", "No Existen Datos Para Mostrar");
+                return resolve(true);
+              }
+            }
+          } else {
+            this.presentAlert("Error", resp.Description);
+            return resolve(true);
+          }
+        });
+        return resolve(true);
+      });
+  }
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
   }
 
   

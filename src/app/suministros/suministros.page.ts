@@ -7,6 +7,7 @@ import { ConsultTransacService } from '../consult-transac/consult-transac.servic
 import { Tipo, Bodega, Trans, Proceso } from '../interfaces/interfaces';
 import { LoginservicesService } from '../login/loginservices.service';
 import { subscribeOn } from 'rxjs/operators';
+import { ParametrosService } from '../parametros/parametros.service';
 
 @Component({
   selector: 'app-suministros',
@@ -51,7 +52,8 @@ export class SuministrosPage implements OnInit {
     private _transac: ConsultTransacService,
     private _log: LoginservicesService,
     public loadingController: LoadingController,
-    public _suministrto: SuministrosService) {
+    public _suministrto: SuministrosService,
+    private _param: ParametrosService) {
 
 
 
@@ -153,7 +155,7 @@ export class SuministrosPage implements OnInit {
     var item = this.Destino.find(item => item['CODIGO'] === $event.target.value);
     this.destinoName = item.DESCRIPCION;
   }
-  imprimir(tipo) {
+  async imprimir(tipo) {
 
 
     let sello = this.validationsForm.get('Sello').value;
@@ -163,6 +165,9 @@ export class SuministrosPage implements OnInit {
     let destino = '';
     let cantidad = '';
     let fecha;
+    try {
+      await this.showLoading("Imprimiendo...");
+      let rsPrint: any = false;
     this._suministrto.Imprimir(sello, tipo).subscribe(async (resp) => {
       let table = [];
       table = resp.Dt.Table;
@@ -183,26 +188,30 @@ export class SuministrosPage implements OnInit {
           cantidad = table[0]["tcd_cantid"]
 
         }
-        let cadena = ' 0 200 200 830 1' + '\n' + 'LABEL' + '\n' + 'CONTRAST 0' + '\n' +
-          'TONE 0' + '\n' +
-          'SPEED 5' + '\n' +
-          'JOURNAL' + '\n' +
-          'PAGE-WIDTH 560' + '\n' +
-          'BAR-SENSE' + '\n' +
-          ';// PAGE 0000000005600800' + '\n' +
-          'CENTER' + '\n' +
-          'T 5 1 0 44 TRANSFERENCIA DE ' + this.itemName.toUpperCase() + '\n' + '\n' +
-          'T 5 0 38 92 Usuario: ' + us + '\n' +
-          'T 5 0 38 140 Fecha: ' + fecha + '\n' + '\n' +
-          'T 5 0 38 188 Sello: ' + sello + '\n' +
-          'T 5 0 38 236 Item: ' + this.itemName.toUpperCase() + '\n' +
-          'T 5 0 38 248 Bod. Origen: ' + this.origenName + '\n' +
-          'T 5 0 38 332 Bod. Destino: ' + this.destinoName + '\n' +
-          'T 5 0 38 380 Cantidad: ' + cantidad + '\n' +
-          'ENDML' + '\n' +
-          'PRINT' + '\n';
+        let cadena = ' 0 200 200 830 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'JOURNAL' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+          ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'CENTER' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 1 0 44 TRANSFERENCIA DE ' + this.itemName.toUpperCase() + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 92 Usuario: ' + us + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 140 Fecha: ' + fecha + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 188 Sello: ' + sello + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 236 Item: ' + this.itemName.toUpperCase() + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 248 Bod. Origen: ' + this.origenName + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 332 Bod. Destino: ' + this.destinoName + String.fromCharCode(13) + String.fromCharCode(10) +
+          'T 5 0 38 380 Cantidad: ' + cantidad + String.fromCharCode(13) + String.fromCharCode(10) +
+          'ENDML' + String.fromCharCode(13) + String.fromCharCode(10) +
+          'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
 
         console.log(cadena);
+        rsPrint = await this._suministrto.printer(cadena, await this._param.getvaluesMac());
+        if (rsPrint) {
+          await this.presentAlert("Información", "Impresión realizada");
+        }
       }
       else {
 
@@ -214,7 +223,59 @@ export class SuministrosPage implements OnInit {
         await alert.present();
       }
     });
-    //FALTA IMPRIMIR
+      
+  } catch (error) {
+    await this.presentAlert("Error", error);
+  }
+  this.hideLoading();
+
+  }
+
+
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
+
+  async showLoading(mensaje) {
+    /* this.loading = this.loadingController.create({
+      message: 'This Loader will Not AutoHide'
+    }).then((res) => {
+      res.present();
+    }); */
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+      });
+      await this.loading.present();
+      return resolve(true);
+    });
   }
 
 }

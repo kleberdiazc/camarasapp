@@ -4,7 +4,7 @@ import { TemperaturaService } from './temperatura.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { DetalleConsultaService } from '../detalle-consulta/detalle-consulta.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   tipo: string = 'F';
   hideFactura: boolean = true;
   hideCierre: boolean = true;
+  loading :any = this.loadingController.create();
   validations = {
     'sscc': [
       { type: 'required', message: 'sscc es requerido.' },
@@ -42,7 +43,8 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   constructor(private router: Router,
     private alertController: AlertController,
     private _temp: TemperaturaService,
-    private _log: LoginservicesService) {
+    private _log: LoginservicesService,
+    public loadingController: LoadingController) {
     this.validationsForm = new FormGroup({
       'sscc': new FormControl('', Validators.compose([
         Validators.required
@@ -166,10 +168,60 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   }
 
   BuscaCierres() {
+    
+  }
+
+  async cierres() {
+  const valor = await new Promise(async (resolve) => {
     this._temp.ConsultarCierre().subscribe((resp) => {
       console.log('consulta factura', resp);
-      this.Cierres = resp.Dt.Table;
+      
+      if (resp.Codigo) {
+        if (Object.keys(resp.Dt).length > 0) {
+          let dt: [][] = resp.Dt.Table;
+          if (resp.Dt.Table.length > 0) {
+            this.Cierres = resp.Dt.Table;
+            return resolve(true);
+          } else {
+            this.presentAlert("Error", "No Existen Datos Para Mostrar");
+            return resolve(true);
+          }
+        }
+      } else {
+        this.presentAlert("Error", resp.Description);
+        return resolve(true);
+      }
     });
+    return resolve(true);
+    });
+  }
+
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
   }
 
 

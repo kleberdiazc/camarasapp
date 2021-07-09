@@ -141,55 +141,77 @@ export class ConsultTransacPage implements OnInit {
   async consultarCombos() {
     const valor = await new Promise(async (resolve) => {
     this._transac.ConsultarBodegas("1").subscribe((resp => {
-
-      console.log(resp);
-      this.Tipos = resp.Dt.Table;
-      this.Bodegas = resp.Dt.Table1;
-      this.Procesos = resp.Dt.Table2;
-      this.Trans = resp.Dt.Table3;
-      return resolve(true);
+      if (resp.Codigo) {
+        if (Object.keys(resp.Dt).length > 0) {
+          let dt: [][] = resp.Dt.Table;
+          if (resp.Dt.Table.length > 0) {
+            console.log(resp);
+            this.Tipos = resp.Dt.Table;
+            this.Bodegas = resp.Dt.Table1;
+            this.Procesos = resp.Dt.Table2;
+            this.Trans = resp.Dt.Table3;
+            return resolve(true);
+          }
+        }
+      } else {
+        this.presentAlert("Error", resp.Description);
+        return resolve(true);
+      }
+      
     }));
       
   });
   }
   
-  onSubmit(values) {
-    let fechaHasta: Date = this.validationsForm.get('Hasta').value;
-    let fechaDesde: Date = this.validationsForm.get('Desde').value;
-    //this.datePipe.transform(fecha,'yyyy/MM/dd')
-    let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
-    let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
-
-    this.loading = this.presentLoading('Cargando');
-    this._transac.ConsultarTransac(this.validationsForm.get('Bodega').value,
-      this.usuario,
-      this.validationsForm.get('Tipo').value, desde,
-       hasta, this.validationsForm.get('Proceso').value,
-      this.validationsForm.get('Trans').value).subscribe(async(resp) => {
-        console.log(resp);
-        this.loading.dismiss();
-        
-         if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-          
-        } else {
-          this.segundo = false;
-          this.principal = true;
-          this.rows = resp.Dt.Table;
-          
-         }
-      })
+  async onSubmit(values) {
+    
 
 
-
+    await this.presentLoading("Cargando...");
+    await this.getdataTransac();
+    this.hideLoading();
       
 
     
+  }
+
+  async getdataTransac() {
+    const valor = await new Promise(async (resolve) => {
+      let fechaHasta: Date = this.validationsForm.get('Hasta').value;
+      let fechaDesde: Date = this.validationsForm.get('Desde').value;
+      //this.datePipe.transform(fecha,'yyyy/MM/dd')
+      let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
+      let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
+  
+      //this.loading = this.presentLoading('Cargando');
+        this._transac.ConsultarTransac(this.validationsForm.get('Bodega').value,
+          this.usuario,
+          this.validationsForm.get('Tipo').value, desde,
+          hasta, this.validationsForm.get('Proceso').value,
+          this.validationsForm.get('Trans').value).subscribe(async (resp) => {
+            console.log(resp);
+            //this.loading.dismiss();
+          
+  
+            if (resp.Codigo) {
+              if (Object.keys(resp.Dt).length > 0) {
+                let dt: [][] = resp.Dt.Table;
+                if (resp.Dt.Table.length > 0) {
+                  this.segundo = false;
+                  this.principal = true;
+                  this.rows = resp.Dt.Table;
+                }
+              }
+            } else {
+              this.presentAlert("Error", resp.Description);
+              return resolve(true);
+            }
+  
+  
+  
+          });
+          return resolve(true);
+      });
   }
 
   async onSiguienteSegundo(){
@@ -230,24 +252,45 @@ export class ConsultTransacPage implements OnInit {
       //this.loading = this.presentLoading('Cargando');
       this._transac.DetalleTransac(e.selected[0]["NUMTRA"]).subscribe(async (resp) => {
         //this.loading.dismiss();
-          
-           if (resp.Codigo.toString() == 'false') {
-            const alert = await this.alertController.create({
-              header: 'Error!',
-              message: resp.Description,
-              buttons: ['OK']
-            });
-            await alert.present();
-            
-          } else {
-  
-            this.detalle = resp.Dt.Table;
-            
-           }
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            let dt: [][] = resp.Dt.Table;
+            if (resp.Dt.Table.length > 0) {
+              this.detalle = resp.Dt.Table;
+            }
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
+        }  
       })
       return resolve(true);
       });
   }
+
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+
+
 
   async getResumen() {
     const valor = await new Promise(async (resolve) => {
@@ -267,23 +310,21 @@ export class ConsultTransacPage implements OnInit {
       this.usuario,
       this.validationsForm.get('Tipo').value,desde,
       hasta, this.validationsForm.get('Proceso').value,
-      this.validationsForm.get('Trans').value,lote,'').subscribe(async(resp) => {
-        console.log(resp);
-        //this.loading.dismiss();
+      this.validationsForm.get('Trans').value, lote, '').subscribe(async (resp) => {
         
-         if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-          
+
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            let dt: [][] = resp.Dt.Table;
+            if (resp.Dt.Table.length > 0) {
+              this.rowsRes = resp.Dt.Table;
+              console.log(resp.Dt.Table);
+            }
+          }
         } else {
-           this.rowsRes = resp.Dt.Table;
-           console.log(resp.Dt.Table);
-          
-         }
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
+        }
       })
       return resolve(true);
       });

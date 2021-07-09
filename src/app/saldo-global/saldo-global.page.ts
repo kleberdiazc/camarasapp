@@ -52,24 +52,33 @@ export class SaldoGlobalPage implements OnInit {
     this.total = 0.0;
   }
 
-  Buscar_Saldos() {
-    console.log('click');
-    this.loading = this.presentLoading('Cargando');
-    this._saldoGolbal.getListaSaldosGlobal('','').subscribe((resp) => {
-      this.loading.dismiss();
-      this.rows = resp;
-      //this.temp = [...resp];
-      console.log(this.rows);
-      let suma = 0;
-      this.rows.forEach(element => {
-        suma = suma + element.MASTER
-      });
-
-      console.log(suma);
-      this.total = suma;
-      
-    }); 
+  async Buscar_Saldos() {
+    //console.log('click');
+    //this.loading = this.presentLoading('Cargando');
+    await this.presentLoading("Cargando...");
+    await this.saldos();
+    this.hideLoading();
   }
+
+  async saldos() {
+    const valor = await new Promise(async (resolve) => {
+      this._saldoGolbal.getListaSaldosGlobal('','').subscribe((resp) => {
+        this.rows = resp;
+        //this.temp = [...resp];
+        console.log(this.rows);
+        let suma = 0;
+        this.rows.forEach(element => {
+          suma = suma + element.MASTER
+        });
+
+        console.log(suma);
+        this.total = suma;
+        
+      });
+      return resolve(true);
+    });
+  }
+
   async presentLoading(mensaje: string) {
     this.loading = await this.loadingController.create({
       message: mensaje
@@ -100,12 +109,8 @@ export class SaldoGlobalPage implements OnInit {
 
   async getlistaSaldo() {
     const valor = await new Promise(async (resolve) => {
-    this.loading = this.presentLoading('Cargando');
     this._saldoGolbal.getListaSaldosGlobal(this.selected[0]["CODIGO"], '').subscribe((resp) => {
-      this.loading.dismiss();
-      console.log(resp);
       this.rows2 = resp;
-      console.log(this.rows2);
     });
     return resolve(true);
   });

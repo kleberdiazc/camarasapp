@@ -62,71 +62,90 @@ export class DetallePalletPage implements OnInit {
     }
   
   onSubmit(values) {
+    
+    this.consultarPallet();
+      
+  }
+
+
+  async consultarPallet() {
     console.log(this.validationsForm.get('sscc').value.length);
 
     if (this.validationsForm.get('sscc').value.length == 20) {
-      this.loading = this.presentLoading('Cargando');
-      this._detalle.ConsultarDetallePallet(this.validationsForm.get('sscc').value.substring(2, 20)).subscribe(async (resp) => {
-        this.loading.dismiss();
-        console.log(resp);
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
+      //this.loading = this.presentLoading('Cargando');
+      const valor = await new Promise(async (resolve) => {
+        this._detalle.ConsultarDetallePallet(this.validationsForm.get('sscc').value.substring(2, 20)).subscribe(async (resp) => {
+          //this.loading.dismiss();
+          console.log('XXX',resp);
+          if (resp.Codigo) {
+            if (Object.keys(resp.Dt).length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              if (resp.Dt.Table.length > 0) {
+                this.rows = resp.Dt.Table;
+                return resolve(true);
+              }
+            }
+          } else {
+            this.presentAlert("Error", resp.Description);
+            return resolve(true);
+          }
+            
+            
           
-        } else {
-          this.rows = resp.Dt.Table;
-          
-         }
+        });
+        return resolve(true);
       });
-     
       console.log(this.validationsForm.get('sscc').value);
     }
     else {
-      this.loading = this.presentLoading('Cargando');
-      this._detalle.DetalleTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
-        this.loading.dismiss();
+      //this.loading = this.presentLoading('Cargando');
+      const valor = await new Promise(async (resolve) => {
+        this._detalle.DetalleTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
+          //this.loading.dismiss();
+            
+          if (resp.Codigo) {
+            if (Object.keys(resp.Dt).length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              if (resp.Dt.Table.length > 0) {
+                this.rows = resp.Dt.Table;
+                return resolve(true);
+              }
+            }
+          } else {
+            this.presentAlert("Error", resp.Description);
+            return resolve(true);
+          }
+    
+            
+              
           
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-            
-        } else {
-  
-          this.rows = resp.Dt.Table;
-            
-        }
+        });
+      return resolve(true);
       });
+      const valor2 = await new Promise(async (resolve) => {
       this._detalle.getTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
           
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-            
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            let dt: [][] = resp.Dt.Table;
+            if (resp.Dt.Table.length > 0) {
+              let detalle: [][] = resp.Dt.Table;
+              this.Descripcion = detalle[0]["Tipo"] + " "+ detalle[0]["Resp"] + " "+ detalle[0]["Bod1"]
+              + " "+ detalle[0]["fecha"];
+              return resolve(true);
+            }
+          }
         } else {
-  
-          let detalle: [][] = resp.Dt.Table;
-          this.Descripcion = detalle[0]["Tipo"] + " "+ detalle[0]["Resp"] + " "+ detalle[0]["Bod1"]
-          + " "+ detalle[0]["fecha"];
-
-            
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
         }
+
+
+      });
+        return resolve(true);
       });
     }
-      
-      
-    }
+  }
   
     onKeydown(event) {
       console.log(event);
@@ -139,7 +158,7 @@ export class DetallePalletPage implements OnInit {
 
     //let det = this._detalle.imprimir(this.validationsForm.get('sscc').value, this.rows);
       //console.log(det);
-      let cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) + +
+      let cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) +  'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10)  +
         'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
         'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
         'PAGE-HWIDT 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
