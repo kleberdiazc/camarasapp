@@ -44,7 +44,7 @@ export class InfoTumbPage implements OnInit {
    }
 
   ngOnInit() {
-    this.BuscarTuneles();
+    //this.BuscarTuneles();
   }
   async presentLoading(mensaje: string) {
     this.loading = await this.loadingController.create({
@@ -52,12 +52,28 @@ export class InfoTumbPage implements OnInit {
     });
     return  this.loading.present();
   }
-  
+  hideLoading() {
 
-  BuscarTuneles() {
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
+  
+  async ionViewWillEnter() {
+    await this.presentLoading("Cargando...");
+    await this.BuscarTuneles();
+    this.hideLoading();
+  }
+
+
+  async BuscarTuneles() {
+    const valor = await new Promise(async (resolve) => {
     this._info.ConsultarCierres().subscribe((resp) => {
       console.log(resp);
       this.cierres = resp.Dt.Table;
+    });
+    return resolve(true);
     });
   }
 
