@@ -3,7 +3,7 @@
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 @import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
 @import '~@swimlane/ngx-datatable/themes/dark.scss';
-
+@import "theme/mixins/inputs/select-alert";
 
 .top-20 {
     margin-top: 20%

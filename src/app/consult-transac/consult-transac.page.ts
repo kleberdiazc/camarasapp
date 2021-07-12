@@ -28,12 +28,12 @@ export class ConsultTransacPage implements OnInit {
   columnsRes = [];
   temp = [];
 
-  loading :any = this.loadingController.create();
+  loading: any = this.loadingController.create();
   validationsForm: FormGroup;
-  principal:boolean= false;
-  segundo:boolean=true;
+  principal: boolean = false;
+  segundo: boolean = true;
   tercero: boolean = true;
-  myBoolean = true;
+  myBoolean = false;
   usuario: string = '';
   selected = [];
   SelectionType = SelectionType;
@@ -43,7 +43,7 @@ export class ConsultTransacPage implements OnInit {
   validations = {
     'Tipo': [
       { type: 'required', message: 'Tipo es requerido.' },
-      
+
     ],
     'Bodega': [
       { type: 'required', message: 'Bodega es requerido.' }
@@ -63,62 +63,62 @@ export class ConsultTransacPage implements OnInit {
       { type: 'required', message: 'Trans es requerido.' }
     ]
   };
-  
-  constructor( private router : Router,
+
+  constructor(private router: Router,
     private alertController: AlertController,
     private _transac: ConsultTransacService,
     private _log: LoginservicesService,
     public loadingController: LoadingController) {
 
 
-        this.columns = [
-          { prop: 'NUMSEC',name: 'NUMSEC'},
-          { prop: 'NUMTRA', name:'NUMTRA' },
-          { prop: 'FECHA', name: 'FECHA' },
-          { prop: 'TIPO', name: 'TIPO' },
-          { prop: 'ESTADO', name: 'ESTADO' },
-          { prop: 'OBSERV', name: 'OBSERV' },
-          { prop: 'USUARIO', name: 'USUARIO' },
-        ]
+    this.columns = [
+      { prop: 'NUMSEC', name: 'NUMSEC' },
+      { prop: 'NUMTRA', name: 'NUMTRA' },
+      { prop: 'FECHA', name: 'FECHA' },
+      { prop: 'TIPO', name: 'TIPO' },
+      { prop: 'ESTADO', name: 'ESTADO' },
+      { prop: 'OBSERV', name: 'OBSERV' },
+      { prop: 'USUARIO', name: 'USUARIO' },
+    ]
 
-        this.columnsRes = [
-          { prop: 'LOTE',name: 'LOTE'},
-          { prop: 'CODPROD', name:'CODPROD' },
-          { prop: 'PRODUCTO', name: 'PRODUCTO' },
-          { prop: 'TALLA', name: 'TALLA' },
-          { prop: 'CJS', name: 'CJS' },
-          { prop: 'MSTRS', name: 'MSTRS' },
-          { prop: 'USUARIO', name: 'USUARIO' },
-        ]
-      
-      this.validationsForm = new FormGroup({
-      'Tipo': new FormControl('',Validators.compose([
-       Validators.required
-      //Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+    this.columnsRes = [
+      { prop: 'LOTE', name: 'LOTE' },
+      { prop: 'CODPROD', name: 'CODPROD' },
+      { prop: 'PRODUCTO', name: 'PRODUCTO' },
+      { prop: 'TALLA', name: 'TALLA' },
+      { prop: 'CJS', name: 'CJS' },
+      { prop: 'MSTRS', name: 'MSTRS' },
+      { prop: 'USUARIO', name: 'USUARIO' },
+    ]
+
+    this.validationsForm = new FormGroup({
+      'Tipo': new FormControl('', Validators.compose([
+        Validators.required
+        //Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
-      'Bodega': new FormControl('',Validators.compose([
+      'Bodega': new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      'Proceso': new FormControl('',Validators.compose([
+      'Proceso': new FormControl('', Validators.compose([
         //Validators.required,
-       // Validators.pattern('^([-+,0-9.]+)')
+        // Validators.pattern('^([-+,0-9.]+)')
       ])),
-      'Trans': new FormControl('',Validators.compose([
+      'Trans': new FormControl('', Validators.compose([
         //Validators.required,
-       // Validators.pattern('^([-+,0-9.]+)')
+        // Validators.pattern('^([-+,0-9.]+)')
       ])),
-      'Desde': new FormControl(this.myDate,Validators.compose([
+      'Desde': new FormControl(this.myDate, Validators.compose([
         Validators.required,
-       // Validators.pattern('^([-+,0-9.]+)')
+        // Validators.pattern('^([-+,0-9.]+)')
       ])),
-      'Hasta': new FormControl(this.myDate,Validators.compose([
+      'Hasta': new FormControl(this.myDate, Validators.compose([
         Validators.required,
-       // Validators.pattern('^([-+,0-9.]+)')
-        ]))
-      });
+        // Validators.pattern('^([-+,0-9.]+)')
+      ]))
+    });
   }
-  
-  
+
+
   async ngOnInit() {
     await this.presentLoading("Cargando...");
     await this.consultarCombos();
@@ -135,86 +135,87 @@ export class ConsultTransacPage implements OnInit {
     this.loading = await this.loadingController.create({
       message: mensaje
     });
-    return  this.loading.present();
+    return this.loading.present();
   }
-  
+
   async consultarCombos() {
     const valor = await new Promise(async (resolve) => {
-    this._transac.ConsultarBodegas("1").subscribe((resp => {
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
-          let dt: [][] = resp.Dt.Table;
-          if (resp.Dt.Table.length > 0) {
-            console.log(resp);
-            this.Tipos = resp.Dt.Table;
-            this.Bodegas = resp.Dt.Table1;
-            this.Procesos = resp.Dt.Table2;
-            this.Trans = resp.Dt.Table3;
-            return resolve(true);
+      this._transac.ConsultarBodegas("1").subscribe((resp => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            let dt: [][] = resp.Dt.Table;
+            if (resp.Dt.Table.length > 0) {
+              console.log(resp);
+              this.Tipos = resp.Dt.Table;
+              this.Bodegas = resp.Dt.Table1;
+              this.Procesos = resp.Dt.Table2;
+              this.Trans = resp.Dt.Table3;
+              return resolve(true);
+            }
           }
+        } else {
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
         }
-      } else {
-        this.presentAlert("Error", resp.Description);
-        return resolve(true);
-      }
-      
-    }));
-      
-  });
+
+      }));
+
+    });
   }
-  
+
   async onSubmit(values) {
-    
+
 
 
     await this.presentLoading("Cargando...");
     await this.getdataTransac();
     this.hideLoading();
-      
 
-    
+
+
   }
 
   async getdataTransac() {
+    this.rows.length = 0;
     const valor = await new Promise(async (resolve) => {
       let fechaHasta: Date = this.validationsForm.get('Hasta').value;
       let fechaDesde: Date = this.validationsForm.get('Desde').value;
       //this.datePipe.transform(fecha,'yyyy/MM/dd')
       let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
       let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
-  
+
       //this.loading = this.presentLoading('Cargando');
-        this._transac.ConsultarTransac(this.validationsForm.get('Bodega').value,
-          this.usuario,
-          this.validationsForm.get('Tipo').value, desde,
-          hasta, this.validationsForm.get('Proceso').value,
-          this.validationsForm.get('Trans').value).subscribe(async (resp) => {
-            console.log(resp);
-            //this.loading.dismiss();
-          
-  
-            if (resp.Codigo) {
-              if (Object.keys(resp.Dt).length > 0) {
-                let dt: [][] = resp.Dt.Table;
-                if (resp.Dt.Table.length > 0) {
-                  this.segundo = false;
-                  this.principal = true;
-                  this.rows = resp.Dt.Table;
-                }
+      this._transac.ConsultarTransac(this.validationsForm.get('Bodega').value,
+        this.usuario,
+        this.validationsForm.get('Tipo').value, desde,
+        hasta, this.validationsForm.get('Proceso').value,
+        this.validationsForm.get('Trans').value).subscribe(async (resp) => {
+          console.log(resp);
+          //this.loading.dismiss();
+
+
+          if (resp.Codigo) {
+            if (Object.keys(resp.Dt).length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              if (resp.Dt.Table.length > 0) {
+                this.segundo = false;
+                this.principal = true;
+                this.rows = resp.Dt.Table;
               }
-            } else {
-              this.presentAlert("Error", resp.Description);
-              return resolve(true);
             }
-  
-  
-  
-          });
+          } else {
+            this.presentAlert("Error", resp.Description);
+            return resolve(true);
+          }
+
           return resolve(true);
-      });
+
+        });
+
+    });
   }
 
-  async onSiguienteSegundo(){
+  async onSiguienteSegundo() {
     this.tercero = false;
     this.segundo = true;
     this.principal = true;
@@ -224,20 +225,20 @@ export class ConsultTransacPage implements OnInit {
 
   }
 
-  onAtrasSegundo(){
+  onAtrasSegundo() {
     this.tercero = true;
     this.segundo = true;
     this.principal = false;
   }
 
-  onAtrasTercero(){
+  onAtrasTercero() {
     this.tercero = true;
     this.segundo = false;
     this.principal = true;
   }
 
   async onSelect(e) {
-    
+
     await this.presentLoading("Cargando...");
     await this.setselect(e);
     this.hideLoading();
@@ -246,6 +247,7 @@ export class ConsultTransacPage implements OnInit {
 
 
   async setselect(e) {
+    this.detalle.length = 0;
     const valor = await new Promise(async (resolve) => {
       console.log(e.selected[0]["NUMTRA"].toString());
       console.log(this.selected);
@@ -262,10 +264,11 @@ export class ConsultTransacPage implements OnInit {
         } else {
           this.presentAlert("Error", resp.Description);
           return resolve(true);
-        }  
+        }
+        return resolve(true);
       })
-      return resolve(true);
-      });
+
+    });
   }
 
   async presentAlert(Header, Mensaje) {
@@ -293,41 +296,43 @@ export class ConsultTransacPage implements OnInit {
 
 
   async getResumen() {
+    this.rowsRes.length = 0;
     const valor = await new Promise(async (resolve) => {
-    let lote: string;
-    if (this.myBoolean) {
-      lote = 'S'
-    } else {
-      lote = 'N'
-    }
-    let fechaHasta: Date = this.validationsForm.get('Hasta').value;
-    let fechaDesde: Date = this.validationsForm.get('Desde').value;
-    //this.datePipe.transform(fecha,'yyyy/MM/dd')
-    let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
-    let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
+      let lote: string;
+      if (this.myBoolean) {
+        lote = 'S'
+      } else {
+        lote = 'N'
+      }
+      let fechaHasta: Date = this.validationsForm.get('Hasta').value;
+      let fechaDesde: Date = this.validationsForm.get('Desde').value;
+      //this.datePipe.transform(fecha,'yyyy/MM/dd')
+      let desde = moment(fechaDesde).format('YYYY/MM/DD'); // 2019-04-22
+      let hasta = moment(fechaHasta).format('YYYY/MM/DD'); // 2019-04-22
 
-    this._transac.ResumenTransac(this.validationsForm.get('Bodega').value,
-      this.usuario,
-      this.validationsForm.get('Tipo').value,desde,
-      hasta, this.validationsForm.get('Proceso').value,
-      this.validationsForm.get('Trans').value, lote, '').subscribe(async (resp) => {
-        
+      this._transac.ResumenTransac(this.validationsForm.get('Bodega').value,
+        this.usuario,
+        this.validationsForm.get('Tipo').value, desde,
+        hasta, this.validationsForm.get('Proceso').value,
+        this.validationsForm.get('Trans').value, lote, '').subscribe(async (resp) => {
 
-        if (resp.Codigo) {
-          if (Object.keys(resp.Dt).length > 0) {
-            let dt: [][] = resp.Dt.Table;
-            if (resp.Dt.Table.length > 0) {
-              this.rowsRes = resp.Dt.Table;
-              console.log(resp.Dt.Table);
+
+          if (resp.Codigo) {
+            if (Object.keys(resp.Dt).length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              if (resp.Dt.Table.length > 0) {
+                this.rowsRes = resp.Dt.Table;
+                console.log(resp.Dt.Table);
+              }
             }
+          } else {
+            this.presentAlert("Error", resp.Description);
+            return resolve(true);
           }
-        } else {
-          this.presentAlert("Error", resp.Description);
           return resolve(true);
-        }
-      })
-      return resolve(true);
-      });
+        })
+
+    });
 
   }
   onMyBooleanChange() {

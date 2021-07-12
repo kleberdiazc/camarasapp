@@ -21,6 +21,50 @@ export class ConsultasSsccPage implements OnInit {
     ]
   };
   loading: any = this.loadingController.create();
+
+
+  async showLoading(mensaje) {
+
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+      });
+      await this.loading.present();
+      return resolve(true);
+    });
+  }
+
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
+
   constructor(private router: Router,
     private _detalle: DetalleConsultaService,
     public alertController: AlertController,
@@ -48,7 +92,7 @@ export class ConsultasSsccPage implements OnInit {
 
   async onSubmit(values) {
 
-    await this.presentLoading("Cargando...");
+    await this.showLoading("Cargando...");
     await this.bringData();
     this.hideLoading();
 
@@ -86,75 +130,23 @@ export class ConsultasSsccPage implements OnInit {
           this.router.navigate(['app/consultas-sscc/detalle-consulta'], navigationExtras);
           console.log(this.validationsForm.get('sscc').value);
 
-
+          return resolve(true);
 
         });
-        return resolve(true);
+
       });
     }
   }
 
-  async presentAlert(Header, Mensaje) {
-    this.hideLoading();
-    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
 
-    return new Promise(async (resolve) => {
-      const alert = await this.alertController.create({
-        cssClass: css,
-        header: Header,
-        message: Mensaje,
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            return resolve(true);
-          },
-        }]
-      });
-
-      await alert.present();
-    });
-  }
-
-  hideLoading() {
-
-    if (this.loading !== null) {
-      this.loadingController.dismiss();
-      this.loading = null;
-    }
-  }
   onKeydown(event) {
     console.log(event);
   }
 
-  keyChange(event) {
-    this.bringData();
-    /* let ssccs = this.validationsForm.get('sscc').value;
-    if (ssccs.length == 20) {
-      let navigationExtras: NavigationExtras = {
-        state: {
-          sscc: this.validationsForm.get('sscc').value.substring(2, 20),
-          resumido: this.myBoolean,
-          consulta: this.consulta
-        }
-      }
-      this._detalle.ValidarConsulta(this.consulta, this.validationsForm.get('sscc').value).subscribe(async (resp) => {
-        console.log(resp);
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-
-        } else {
-          this.router.navigate(['app/consultas-sscc/detalle-consulta'], navigationExtras);
-          console.log(this.validationsForm.get('sscc').value);
-
-        }
-      });
-
-    } */
+  async keyChange(event) {
+    await this.presentLoading("Cargando...");
+    await this.bringData();
+    this.hideLoading();
   }
 
   OnChangeRad(event) {
@@ -163,7 +155,6 @@ export class ConsultasSsccPage implements OnInit {
     this.consulta = state;
 
   }
-
 
   onMyBooleanChange() {
     console.log(this.myBoolean);

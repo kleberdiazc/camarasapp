@@ -36,6 +36,47 @@ export class DetalleConsultaPage implements OnInit {
   tal_codigo: string;
   loading: any = this.loadingController.create();
 
+  async showLoading(mensaje) {
+
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+      });
+      await this.loading.present();
+      return resolve(true);
+    });
+  }
+  async presentAlert(Header, Mensaje) {
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
+
   constructor(private route: ActivatedRoute,
     private router: Router, private _detalle: DetalleConsultaService,
     public loadingController: LoadingController,
@@ -50,8 +91,7 @@ export class DetalleConsultaPage implements OnInit {
       { prop: 'sscc_Bodega', name: 'Bodega' },
       { prop: 'LIBRAS', name: 'LIBRAS' },
     ]
-
-    if (this.router.getCurrentNavigation().extras.state) {
+    if (this.router.getCurrentNavigation().extras.state != undefined) {
       console.log(this.router.getCurrentNavigation().extras.state.sscc)
       this.data = this.router.getCurrentNavigation().extras.state;
       if (this.data.sscc.substring(1, 9) == '786115922' || this.data.sscc.substring(1, 9) == '786120672') {
@@ -67,8 +107,12 @@ export class DetalleConsultaPage implements OnInit {
   async ngOnInit() {
 
     //this.loading = await this.showLoading('Cargando');
-
+    await this.showLoading("Cargando..");
     let resum;
+    if (this.data === undefined) {
+      this.hideLoading();
+      return;
+    }
 
     if (this.data.resumido) {
       resum = 'S';
@@ -92,24 +136,12 @@ export class DetalleConsultaPage implements OnInit {
           this.presentAlert("Error", resp.Description);
           return resolve(true);
         }
-    
-        //this.rows = JSON.parse(JSON.stringify(resp.Dt.Table));
-        
-
 
         return resolve(true);
       });
     });
-      
+    this.hideLoading();
   }
-
-  /* async presentLoading(mensaje: string) {
-    this.loading = await this.loadingController.create({
-      message: mensaje
-    });
-    return this.loading.present();
-  } */
-
 
 
   onClickRow(row) {
@@ -226,50 +258,7 @@ export class DetalleConsultaPage implements OnInit {
   }
 
 
-  async showLoading(mensaje) {
-    /* this.loading = this.loadingController.create({
-      message: 'This Loader will Not AutoHide'
-    }).then((res) => {
-      res.present();
-    }); */
-    return new Promise(async (resolve) => {
-      this.loading = await this.loadingController.create({
-        message: mensaje,
-        translucent: true,
-        cssClass: 'custom-class custom-loading',
-      });
-      await this.loading.present();
-      return resolve(true);
-    });
-  }
-  async presentAlert(Header, Mensaje) {
-    this.hideLoading();
-    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
 
-    return new Promise(async (resolve) => {
-      const alert = await this.alertController.create({
-        cssClass: css,
-        header: Header,
-        message: Mensaje,
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            return resolve(true);
-          },
-        }]
-      });
-
-      await alert.present();
-    });
-  }
-
-  hideLoading() {
-
-    if (this.loading !== null) {
-      this.loadingController.dismiss();
-      this.loading = null;
-    }
-  }
   imprime() {
 
   }

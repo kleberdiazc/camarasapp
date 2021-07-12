@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TransaccionesService } from './transacciones.service';
 import { AlertController, LoadingController, IonInput } from '@ionic/angular';
+import { NavigationExtras, Router } from '@angular/router';
 import { ResultWS, DataCombos, TablaCodigo, ClsProducto, tb_DataGrid } from './../interfaces/interfaces';
 import { Dictionary } from './../Class/dictionary';
 import { SelectionType } from '@swimlane/ngx-datatable';
@@ -284,7 +285,7 @@ export class TransaccionesPage implements OnInit {
     }
   }
 
-  constructor(private _dataService: TransaccionesService, public alertController: AlertController,
+  constructor(private router: Router, private _dataService: TransaccionesService, public alertController: AlertController,
     public loadingController: LoadingController, private _log: LoginservicesService
     , private _param: ParametrosService) {
 
@@ -2602,6 +2603,26 @@ export class TransaccionesPage implements OnInit {
         });
       });
 
+    } catch (error) {
+      await this.presentAlert("Error", error);
+    }
+  }
+
+  async OnclickDesEmpaque() {
+    try {
+
+      //this.btn_DesEmpaque = "378612067302448243";
+      if (this.btn_DesEmpaque !== "") {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            sscc: this.btn_DesEmpaque,
+            resumido: "S",
+            consulta: ""
+          }
+        }
+
+        this.router.navigate(['app/transacciones/detalle-consulta'], navigationExtras);
+      }
     } catch (error) {
       await this.presentAlert("Error", error);
     }

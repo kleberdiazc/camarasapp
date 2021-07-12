@@ -84,11 +84,6 @@ export class AppComponent {
       ionicIcon: 'caret-forward-outline'
     },
     {
-      title: 'Consulta SSCC',
-      url: '/app/consulta-sscc',
-      ionicIcon: 'caret-forward-outline'
-    },
-    {
       title: 'Saldo Global',
       url: '/app/saldo-global',
       ionicIcon: 'caret-forward-outline'

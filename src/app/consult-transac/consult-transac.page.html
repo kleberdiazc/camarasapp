@@ -9,145 +9,158 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content  class="forms-validations-content"  >
-<div [hidden]="principal">
-  <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label>Tipo:</ion-label>
-          <ion-select placeholder=""   formControlName ="Tipo"  interface="action-sheet">
-              <ion-select-option *ngFor="let t of Tipos "   [value]="t.CODIGO">{{t.DESCRIPCION}}</ion-select-option>
-          </ion-select>
-        </ion-item> 
-        <div class="error-container">
-          <ng-container *ngFor="let validation of validations.Tipo">
-            <div class="error-message" *ngIf="validationsForm.get('Tipo').hasError(validation.type) && (validationsForm.get('Tipo').dirty || validationsForm.get('Tipo').touched)">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              <span>{{ validation.message }}</span>
-            </div>
-          </ng-container>
-        </div>
-    </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label>Bodega:</ion-label>
-        <ion-select placeholder=""   formControlName ="Bodega"  interface="action-sheet">
-            <ion-select-option *ngFor="let bod of Bodegas"   [value]="bod.CODIGO">{{bod.DESCRIPCION}}</ion-select-option>
-        </ion-select>
-        </ion-item>
-        <div class="error-container">
-          <ng-container *ngFor="let validation of validations.Bodega">
-            <div class="error-message" *ngIf="validationsForm.get('Bodega').hasError(validation.type) && (validationsForm.get('Bodega').dirty || validationsForm.get('Bodega').touched)">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              <span>{{ validation.message }}</span>
-            </div>
-          </ng-container>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-list>
-          <ion-item class="input-item">
-            <ion-label>Usuario  : </ion-label>
-            <ion-input  type="text"  [ngModelOptions]="{standalone: true}"  [(ngModel)]="usuario" ></ion-input>
+<ion-content class="forms-validations-content">
+  <div [hidden]="principal">
+    <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Tipo:</ion-label>
+            <ion-select placeholder="" formControlName="Tipo" interface="action-sheet">
+              <ion-select-option *ngFor="let t of Tipos " [value]="t.CODIGO">{{t.DESCRIPCION}}</ion-select-option>
+            </ion-select>
           </ion-item>
-      </ion-list>
-      </ion-col>
-    </ion-row>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Tipo">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Tipo').hasError(validation.type) && (validationsForm.get('Tipo').dirty || validationsForm.get('Tipo').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Bodega:</ion-label>
+            <ion-select placeholder="" formControlName="Bodega" interface="action-sheet">
+              <ion-select-option *ngFor="let bod of Bodegas" [value]="bod.CODIGO">{{bod.DESCRIPCION}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Bodega">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Bodega').hasError(validation.type) && (validationsForm.get('Bodega').dirty || validationsForm.get('Bodega').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-list>
+            <ion-item class="input-item">
+              <ion-label>Usuario : </ion-label>
+              <ion-input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="usuario"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
 
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label>Desde</ion-label>
-          <ion-datetime displayFormat="YYYY/MM/DD" formControlName ="Desde" min="2018-01-04" max="2050-08-23"></ion-datetime>
-        </ion-item>
-        <div class="error-container">
-          <ng-container *ngFor="let validation of validations.Desde">
-            <div class="error-message" *ngIf="validationsForm.get('Desde').hasError(validation.type) && (validationsForm.get('Desde').dirty || validationsForm.get('Desde').touched)">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              <span>{{ validation.message }}</span>
-            </div>
-          </ng-container>
-        </div>
-    </ion-col>
-    </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Desde</ion-label>
+            <ion-datetime displayFormat="YYYY/MM/DD" formControlName="Desde" min="2018-01-04" max="2050-08-23">
+            </ion-datetime>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Desde">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Desde').hasError(validation.type) && (validationsForm.get('Desde').dirty || validationsForm.get('Desde').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
 
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label>Hasta</ion-label>
-          <ion-datetime displayFormat="YYYY/MM/DD" formControlName ="Hasta" min="2018-01-04" max="2050-08-23"></ion-datetime>
-        </ion-item>
-        <div class="error-container">
-          <ng-container *ngFor="let validation of validations.Hasta">
-            <div class="error-message" *ngIf="validationsForm.get('Hasta').hasError(validation.type) && (validationsForm.get('Hasta').dirty || validationsForm.get('Hasta').touched)">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              <span>{{ validation.message }}</span>
-            </div>
-          </ng-container>
-        </div>
-    </ion-col>
-    </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Hasta</ion-label>
+            <ion-datetime displayFormat="YYYY/MM/DD" formControlName="Hasta" min="2018-01-04" max="2050-08-23">
+            </ion-datetime>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Hasta">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Hasta').hasError(validation.type) && (validationsForm.get('Hasta').dirty || validationsForm.get('Hasta').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
 
 
-    <ion-row>
+      <ion-row>
         <ion-col size="12">
           <ion-item>
             <ion-label>Proceso:</ion-label>
-            <ion-select placeholder=""   formControlName ="Proceso"  interface="action-sheet">
-              <ion-select-option *ngFor="let pro of Procesos"   [value]="pro.CODIGO">{{pro.DESCRIPCION}}</ion-select-option>
-          </ion-select>
-      </ion-item>
-      <div class="error-container">
-        <ng-container *ngFor="let validation of validations.Proceso">
-          <div class="error-message" *ngIf="validationsForm.get('Proceso').hasError(validation.type) && (validationsForm.get('Proceso').dirty || validationsForm.get('Proceso').touched)">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            <span>{{ validation.message }}</span>
+            <ion-select placeholder="" formControlName="Proceso" interface="action-sheet">
+              <ion-select-option *ngFor="let pro of Procesos" [value]="pro.CODIGO">{{pro.DESCRIPCION}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Proceso">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Proceso').hasError(validation.type) && (validationsForm.get('Proceso').dirty || validationsForm.get('Proceso').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
-      </div>
-    </ion-col>
-    </ion-row>
+        </ion-col>
+      </ion-row>
 
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
             <ion-label>Trans:</ion-label>
-          <ion-select placeholder=""   formControlName ="Trans"  interface="action-sheet">
-              <ion-select-option *ngFor="let tran of Trans"   [value]="tran.CODIGO">{{tran.DESCRIPCION}}</ion-select-option>
-          </ion-select>
-      </ion-item>
-      <div class="error-container">
-        <ng-container *ngFor="let validation of validations.Trans">
-          <div class="error-message" *ngIf="validationsForm.get('Trans').hasError(validation.type) && (validationsForm.get('Trans').dirty || validationsForm.get('Trans').touched)">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            <span>{{ validation.message }}</span>
+            <ion-select placeholder="" formControlName="Trans" interface="action-sheet">
+              <ion-select-option *ngFor="let tran of Trans" [value]="tran.CODIGO">{{tran.DESCRIPCION}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Trans">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Trans').hasError(validation.type) && (validationsForm.get('Trans').dirty || validationsForm.get('Trans').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
-      </div>
-    </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label>Mostrar LOTES en el resumen</ion-label>
-          <ion-checkbox slot="start" [ngModelOptions]="{standalone: true}"  [(ngModel)]="myBoolean" (ionChange)="onMyBooleanChange()"  mode="ios"></ion-checkbox>
-    </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Seguir</ion-button>
-      </ion-col>
-    </ion-row>
-    
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Mostrar LOTES en el resumen</ion-label>
+            <ion-checkbox slot="start" [ngModelOptions]="{standalone: true}" [(ngModel)]="myBoolean"
+              (ionChange)="onMyBooleanChange()" mode="ios"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-button class="submit-btn" type="submit" expand="block" fill="outline"
+            [disabled]="!validationsForm.valid">Seguir</ion-button>
+        </ion-col>
+      </ion-row>
 
 
-  <!--<ion-row>
+
+      <!--<ion-row>
       <ion-col>
         <ion-list>
           <ion-item class="input-item">
@@ -181,25 +194,15 @@
       </ion-col>
     </ion-row>-->
 
-  </form>
-</div>
-<div [hidden]="segundo">
-  <ion-row >
-    <ion-col size="12">
-      <div>
-        <ngx-datatable
-            #table
-            class="material striped"
-            style="height: 200px;"
-            [rows]="rows"
-            columnMode="force"
-            [headerHeight]="50"
-            [footerHeight]="0"
-            [rowHeight]="50"
-            [scrollbarH]="true"
-            [scrollbarV]="true"
-            [selectionType]="SelectionType.single"
-            (select)="onSelect($event)">
+    </form>
+  </div>
+  <div [hidden]="segundo">
+    <ion-row>
+      <ion-col size="12">
+        <div>
+          <ngx-datatable #table class="material striped" style="height: 200px;" [rows]="rows" columnMode="force"
+            [headerHeight]="50" [footerHeight]="0" [rowHeight]="40" [scrollbarH]="true" [scrollbarV]="true"
+            [selectionType]="SelectionType.single" (select)="onSelect($event)">
             <ngx-datatable-column name="NUMSEC" prop='NUMSEC' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="NUMTRA" prop='NUMTRA' [flexGrow]="3"></ngx-datatable-column>
             <ngx-datatable-column name="FECHA" prop='FECHA' [flexGrow]="10"></ngx-datatable-column>
@@ -207,83 +210,62 @@
             <ngx-datatable-column name="ESTADO" prop='ESTADO' [flexGrow]="4"></ngx-datatable-column>
             <ngx-datatable-column name="OBSERV" prop='OBSERV' [flexGrow]="3"></ngx-datatable-column>
             <ngx-datatable-column name="USUARIO" prop='USUARIO' [flexGrow]="3"></ngx-datatable-column>
-        </ngx-datatable>
-    </div>
-    </ion-col>
-  </ion-row>
-  <ion-row >
-    <ion-badge class="ion-margin" color="primary" mode="ios">Detalle</ion-badge>
-    <ion-col size="12">
-      <div>
-        <ngx-datatable
-            #table
-            class="material striped"
-            style="height: 200px;"
-            [rows]="detalle"
-            columnMode="force"
-            [headerHeight]="50"
-            [footerHeight]="0"
-            [rowHeight]="50"
-            [scrollbarH]="true"
-            [scrollbarV]="true"
-           >
-           <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
-           <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
-           <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="10"></ngx-datatable-column>
-           <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="5"></ngx-datatable-column>
-           <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="4"></ngx-datatable-column>
-        </ngx-datatable>
-    </div>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="12">
-      <ion-button class="submit-btn" (click)="onSiguienteSegundo()" expand="block" fill="outline" >Siguiente</ion-button>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="12">
-      <ion-button class="submit-btn" (click)="onAtrasSegundo()" expand="block" fill="outline" >Atras</ion-button>
-    </ion-col>
-  </ion-row>
-  
-</div>
-
-<div [hidden]="tercero">
-  <ion-row >
-    <ion-col size="12">
-      <div>
-        <ngx-datatable
-            #table
-            class="material striped"
-            [rows]="rowsRes"
-            style="height: 400px;"
-            columnMode="force"
-            [headerHeight]="50"
-            [footerHeight]="0"
-            [rowHeight]="30"
-            [scrollbarV]="true"
-            [scrollbarH]="true">
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-badge class="ion-margin" color="primary" mode="ios">Detalle</ion-badge>
+      <ion-col size="12">
+        <div>
+          <ngx-datatable #table class="material striped" style="height: 200px;" [rows]="detalle" columnMode="force"
+            [headerHeight]="50" [footerHeight]="0" [rowHeight]="40" [scrollbarH]="true" [scrollbarV]="true">
             <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
-            <ngx-datatable-column  name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="4"></ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="submit-btn" (click)="onSiguienteSegundo()" expand="block" fill="outline">Siguiente
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="submit-btn" (click)="onAtrasSegundo()" expand="block" fill="outline">Atras</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+  <div [hidden]="tercero">
+    <ion-row>
+      <ion-col size="12">
+        <div>
+          <ngx-datatable #table class="material striped" [rows]="rowsRes" style="height: 400px;" columnMode="force"
+            [headerHeight]="50" [footerHeight]="0" [rowHeight]="30" [scrollbarV]="true" [scrollbarH]="true">
+            <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
             <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
             <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="4"></ngx-datatable-column>
             <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="3"></ngx-datatable-column>
             <ngx-datatable-column name="USUARIO" prop='USUARIO' [flexGrow]="3"></ngx-datatable-column>
-        </ngx-datatable>
-    </div>
-    </ion-col>
-  </ion-row>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
     <ion-row>
-    <ion-col size="12">
-      <ion-button class="submit-btn" (click)="onAtrasTercero()" expand="block" fill="outline" >Atras</ion-button>
-    </ion-col>
-  </ion-row>
-  
-</div>
+      <ion-col size="12">
+        <ion-button class="submit-btn" (click)="onAtrasTercero()" expand="block" fill="outline">Atras</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
 
 </ion-content>
-
-
-

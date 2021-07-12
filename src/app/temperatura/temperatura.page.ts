@@ -12,18 +12,18 @@ import { DetalleConsultaService } from '../detalle-consulta/detalle-consulta.ser
   templateUrl: './temperatura.page.html',
   styleUrls: ['./temperatura.page.scss'],
 })
-export class TemperaturaPage implements OnInit,OnDestroy {
+export class TemperaturaPage implements OnInit, OnDestroy {
   validationsForm: FormGroup;
   isChecked: boolean;
   myBoolean = true;
   embarques: Embarques[] = []
-  Cierres:[] = []
+  Cierres: [] = []
   consulta: string;
   Emb: string;
   tipo: string = 'F';
   hideFactura: boolean = true;
   hideCierre: boolean = true;
-  loading :any = this.loadingController.create();
+  loading: any = this.loadingController.create();
   validations = {
     'sscc': [
       { type: 'required', message: 'sscc es requerido.' },
@@ -40,6 +40,20 @@ export class TemperaturaPage implements OnInit,OnDestroy {
       { type: 'required', message: 'Temperatura es requerido.' }
     ]
   };
+
+  async showLoading(mensaje) {
+
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+      });
+      await this.loading.present();
+      return resolve(true);
+    });
+  }
+
   constructor(private router: Router,
     private alertController: AlertController,
     private _temp: TemperaturaService,
@@ -67,20 +81,22 @@ export class TemperaturaPage implements OnInit,OnDestroy {
 
   }
 
-  ngOnInit() {
-    this.BuscarEmbarques();
-    this.BuscaCierres();
-    console.log("entre");
+  async ngOnInit() {
+    await this.showLoading("Cargando..");
+    await this.BuscarEmbarques();
+    await this.cierres();
+
   }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    console.log("destrui");
+
   }
-  ionViewWillEnter() {
-    this.BuscarEmbarques();
-    this.BuscaCierres();
+  async ionViewWillEnter() {
+    await this.showLoading("Cargando..");
+    await this.BuscarEmbarques();
+    await this.cierres();
   }
 
 
@@ -92,7 +108,7 @@ export class TemperaturaPage implements OnInit,OnDestroy {
       this.hideFactura = false;
       this.hideCierre = true;
     }
-    if(this.tipo == 'C') {
+    if (this.tipo == 'C') {
       this.hideFactura = true;
       this.hideCierre = false;
     }
@@ -104,95 +120,80 @@ export class TemperaturaPage implements OnInit,OnDestroy {
   }
 
   async onSubmit(values) {
-    if (this.tipo == 'F') {
-      this._temp.GrabarFactura(this.tipo, '0', this.validationsForm.get('emba').value, this.validationsForm.get('temp').value.toString()
-      , this.validationsForm.get('sscc').value
-      , await this._log.getuser()).subscribe(async (resp) => {
-        console.log(resp);
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            cssClass: 'variant-alert-error',
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
+    await this.showLoading("Grabando..");
+    const valor = await new Promise(async (resolve) => {
+      if (this.tipo == 'F') {
+        this._temp.GrabarFactura(this.tipo, '0', this.validationsForm.get('emba').value, this.validationsForm.get('temp').value.toString()
+          , this.validationsForm.get('sscc').value
+          , await this._log.getuser()).subscribe(async (resp) => {
 
-        } else {
-          const alert = await this.alertController.create({
-            cssClass: 'variant-alert-success',
-            header: 'Guardado Exitoso!!',
-            message: 'La transacción se ha realizado con exito.',
-            buttons: ['OK']
-          });
-          await alert.present();
+            if (resp.Codigo) {
+              this.presentAlert("Información", "La transacción se ha realizado con exito.");
+            } else {
+              this.presentAlert("Error", resp.Description);
 
-        }
-      });
-    }
-    if(this.tipo == 'C') {
-      this._temp.GrabarFactura(this.tipo, this.validationsForm.get('Cierres').value, '0', this.validationsForm.get('temp').value.toString()
-      , this.validationsForm.get('sscc').value
-      , await this._log.getuser()).subscribe(async (resp) => {
-        console.log(resp);
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            cssClass: 'variant-alert-error',
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-
-        } else {
-          const alert = await this.alertController.create({
-            cssClass: 'variant-alert-success',
-            header: 'Guardado Exitoso!!',
-            message: 'La transacción se ha realizado con exito.',
-            buttons: ['OK']
-          });
-          await alert.present();
-
-        }
-      });
-    }
-
-
-  }
-
-  BuscarEmbarques() {
-    this._temp.ConsultarFacturas().subscribe((resp) => {
-      console.log('consulta factura', resp);
-      this.embarques = resp.Dt.Table;
-    });
-  }
-
-  BuscaCierres() {
-    
-  }
-
-  async cierres() {
-  const valor = await new Promise(async (resolve) => {
-    this._temp.ConsultarCierre().subscribe((resp) => {
-      console.log('consulta factura', resp);
-      
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
-          let dt: [][] = resp.Dt.Table;
-          if (resp.Dt.Table.length > 0) {
-            this.Cierres = resp.Dt.Table;
+            }
             return resolve(true);
-          } else {
-            this.presentAlert("Error", "No Existen Datos Para Mostrar");
+          });
+      }
+      if (this.tipo == 'C') {
+        this._temp.GrabarFactura(this.tipo, this.validationsForm.get('Cierres').value, '0', this.validationsForm.get('temp').value.toString()
+          , this.validationsForm.get('sscc').value
+          , await this._log.getuser()).subscribe(async (resp) => {
+            if (resp.Codigo) {
+              this.presentAlert("Información", "La transacción se ha realizado con exito.");
+            } else {
+              this.presentAlert("Error", resp.Description);
+
+            }
             return resolve(true);
-          }
-        }
-      } else {
-        this.presentAlert("Error", resp.Description);
-        return resolve(true);
+
+          });
       }
     });
-    return resolve(true);
+
+  }
+
+  async BuscarEmbarques() {
+    const valor = await new Promise(async (resolve) => {
+      this._temp.ConsultarFacturas().subscribe((resp) => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            this.embarques = resp.Dt.Table;
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
+
+        }
+        return resolve(true);
+      });
+    });
+  }
+
+  /*  BuscaCierres() {
+ 
+   } */
+
+  async cierres() {
+    const valor = await new Promise(async (resolve) => {
+      this._temp.ConsultarCierre().subscribe((resp) => {
+
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+            let dt: [][] = resp.Dt.Table;
+            if (resp.Dt.Table.length > 0) {
+              this.Cierres = resp.Dt.Table;
+            } else {
+              this.presentAlert("Error", "No Existen Datos Para Mostrar");
+            }
+          }
+          return resolve(true);
+        } else {
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
+        }
+      });
+
     });
   }
 

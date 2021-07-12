@@ -67,6 +67,10 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../transacciones/transacciones.module').then(m => m.TransaccionesPageModule)
+          },
+          {
+            path: 'detalle-consulta',
+            loadChildren: () => import('../detalle-consulta/detalle-consulta.module').then(m => m.DetalleConsultaPageModule)
           }
         ]
       },
@@ -81,7 +85,7 @@ const routes: Routes = [
           {
             path: 'detalle-consulta',
             loadChildren: () => import('../detalle-consulta/detalle-consulta.module').then(m => m.DetalleConsultaPageModule)
-          },
+          }
         ]
       },
       {

@@ -4,69 +4,69 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Detalle Pallet
+      Detalle Pallet/Trans.
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content  class="forms-validations-content">
+<ion-content class="forms-validations-content">
   <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
-  <ion-row  class="ion-margin-top">
-    <ion-col size="12">
+    <ion-row class="ion-margin-top">
+      <ion-col size="12">
 
-      <ion-item class="input-item">
-        <ion-label>SSCC : </ion-label>
-        <ion-input type="text" (keydown.enter)="onKeydown($event)" placeholder="" formControlName="sscc" clearInput autocapitalize="off" ></ion-input>
-      </ion-item>
-      <div class="error-container">
-        <ng-container *ngFor="let validation of validations.sscc">
-          <div class="error-message" *ngIf="validationsForm.get('sscc').hasError(validation.type) && (validationsForm.get('sscc').dirty || validationsForm.get('sscc').touched)">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            <span>{{ validation.message }}</span>
-          </div>
-        </ng-container>
-      </div>
-    </ion-col>
-    
-  </ion-row>
-  <ion-row>
-    <ion-col size = "12">
-      <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Buscar</ion-button>
-    </ion-col>
-  </ion-row>
-  
+        <ion-item class="input-item">
+          <ion-label>SSCC : </ion-label>
+          <ion-input type="text" (keydown.enter)="onKeydown($event)" placeholder="" formControlName="sscc" clearInput
+            autocapitalize="off"></ion-input>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.sscc">
+            <div class="error-message"
+              *ngIf="validationsForm.get('sscc').hasError(validation.type) && (validationsForm.get('sscc').dirty || validationsForm.get('sscc').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ion-col>
+
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">
+          Buscar</ion-button>
+      </ion-col>
+    </ion-row>
+
   </form>
   <ion-row class="ion-margin-top">
     <ion-label>Descripción : {{Descripcion}} </ion-label>
   </ion-row>
-  <ion-row  class="ion-margin-top">
+  <ion-row class="ion-margin-top">
     <ion-col size="12">
       <div>
-        <ngx-datatable
-            #table
-            class="material striped"
-            style="height: 300px;"
-            [rows]="rows"
-            columnMode="force"
-            [headerHeight]="50"
-            [footerHeight]="0"
-            [rowHeight]="30"
-            [scrollbarV]="true"
-            [scrollbarH]="true">
-            <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
-            <ngx-datatable-column name="Talla" prop='Talla' [flexGrow]="3"></ngx-datatable-column>
-            <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="10"></ngx-datatable-column>
-            <ngx-datatable-column name="Master" prop='Master' [flexGrow]="5"></ngx-datatable-column>
+        <ngx-datatable #table class="material striped" style="height: 300px;" [rows]="rows" [columns]="columns"
+          columnMode="force" [headerHeight]="50" [footerHeight]="0" [rowHeight]="30" [scrollbarV]="true"
+          [scrollbarH]="true">
+
+          <!-- <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="5"></ngx-datatable-column>
+          <ngx-datatable-column name="CODPROD" prop='CODPROD' [flexGrow]="3"></ngx-datatable-column>
+          <ngx-datatable-column name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
+          <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
+          <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="5"></ngx-datatable-column>
+          <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="5"></ngx-datatable-column> -->
         </ngx-datatable>
-    </div>
+      </div>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col size = "6">
-      <ion-button class="submit-btn" type="submit" (click)="onImprimir()" expand="block" fill="outline" >Imprimir</ion-button>
+    <ion-col size="6">
+      <ion-button class="submit-btn" type="submit" (click)="onImprimir()" expand="block" fill="outline">Imprimir
+      </ion-button>
     </ion-col>
-    <ion-col size = "6">
-      <ion-button class="submit-btn" type="submit" (click)="onImprimir2()" expand="block" fill="outline">Imprimir2</ion-button>
+    <ion-col size="6">
+      <ion-button class="submit-btn" type="submit" (click)="onImprimir2()" expand="block" fill="outline">Imprimir2
+      </ion-button>
     </ion-col>
   </ion-row>
 

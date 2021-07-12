@@ -12,27 +12,68 @@ import { AlertController, LoadingController } from '@ionic/angular';
 export class SaldoGlobalPage implements OnInit {
   rows: SaldosGlobal[] = [];
   rows2: SaldosGlobal[] = [];
-  rows3:SaldosGlobal[] = [];
+  rows3: SaldosGlobal[] = [];
   columns = [];
   total: number = 0;
   selected = [];
   selected2 = [];
   selected3 = [];
   SelectionType = SelectionType;
-  principal:boolean= false;
-  segundo:boolean=true;
+  principal: boolean = false;
+  segundo: boolean = true;
   tercero: boolean = true;
   loading: any = this.loadingController.create();
   codigo: string = '';
-  bodega : string = '';
-  
+  bodega: string = '';
+
+  async showLoading(mensaje) {
+    return new Promise(async (resolve) => {
+      this.loading = await this.loadingController.create({
+        message: mensaje,
+        translucent: true,
+        cssClass: 'custom-class custom-loading',
+      });
+      await this.loading.present();
+      return resolve(true);
+    });
+  }
+
+  async presentAlert(Header, Mensaje) {
+
+    this.hideLoading();
+    let css = (Header === "Error" ? "variant-alert-error" : Header === "Advertencia" ? "variant-alert-warning" : "variant-alert-success");
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        cssClass: css,
+        header: Header,
+        message: Mensaje,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            return resolve(true);
+          },
+        }]
+      });
+
+      await alert.present();
+    });
+  }
+
+  hideLoading() {
+
+    if (this.loading !== null) {
+      this.loadingController.dismiss();
+      this.loading = null;
+    }
+  }
+
   constructor(private _saldoGolbal: SaldoGlobalService,
-              private alertController: AlertController,
-              public loadingController: LoadingController) {
-    
+    private alertController: AlertController,
+    public loadingController: LoadingController) {
+
     this.columns = [
-      { prop: 'CODIGO',name: 'CODIGO'},
-      { prop: 'DESCRIPCION', name:'DESCRIPCION' },
+      { prop: 'CODIGO', name: 'CODIGO' },
+      { prop: 'DESCRIPCION', name: 'DESCRIPCION' },
       { prop: 'MASTER', name: 'MASTER' },
       { prop: 'LIBRAS', name: 'LIBRAS' },
     ]
@@ -55,27 +96,34 @@ export class SaldoGlobalPage implements OnInit {
   async Buscar_Saldos() {
     //console.log('click');
     //this.loading = this.presentLoading('Cargando');
-    await this.presentLoading("Cargando...");
+
+    await this.showLoading("Cargando Saldos...");
     await this.saldos();
     this.hideLoading();
   }
 
   async saldos() {
     const valor = await new Promise(async (resolve) => {
-      this._saldoGolbal.getListaSaldosGlobal('','').subscribe((resp) => {
-        this.rows = resp;
-        //this.temp = [...resp];
-        console.log(this.rows);
-        let suma = 0;
-        this.rows.forEach(element => {
-          suma = suma + element.MASTER
-        });
+      this._saldoGolbal.getListaSaldosGlobal('', '').subscribe(async (resp) => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
 
-        console.log(suma);
-        this.total = suma;
-        
+            this.rows = JSON.parse(JSON.stringify(resp.Dt.Table));
+
+            let suma = 0;
+            this.rows.forEach(element => {
+              suma = suma + element.MASTER
+            });
+
+            this.total = suma;
+          }
+        } else {
+          await this.presentAlert("Error", resp.Description);
+        }
+
+        return resolve(true);
       });
-      return resolve(true);
+
     });
   }
 
@@ -83,12 +131,12 @@ export class SaldoGlobalPage implements OnInit {
     this.loading = await this.loadingController.create({
       message: mensaje
     });
-    return  this.loading.present();
+    return this.loading.present();
   }
 
 
   async onSelect(e) {
-    
+
     this.codigo = this.selected[0]["CODIGO"];
     //console.log(this.selected[0].tran.toString());
   }
@@ -101,19 +149,27 @@ export class SaldoGlobalPage implements OnInit {
     this.tercero = true;
     this.segundo = false;
     this.principal = true;
-    await this.presentLoading("Cargando...");
+    await this.showLoading("Cargando...");
     await this.getlistaSaldo();
     this.hideLoading();
-    
+
   }
 
   async getlistaSaldo() {
     const valor = await new Promise(async (resolve) => {
-    this._saldoGolbal.getListaSaldosGlobal(this.selected[0]["CODIGO"], '').subscribe((resp) => {
-      this.rows2 = resp;
+      this._saldoGolbal.getListaSaldosGlobal(this.selected[0]["CODIGO"], '').subscribe(async (resp) => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+
+            this.rows2 = JSON.parse(JSON.stringify(resp.Dt.Table));
+          }
+        } else {
+          await this.presentAlert("Error", resp.Description);
+        }
+
+        return resolve(true);
+      });
     });
-    return resolve(true);
-  });
   }
 
   atrasPrimero() {
@@ -126,35 +182,32 @@ export class SaldoGlobalPage implements OnInit {
     this.tercero = false;
     this.segundo = true;
     this.principal = true;
-    console.log("select2",this.selected2);
-    await this.presentLoading("Cargando...");
-    await this. getlista3();
+    await this.showLoading("Cargando...");
+    await this.getlista3();
     this.hideLoading();
-   
+
   }
   async getlista3() {
     const valor = await new Promise(async (resolve) => {
-    this._saldoGolbal.getListaSaldosGlobal('', this.selected2[0]["BOD_CODIGO"]).subscribe((resp) => {
-      console.log(resp);
-      this.rows3 = resp;
-      console.log(this.rows3);
-      return resolve(true);
+      this._saldoGolbal.getListaSaldosGlobal('', this.selected2[0]["BOD_CODIGO"]).subscribe(async (resp) => {
+        if (resp.Codigo) {
+          if (Object.keys(resp.Dt).length > 0) {
+
+            this.rows3 = JSON.parse(JSON.stringify(resp.Dt.Table));
+          }
+        } else {
+          await this.presentAlert("Error", resp.Description);
+        }
+
+        return resolve(true);
+      });
+
     });
-      
-    }); 
   }
 
   atrasSegundo() {
     this.tercero = true;
     this.segundo = false;
     this.principal = true;
-  }
-
-  hideLoading() {
-
-    if (this.loading !== null) {
-      this.loadingController.dismiss();
-      this.loading = null;
-    }
   }
 }
