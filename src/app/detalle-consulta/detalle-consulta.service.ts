@@ -5,7 +5,7 @@ import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 import { SaldosGlobal, Valida } from '../interfaces/interfaces';
 import { ParametrosService } from '../parametros/parametros.service';
-import { URL_CONSULT } from '../config/url.servicios';
+import { URL_CONSULT, CONNECTION_PROD } from '../config/url.servicios';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 @Injectable({
@@ -22,40 +22,40 @@ export class DetalleConsultaService {
     private btSerial: BluetoothSerial,
     private _param: ParametrosService) { }
 
-    connectBT(address) {
-      return this.btSerial.connect(address);
-    }
-  
-    async printer(dataPrint, address) {
-      return new Promise(async (resolve) => {
-        let xyz = await this.connectBT(address).subscribe(async data => {
-          if (data === "OK") {
-            await this.btSerial.write(dataPrint).then(async dataz => {
-              xyz.unsubscribe();
-              return resolve(true);
-            }, async errx => {
-              xyz.unsubscribe();
-              let mno = await this.alertCtrl.create({
-                header: "Error Impresión ",
-                message: errx,
-                buttons: ['OK']
-              });
-              await mno.present();
-  
-              return resolve(false);
+  connectBT(address) {
+    return this.btSerial.connect(address);
+  }
+
+  async printer(dataPrint, address) {
+    return new Promise(async (resolve) => {
+      let xyz = await this.connectBT(address).subscribe(async data => {
+        if (data === "OK") {
+          await this.btSerial.write(dataPrint).then(async dataz => {
+            xyz.unsubscribe();
+            return resolve(true);
+          }, async errx => {
+            xyz.unsubscribe();
+            let mno = await this.alertCtrl.create({
+              header: "Error Impresión ",
+              message: errx,
+              buttons: ['OK']
             });
-          }
-        }, async err => {
-          let mno = await this.alertCtrl.create({
-            header: "Error Conexión ",
-            message: err,
-            buttons: ['OK']
+            await mno.present();
+
+            return resolve(false);
           });
-          await mno.present();
-          return resolve(false);
+        }
+      }, async err => {
+        let mno = await this.alertCtrl.create({
+          header: "Error Conexión ",
+          message: err,
+          buttons: ['OK']
         });
+        await mno.present();
+        return resolve(false);
       });
-    }
+    });
+  }
   ValidarConsulta(consulta: string, sscc: string) {
 
     const ListParam = [{ "Name": "TIPO", "Type": "Varchar", "Value": consulta },
@@ -65,7 +65,7 @@ export class DetalleConsultaService {
     const base = {
       sp: 'SP_CONSULTA_GEN',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<Valida>(URL_CONSULT, base);
@@ -81,7 +81,7 @@ export class DetalleConsultaService {
     const base = {
       sp: 'spr_ConsultarDetallenew',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     console.log(resumido, sscc)
@@ -103,7 +103,7 @@ export class DetalleConsultaService {
     const base = {
       sp: 'spr_SaldosxProdTallote',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);
@@ -298,7 +298,7 @@ export class DetalleConsultaService {
     const base = {
       sp: 'sp_consultacajas',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);
@@ -311,7 +311,7 @@ export class DetalleConsultaService {
     const base = {
       sp: 'Spr_FechaMoviles',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);

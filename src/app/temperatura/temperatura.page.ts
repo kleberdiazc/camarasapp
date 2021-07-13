@@ -82,9 +82,9 @@ export class TemperaturaPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    await this.showLoading("Cargando..");
-    await this.BuscarEmbarques();
-    await this.cierres();
+    /*  await this.showLoading("Cargando..");
+     await this.BuscarEmbarques();
+     await this.cierres(); */
 
   }
 
@@ -97,6 +97,7 @@ export class TemperaturaPage implements OnInit, OnDestroy {
     await this.showLoading("Cargando..");
     await this.BuscarEmbarques();
     await this.cierres();
+    this.hideLoading();
   }
 
 

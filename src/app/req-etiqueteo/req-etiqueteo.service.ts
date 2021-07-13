@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { URL_CONSULT, URL_TRANSACIMAGEN } from '../config/url.servicios';
+import { URL_CONSULT, URL_TRANSACIMAGEN, CONNECTION_PROD } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +60,7 @@ export class ReqEtiqueteoService {
     const base = {
       sp: 'SP_CARGA_BODEGAORIGEN_SOB',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -74,7 +74,7 @@ export class ReqEtiqueteoService {
     const base = {
       sp: 'SP_SSCC_REQETIQUETEO',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -89,7 +89,7 @@ export class ReqEtiqueteoService {
     const base = {
       sp: 'SP_GRABATRANSACC_ETIQ_CO',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 

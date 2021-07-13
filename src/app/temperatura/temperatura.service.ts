@@ -2,7 +2,7 @@ import { Embarques, RWEmbarques, Valida, ResultWS } from './../interfaces/interf
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
-import { URL_CONSULT } from '../config/url.servicios';
+import { URL_CONSULT, CONNECTION_PROD } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class TemperaturaService {
     const base = {
       sp: 'sp_obtieneEmbarques',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 
@@ -37,7 +37,7 @@ export class TemperaturaService {
     const base = {
       sp: 'sp_obtieneCierres',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 
@@ -57,7 +57,7 @@ export class TemperaturaService {
     const base = {
       sp: 'spr_InserTemperatura',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<Valida>('URL_CONSULT', base);
@@ -71,7 +71,7 @@ export class TemperaturaService {
     const base = {
       sp: 'spr_AgregarColaImpresionPallet',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<Valida>(URL_CONSULT, base);

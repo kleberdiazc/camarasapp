@@ -104,6 +104,7 @@ export class TransaccionesPage implements OnInit {
   GMixcolor: string = "";
   Gcolor: string = "";
   CantLote: number = 0;
+  EnablechkCuarentena: boolean = false;
 
   DisabledControles: boolean = true;
 
@@ -385,13 +386,15 @@ export class TransaccionesPage implements OnInit {
 
   } */
 
-  OnChangeBodOrigen(e) {
+  async OnChangeBodOrigen(e) {
     if (e.detail.value === "") {
       return;
     }
 
     if (this.lbDestino === true) {
-      this.LlenarUbicacion(this.cmbOrigen.trim());
+      await this.showLoading("Cargando...");
+      await this.LlenarUbicacion(this.cmbOrigen.trim());
+      this.hideLoading();
       this.EnabledCtrTab1 = true;
       this.tab = "Tab2";
     } else {
@@ -399,13 +402,26 @@ export class TransaccionesPage implements OnInit {
     }
   }
 
-  OnChangeBodDestino(e) {
+  async OnChangeBodDestino(e) {
     if (e.detail.value === "") {
       return;
     }
 
+    await this.showLoading("Cargando...");
+    await this.LlenarUbicacion(e.detail.value.toString().trim());
+    this.hideLoading();
+    if (e.detail.value.toString().trim().substring(0, 1) === "X" || e.detail.value.toString().trim() === "VA" ||
+      e.detail.value.toString().trim() === "PL") {
+      this.EnablechkCuarentena = true;
+      this.chkCuarentena = true;
+    } else {
+      this.EnablechkCuarentena = false;
+    }
+
     this.EnabledCtrTab1 = true;
     this.tab = "Tab2";
+
+
   }
 
   OnChangeConversion(e) {
@@ -489,6 +505,8 @@ export class TransaccionesPage implements OnInit {
     this.dataCombosTipoConv = null;
     this.dataCombosMovil = null;
     this.dataCombosChofer = null;
+    this.dataComboUbicacion = null;
+
 
     /*  this.cmbTipo = "";
      this.cmbOrigen = "";
@@ -573,9 +591,10 @@ export class TransaccionesPage implements OnInit {
     this.txt_masters = "";
     this.txt_referencia = "";
     this.txt_Doc = "";
-    this.chkCuarentena = false;
+    this.chkCuarentena = true;
+    this.EnablechkCuarentena = false;
     this.chkInvent = false;
-    this.chkSaldos = false;
+    this.chkSaldos = true;
     this.EnabledbtnReimprimir = false;
 
     this.Caduca = "";
@@ -827,7 +846,7 @@ export class TransaccionesPage implements OnInit {
       }
       if (this.lblTitSSCC === "C.Pallet" || this.lblTitSSCC === "C.Master") {
         if (this.cmbTipoConv === "R" || this.cmbTipoConv === "CM" || this.cmbTipoConv === "P") {
-          if (!this.cargar()) {
+          if (!await this.cargar()) {
             this.hideLoading();
             return;
           }
@@ -1645,6 +1664,7 @@ export class TransaccionesPage implements OnInit {
                   || this.cmbDestino.toString().trim() === "VA"
                   || this.cmbDestino.toString().trim() === "CS" || this.cmbDestino.toString().trim() === "TM" || this.chkCuarentena) {
                   for (let ic = 0; ic < ds.length; ic++) {
+
                     if (ds[ic]["autorizado"].toString().trim() !== "S") {
                       if (ds[ic]["sscc_cuarent"].toString().trim() !== "" || ds[ic]["autorizado"].toString().trim() === "N") {
                         if (ds[ic]["autorizado"].toString().trim() === "N") {

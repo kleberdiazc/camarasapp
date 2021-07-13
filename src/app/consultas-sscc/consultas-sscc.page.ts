@@ -144,9 +144,11 @@ export class ConsultasSsccPage implements OnInit {
   }
 
   async keyChange(event) {
-    await this.presentLoading("Cargando...");
-    await this.bringData();
-    this.hideLoading();
+    if (this.validationsForm.get('sscc').value.length === 20) {
+      await this.presentLoading("Cargando...");
+      await this.bringData();
+      this.hideLoading();
+    }
   }
 
   OnChangeRad(event) {

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
-import { URL_CONSULT } from '../config/url.servicios';
+import { URL_CONSULT, CONNECTION_PROD } from '../config/url.servicios';
 import { Valida, RWDetalleCons, RWCombosCons } from '../interfaces/interfaces';
 
 @Injectable({
@@ -60,7 +60,7 @@ export class DetallePalletService {
     const base = {
       sp: 'SPR_DetPallet_ionic',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     console.log(sscc)
@@ -75,7 +75,7 @@ export class DetallePalletService {
     const base = {
       sp: 'spr_dettrans',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 
@@ -91,7 +91,7 @@ export class DetallePalletService {
     const base = {
       sp: 'sp_gettransac',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 

@@ -4,7 +4,7 @@ import { map, filter } from 'rxjs/operators';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 import { ResultWS } from './../interfaces/interfaces';
-import { Console } from 'console';
+import { URL_CONSULT, CONNECTION_PROD } from '../config/url.servicios';
 
 const { SplashScreen, Storage } = Plugins;
 
@@ -30,10 +30,10 @@ export class LoginservicesService {
     const base = {
       sp: 'sp_login_user',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
-    return this.http.post<ResultWS>('https://web.songa.com/api/Consult', base);
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 
 

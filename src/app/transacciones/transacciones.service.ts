@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { URL_CONSULT, URL_TRANSACIMAGEN } from '../config/url.servicios';
+import { URL_CONSULT, URL_TRANSACIMAGEN, CONNECTION_PROD } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +62,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_COMBOSTRANSACC_APP',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -78,7 +78,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_COMBOSTRANSACC_APP',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -91,7 +91,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_CARGACHOFER',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -104,7 +104,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_VALIDA_CAJA',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -121,7 +121,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_GrabarSSCCMaster',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -134,7 +134,7 @@ export class TransaccionesService {
     const base = {
       sp: 'sp_gettiposscc',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -147,7 +147,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_DetallePallet',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -160,7 +160,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_Secuencial',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -174,7 +174,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_VALIDO_EXITES_SSCC',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -187,7 +187,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_VALIDA_INFO_TRANSA',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -202,7 +202,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_CALLVerificaLoteotrIqf',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -216,7 +216,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_VERIF_CUARENT_BODEGA',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -234,7 +234,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_VALIDA_PO_PROD',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -267,7 +267,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_GrabarTransaccion_Songa_Movil',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 
@@ -292,7 +292,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_AutoTransacSSCC',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -304,7 +304,7 @@ export class TransaccionesService {
     const base = {
       sp: 'Spr_ValidaCuarentenaxSSCC',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -318,7 +318,7 @@ export class TransaccionesService {
     const base = {
       sp: 'Spr_ValidaSaldoProductoSSCC',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -332,7 +332,7 @@ export class TransaccionesService {
     const base = {
       sp: 'Spr_envioautomcorreosinsaldo',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -345,7 +345,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_GrabarSSCCPalletNew',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -359,7 +359,7 @@ export class TransaccionesService {
     const base = {
       sp: 'Spr_ConsSaldoProductoSSCC',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -373,7 +373,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_adddetmaster',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -387,7 +387,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_GRABA_DET',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -409,7 +409,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_IMPRIME_TRANSCAMARA',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -422,7 +422,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_IMPRIME_TRANSCAMARA_LOTES',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -435,7 +435,7 @@ export class TransaccionesService {
     const base = {
       sp: 'spr_AgregarColaImpresion',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -450,7 +450,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_IMPRIMEMULTPAGINAS',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -464,7 +464,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_IMPRIME_TRANSCAMARA_PALLET',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -479,7 +479,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_CARGAUBICACION',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -498,7 +498,7 @@ export class TransaccionesService {
     const base = {
       sp: 'SP_VALIDA_UNIFCOLA',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);

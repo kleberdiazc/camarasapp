@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { ResultWS } from './../interfaces/interfaces';
 import { Storage } from '@ionic/storage-angular';
-import { URL_CONSULT } from '../config/url.servicios';
+import { URL_CONSULT, CONNECTION_PROD } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class FintumbadaService {
     const base = {
       sp: 'SP_OBTIENECIERRE',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -34,7 +34,7 @@ export class FintumbadaService {
     const base = {
       sp: 'SP_DATACIERRESOB',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);
@@ -47,7 +47,7 @@ export class FintumbadaService {
     const base = {
       sp: 'sp_TransferirSobranteTunel',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<ResultWS>(URL_CONSULT, base);

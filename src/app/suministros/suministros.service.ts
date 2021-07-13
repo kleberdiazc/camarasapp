@@ -1,4 +1,4 @@
-import { URL_CONSULT } from './../config/url.servicios';
+import { URL_CONSULT, CONNECTION_PROD } from './../config/url.servicios';
 import { RWDetalleCons } from './../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -61,7 +61,7 @@ export class SuministrosService {
     const base = {
       sp: 'SP_CARGA_DATATRANS_SUM',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
     return this.http.post<RWCombosCons>(URL_CONSULT, base);
@@ -88,7 +88,7 @@ export class SuministrosService {
     const base = {
       sp: 'SP_GRABA_TRANS_SUM',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
@@ -101,7 +101,7 @@ export class SuministrosService {
     const base = {
       sp: 'sp_transSuminImpr',
       param: ListParam,
-      conexion: 'DESAPRODUCCION'
+      conexion: CONNECTION_PROD
     };
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }

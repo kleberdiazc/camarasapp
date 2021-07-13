@@ -143,7 +143,7 @@ export class SaldosPage implements OnInit {
         if (resp.Codigo) {
           if (Object.keys(resp.Dt).length > 0) {
 
-           this.tallas = resp.Dt.Table;
+            this.tallas = resp.Dt.Table;
 
           }
         } else {
@@ -157,43 +157,45 @@ export class SaldosPage implements OnInit {
 
 
   async Buscar_Saldos() {
-    console.log('click');
-    //this.loading = this.showLoading('Cargando');
+
+    this.rows.length = 0;
+
     const valor = await new Promise(async (resolve) => {
       this._saldos.ConsultarSaldos(this.validationsForm.get('Producto').value,
         this.validationsForm.get('Talla').value,
         this.validationsForm.get('Lote').value).subscribe((resp) => {
-     
-      if (resp.Codigo) {
-        if (Object.keys(resp.Dt).length > 0) {
-          let dt: [][] = resp.Dt.Table;
-          if (resp.Dt.Table.length > 0) {
-            console.log(this.rows);
-            this.rows = resp.Dt.Table;
-            return resolve(true);
+
+          if (resp.Codigo) {
+            if (Object.keys(resp.Dt).length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              if (resp.Dt.Table.length > 0) {
+
+                this.rows = JSON.parse(JSON.stringify(resp.Dt.Table));
+                return resolve(true);
+              } else {
+                this.presentAlert("Error", "No Existen Datos Para Mostrar");
+                return resolve(true);
+              }
+            }
           } else {
-            this.presentAlert("Error", "No Existen Datos Para Mostrar");
+            this.presentAlert("Error", resp.Description);
             return resolve(true);
           }
-        }
-      } else {
-        this.presentAlert("Error", resp.Description);
-        return resolve(true);
-      }
-    });
+        });
 
-  });
+    });
+    this.hideLoading();
   }
 
   async onSubmit(values) {
-    
+
     await this.showLoading("Cargando..");
     await this.Buscar_Saldos();
     await this.hideLoading();
     this.segundo = false;
     this.principal = true;
   }
-  
+
   atras() {
     this.segundo = true;
     this.principal = false;

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
 import { Saldos } from '../interfaces/interfaces';
-import { URL_CONSULT } from '../config/url.servicios';
+import { URL_CONSULT, CONNECTION_PROD } from '../config/url.servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class SaldoGlobalService {
     const base = {
       sp: 'spr_SaldoGlobal',
       param: ListParam,
-      conexion: 'PRODUCCION'
+      conexion: CONNECTION_PROD
     };
 
 
