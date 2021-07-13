@@ -1,214 +1,43 @@
-.ngx-datatable.bootstrap.fixed-header.fixed-row.scroll-vertical.virtualized.scroll-horz {
-  box-shadow: none;
-  font-size: 13px;
-  .datatable-header {
-    height: unset !important;
-    .datatable-header-cell {
-      vertical-align: bottom;
-      padding: 0.75rem;
-      border-bottom: 1px solid #d1d4d7;
-      .datatable-header-cell-label {
-        line-height: 24px;
-      }
+@import "theme/mixins/inputs/select-alert";
+
+
+
+
+  ::ng-deep .variant-alert-success {
+    @include select-alert();
+  
+    // Variables should be in a deeper selector or after the mixin include to override default values
+    --select-alert-color: var(--ion-color-lightest);
+    --select-alert-background: var(--ion-color-primary);
+    --select-alert-margin: var(--app-fair-margin);
+  
+    .alert-message {
+      background-color: white;
     }
   }
-  .datatable-body {
-    .datatable-body-row {
-      vertical-align: top;
-      border-top: 1px solid #d1d4d7;
-      &.datatable-row-even {
-        background-color: rgba(0, 0, 0, 0.05);
-      }
-      &.active {
-        background-color: #1483ff;
-        color: #fff;
-      }
-      .datatable-body-cell {
-        padding: 0.75rem;
-        text-align: left;
-        vertical-align: top;
-      }
-    }
-    .empty-row {
-      $alert-padding-y: 0.75rem !default;
-      $alert-padding-x: 1.25rem !default;
-      position: relative;
-      padding: $alert-padding-y $alert-padding-x;
-      margin-bottom: 0;
+  
+  ::ng-deep .variant-alert-warning {
+    @include select-alert();
+  
+    // Variables should be in a deeper selector or after the mixin include to override default values
+    --select-alert-color: var(--ion-color-lightest);
+    --select-alert-background: var(--ion-color-warning);
+    --select-alert-margin: var(--app-fair-margin);
+  
+    .alert-message {
+      background-color: white;
     }
   }
-  .datatable-footer {
-    background: #424242;
-    color: #ededed;
-    margin-top: -1px;
-    .page-count {
-      line-height: 50px;
-      height: 50px;
-      padding: 0 1.2rem;
-    }
-    .datatable-pager {
-      margin: 0 10px;
-      vertical-align: top;
-      ul {
-        li {
-          margin: 10px 0px;
-          &:not(.disabled) {
-            &.active,
-            &:hover {
-              a {
-                background-color: #545454;
-                font-weight: bold;
-              }
-            }
-          }
-        }
-      }
-      a {
-        height: 22px;
-        min-width: 24px;
-        line-height: 22px;
-        padding: 0;
-        border-radius: 3px;
-        margin: 0 3px;
-        text-align: center;
-        vertical-align: top;
-        text-decoration: none;
-        vertical-align: bottom;
-        color: #ededed;
-      }
-      .datatable-icon-left,
-      .datatable-icon-skip,
-      .datatable-icon-right,
-      .datatable-icon-prev {
-        font-size: 18px;
-        line-height: 27px;
-        padding: 0 3px;
-      }
+  
+  ::ng-deep .variant-alert-error {
+    @include select-alert();
+  
+    // Variables should be in a deeper selector or after the mixin include to override default values
+    --select-alert-color: var(--ion-color-lightest);
+    --select-alert-background: var(--ion-color-danger);
+    --select-alert-margin: var(--app-fair-margin);
+  
+    .alert-message {
+      background-color: white;
     }
   }
-  // Summary row styles
-  .datatable-summary-row {
-    .datatable-body-row {
-      .datatable-body-cell {
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-.top-20 {
-  margin-top: 20%;
-}
-
-.botton-20 {
-  margin-bottom: 20%;
-}
-
-.top-5 {
-  margin-top: 5%;
-}
-
-.top-3 {
-  margin-top: 3%;
-}
-
-.ion-color-hsonga {
-  --ion-color-base: var(--ion-color-hsonga);
-  --ion-color-base-rgb: var(--ion-color-hsonga-rgb);
-  --ion-color-contrast: var(--ion-color-hsonga-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-hsonga-contrast-rgb);
-  --ion-color-shade: var(--ion-color-hsonga-shade);
-  --ion-color-tint: var(--ion-color-hsonga-tint);
-}
-
-.ion-color-songa {
-  --ion-color-base: var(--ion-color-songa);
-  --ion-color-base-rgb: var(--ion-color-songa-rgb);
-  --ion-color-contrast: var(--ion-color-songa-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-songa-contrast-rgb);
-  --ion-color-shade: var(--ion-color-songa-shade);
-  --ion-color-tint: var(--ion-color-songa-tint);
-}
-
-ion-checkbox {
-  --size: 20px;
-}
-
-.ion-checkEdit {
-  --size: 15px;
-}
-
-.ion-prd {
-  border-radius: 10px !important;
-  padding-right: 30px;
-  font-size: 0.9em;
-  border: 1px solid #006d97 !important;
-  /*--background: rgb(219, 219, 219) !important;*/
-  /* height: 10%; */
-  /* width: 41%; */
-  max-width: 50vw; // this is applying perfectly
-  max-height: 10vh;
-}
-
-.ion-buscar {
-  padding-right: 30px;
-  font-size: 0.9em;
-  /*--background: rgb(219, 219, 219) !important;*/
-  /* height: 10%; */
-  /* width: 41%; */
-  max-width: 50vw; // this is applying perfectly
-  max-height: 10vh;
-}
-
-.my-label {
-  font-size: 0.7em;
-}
-
-/* .datatable-body-cell {
-  text-align: left;
-  padding: 0.9rem 1.2rem;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.54);
-  vertical-align: bottom;
-  font-size: 70px;
-  font-weight: 500;
-} */
-
-.ion-cant {
-  border-radius: 10px !important;
-  padding-right: 30px;
-  font-size: 0.9em;
-  border: 1px solid #006d97 !important;
-  /*--background: rgb(219, 219, 219) !important;*/
-  /* height: 10%; */
-  /* width: 41%; */
-  max-width: 50vw !important; // this is applying perfectly
-  max-height: 10vh !important;
-}
-
-.my-cant {
-  border-radius: 10px !important;
-  padding-right: 30px;
-  font-size: 0.7em;
-  background: rgb(219, 219, 219) !important;
-  /* height: 10%; */
-  /* width: 41%; */
-  max-width: 80vw !important; // this is applying perfectly
-  max-height: 10vh !important;
-}
-
-.requermiento {
-  width: 10%;
-}
-
-.smallbtn {
-  display: block;
-  height: 6% !important;
-  width: 6% !important;
-  font-size: 20px;
-}
-
-.ngx-datatable .datatable-body .datatable-body-row {
-  vertical-align: top;
-  border-top: 1px solid #d1d4d7;
-}

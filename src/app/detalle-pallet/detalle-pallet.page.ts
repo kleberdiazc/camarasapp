@@ -20,6 +20,7 @@ export class DetallePalletPage implements OnInit {
   consulta: string;
   rows = [];
   columns = [];
+  
   loading: any = this.loadingController.create();
   Descripcion = '';
   validations = {

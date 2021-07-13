@@ -10,27 +10,143 @@
 </ion-header>
 
 <ion-content>
-  <ion-row>
-    <ion-col size="12">
-      <ion-button (click)="Buscar_Saldos()" expand="block" fill="outline">
-        <ion-icon name="search" size="large"></ion-icon>
-      </ion-button>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="12">
-      <div>
-        <ngx-datatable #table class="material striped"   style="height: 500px;" [rows]="rows" columnMode="force" [headerHeight]="50"
-          [footerHeight]="0" [rowHeight]="30" [scrollbarV]="true" [scrollbarH]="true">
-          <ngx-datatable-column name="BODEGA" prop='BODEGA' [flexGrow]="5"></ngx-datatable-column>
-          <ngx-datatable-column name="Ubica" prop='Ubica' [flexGrow]="3"></ngx-datatable-column>
-          <ngx-datatable-column [width]="350" name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
-          <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
-          <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="4"></ngx-datatable-column>
-          <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="3"></ngx-datatable-column>
-          <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="3"></ngx-datatable-column>
-        </ngx-datatable>
-      </div>
-    </ion-col>
-  </ion-row>
+  <div [hidden]="principal">
+    <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
+      <ion-row>
+        <ion-col size="12">
+          <ion-list>
+            <ion-item class="input-item">
+              <ion-label>Producto : </ion-label>
+              <ion-input type="number" formControlName="Producto" ></ion-input>
+            </ion-item>
+            <div class="error-container">
+              <ng-container *ngFor="let validation of validations.Producto">
+                <div class="error-message"
+                  *ngIf="validationsForm.get('Producto').hasError(validation.type) && (validationsForm.get('Producto').dirty || validationsForm.get('Producto').touched)">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <span>{{ validation.message }}</span>
+                </div>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Talla:</ion-label>
+            <ion-select placeholder="" formControlName="Talla" interface="action-sheet">
+              <ion-select-option *ngFor="let bod of tallas" [value]="bod.CODIGO">{{bod.DESCRIPCION}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.Talla">
+              <div class="error-message"
+                *ngIf="validationsForm.get('Talla').hasError(validation.type) && (validationsForm.get('Talla').dirty || validationsForm.get('Talla').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-list>
+            <ion-item class="input-item">
+              <ion-label>Lote : </ion-label>
+              <ion-input type="text" formControlName="Lote" ></ion-input>
+            </ion-item>
+            <div class="error-container">
+              <ng-container *ngFor="let validation of validations.Lote">
+                <div class="error-message"
+                  *ngIf="validationsForm.get('Lote').hasError(validation.type) && (validationsForm.get('Lote').dirty || validationsForm.get('Lote').touched)">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <span>{{ validation.message }}</span>
+                </div>
+              </ng-container>
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-button class="submit-btn" type="submit" expand="block" fill="outline"
+            [disabled]="!validationsForm.valid">Seguir</ion-button>
+        </ion-col>
+      </ion-row>
+
+
+
+      <!--<ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item class="input-item">
+            <ion-label>Temperatura  : </ion-label>
+            <ion-input  formControlName="temp" type="number" min="-150" max="-0" ></ion-input>
+          </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.temp">
+              <div class="error-message" *ngIf="validationsForm.get('temp').hasError(validation.type) && (validationsForm.get('temp').dirty || validationsForm.get('temp').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
+      </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item class="input-item">
+          <ion-input type="text" (keydown.enter)="onKeydown($event)" placeholder="sscc" formControlName="sscc" clearInput autocapitalize="off" ></ion-input>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.sscc">
+            <div class="error-message" *ngIf="validationsForm.get('sscc').hasError(validation.type) && (validationsForm.get('sscc').dirty || validationsForm.get('sscc').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ion-col>
+    </ion-row>-->
+
+    </form>
+  </div>
+  <div [hidden]="segundo">
+    <ion-row class="ion-margin-top">
+      <ion-col size="12">
+        <div>
+          <ngx-datatable #table class="material striped"   style="height: 500px;" [rows]="rows" columnMode="force" [headerHeight]="50"
+            [footerHeight]="0" [rowHeight]="30" [scrollbarV]="true" [scrollbarH]="true">
+            <ngx-datatable-column name="BODEGA" prop='BODEGA' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="Ubica" prop='Ubica' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column [width]="350" name="PRODUCTO" prop='PRODUCTO' [flexGrow]="10"></ngx-datatable-column>
+            <ngx-datatable-column name="TALLA" prop='TALLA' [flexGrow]="5"></ngx-datatable-column>
+            <ngx-datatable-column name="LOTE" prop='LOTE' [flexGrow]="4"></ngx-datatable-column>
+            <ngx-datatable-column name="CJS" prop='CJS' [flexGrow]="3"></ngx-datatable-column>
+            <ngx-datatable-column name="MSTRS" prop='MSTRS' [flexGrow]="3"></ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="block" (click)="atras()" fill="outline">Atras</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+
+
+
+
+ 
 </ion-content>
