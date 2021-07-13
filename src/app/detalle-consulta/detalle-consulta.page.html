@@ -110,17 +110,26 @@
         </ion-item>
       </ion-col>  
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Matricial</ion-label>
+          <ion-checkbox slot="start" [(ngModel)]="matric"
+            (ionChange)="onMyBooleanChange()" mode="ios"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
     <ion-row> 
       <ion-col size = "12">
         <ion-button (click)="onImprimeBarra()"  expand="block" fill="outline">Barras</ion-button>
       </ion-col>
     </ion-row>
-    <ion-row> 
+    <ion-row [hidden]="muestraImp" > 
       <ion-col size = "12">
-        <ion-button [hidden]="false" (click)="imprime()"  expand="block" fill="outline">Imprimir</ion-button>
+        <ion-button (click)="imprime()"  expand="block" fill="outline">Imprimir</ion-button>
       </ion-col>
     </ion-row>
-    <ion-row [hidden]="true"> 
+    <ion-row [hidden]="muestraImp"> 
       <ion-col size = "12">
         <ion-button  expand="block" (click)="imprime2()" fill="outline">Impri2</ion-button>
       </ion-col>

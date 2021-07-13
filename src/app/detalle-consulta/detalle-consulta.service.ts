@@ -88,6 +88,20 @@ export class DetalleConsultaService {
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);
   }
 
+  ConsultarPadre(sscc: string) {
+
+    const ListParam = [{ "Name": "codigo", "Type": "Varchar", "Value": sscc }
+    ];
+
+    const base = {
+      sp: 'spr_ConsultarCodigoPadre',
+      param: ListParam,
+      conexion: CONNECTION_PROD
+    };
+
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+  }
+
 
 
   SaldosTallas(codigo, lote, talla, planta) {
@@ -310,6 +324,21 @@ export class DetalleConsultaService {
 
     const base = {
       sp: 'Spr_FechaMoviles',
+      param: ListParam,
+      conexion: CONNECTION_PROD
+    };
+
+    return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+  }
+
+
+  colaImpresionPallet(sscc,usuario) {
+    const ListParam = [{ "Name": "TRC_NUMSEC", "Type": "Varchar", "Value": sscc },
+    { "Name": "usuario", "Type": "Varchar", "Value": usuario }
+    ];
+
+    const base = {
+      sp: 'spr_AgregarColaImpresionPallet',
       param: ListParam,
       conexion: CONNECTION_PROD
     };

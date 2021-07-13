@@ -258,7 +258,7 @@ export class DetallePalletPage implements OnInit {
       cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
         'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
         'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-        'PRINT' + String.fromCharCode(13) + String.fromCharCode(10) +
+        'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
 
         console.log(cadena);
       rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
