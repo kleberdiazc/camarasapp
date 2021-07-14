@@ -160,14 +160,20 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   async GetCodigoPadre() {
+    console.log('padre');
     await this.showLoading("Cargando..");
     const valor = await new Promise(async (resolve) => {
       this._detalle.ConsultarPadre(this.data.sscc).subscribe((resp) => {
+  
         if (resp.Codigo) {
+          
+         
           if (Object.keys(resp.Dt).length > 0) {
-            let dt: [][] = resp.Dt.Table;
+           
             if (resp.Dt.Table.length > 0) {
-              console.log('tabla pallet',resp.Dt.Table);
+              let dt: [][] = resp.Dt.Table;
+              this.Pallet = dt[0]["dsscc_sscc"];
+              console.log('tabla pallet',dt[0]["dsscc_sscc"]);
             }
             else {
               return resolve(true);
@@ -185,7 +191,8 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   onClickRow(row) {
-    console.log('mi row', row.Lote);
+
+    console.log('mi row', row);
     this.codigo = row.Cod;
     this.talla = row.Talla;
     this.Descri = row.Descri;
@@ -455,10 +462,13 @@ export class DetalleConsultaPage implements OnInit {
   async imprime2() {
     let sscc = this.router.getCurrentNavigation().extras.state.sscc;
     let user = await this._login.getuser();
-    await this.showLoading("Cargando..");
-    await this.agregarColaPallet(sscc,user);
-    this.hideLoading();
-
+    if (this.matric) {
+      await this.showLoading("Cargando..");
+      await this.agregarColaPallet(sscc,user);
+      this.hideLoading();
+  
+    }
+   
    
     try {
       await this.showLoading("Imprimiendo...");
@@ -694,6 +704,6 @@ export class DetalleConsultaPage implements OnInit {
 
   }
   onMyBooleanChange() {
-    
+    console.log(this.matric);
   }
 }
