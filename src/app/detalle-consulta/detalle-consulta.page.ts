@@ -137,6 +137,7 @@ export class DetalleConsultaPage implements OnInit {
             let dt: [][] = resp.Dt.Table;
             if (resp.Dt.Table.length > 0) {
               this.rows = resp.Dt.Table;
+              this.cargaPrimero(this.rows[0]);
             }
             else {
               this.presentAlert("Información", dt[0]["INFO"].toString());
@@ -190,6 +191,17 @@ export class DetalleConsultaPage implements OnInit {
     this.hideLoading();
   }
 
+  cargaPrimero(row) {
+    this.codigo = row.Cod;
+    this.talla = row.Talla;
+    this.Descri = row.Descri;
+    this.Lote = row.Lote;
+    this.Total = row.Master;
+    this.saldo = row.Saldo;
+    this.bodega = row.sscc_Bodega;
+    this.totalcant = row.Master;
+    this.tal_codigo = row.tal_codigo
+  }
   onClickRow(row) {
 
     console.log('mi row', row);

@@ -22,7 +22,7 @@
               [footerHeight]="0"
               [rowHeight]="50"
               [scrollbarH]="true">
-              <ngx-datatable-column name="Ver" prop="name" [flexGrow]="2">
+              <ngx-datatable-column name="Ver" prop="name" [width]="100">
                 <ng-template
                     ngx-datatable-cell-template="ngx-datatable-cell-template"
                     let-rowIndex="rowIndex"
@@ -31,12 +31,12 @@
                     <ion-button size="small" (click)="onClickRow(row)">Ver</ion-button>
                 </ng-template>
             </ngx-datatable-column>
-              <ngx-datatable-column name="Cod" prop='Cod' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="Talla" prop='Talla' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="Descri" prop='Descri' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="Lote" prop='Lote' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="Master" prop='Master' [flexGrow]="5"></ngx-datatable-column>
-              <ngx-datatable-column name="Bodega" prop='sscc_Bodega' [flexGrow]="5"></ngx-datatable-column>  
+              <ngx-datatable-column name="Cod" prop='Cod' [width]="80"></ngx-datatable-column>
+              <ngx-datatable-column name="Talla" prop='Talla'[width]="80"></ngx-datatable-column>
+              <ngx-datatable-column name="Descri" prop='Descri' [width]="200"></ngx-datatable-column>
+              <ngx-datatable-column name="Lote" prop='Lote' [width]="80"></ngx-datatable-column>
+              <ngx-datatable-column name="Master" prop='Master' [width]="80"></ngx-datatable-column>
+              <ngx-datatable-column name="Bodega" prop='sscc_Bodega'[width]="100"></ngx-datatable-column>  
           </ngx-datatable>
       </div>
       </ion-col>
