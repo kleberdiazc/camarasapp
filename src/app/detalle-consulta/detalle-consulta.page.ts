@@ -488,51 +488,48 @@ export class DetalleConsultaPage implements OnInit {
             let prod = resp.Dt.Table; //OBTENER EL DATO PROD
             let cadena = '';
             let strSubtitulo;
-
-            if (this.data.sscc.substring(2, 10) == '3786115923' || this.data.sscc.substring(2, 10) == '3786120673') {
-              strSubtitulo = "";
-            }
-            if (this.data.sscc.substring(2, 10) == '3786120673' || this.data.sscc.substring(2, 10) == '3786120672') {
-              strSubtitulo = ""
-            }
+            let DatoAnt;
 
             if (oculta) {
               if (inventario) {
-                cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
                   ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
+                  'T 7 0 150 115 Detalle Pallet ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
               } else {
-                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 194 115         ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135                                             ' + String.fromCharCode(13) + String.fromCharCode(10);
+                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 1 150 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
               }
               
             } else {
               if (inventario) {
-                cadena = cadena + ' 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
+                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 0 150 115 Detalle Pallet ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
               } else {
                 cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -553,46 +550,90 @@ export class DetalleConsultaPage implements OnInit {
             let primera: boolean = true;
             let Dbltotal = 0;
 
-            this.rows.forEach(element => {
+
+
+            this.rows.forEach(async element => {
               
 
+              
+              if (Salto >= 750) {
+                cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+                // retorno no entiendo que hace aqui 
+                rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+                /*if (rsPrint) {
+                await this.presentAlert("Información", "Impresión realizada");
+                }*/
+                cadena = '';
+ 
+                if (inventario) {
+                  cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
+                }
+                else {
+                  cadena = cadena + ' 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                  'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
+                  'T 7 0 22 135                                          ' + String.fromCharCode(13) + String.fromCharCode(10);
+                }
+                Salto = 170;
+              }
+              
+              talla = element.Talla;
               descripcion = element.Descri;
               descripcion = descripcion + '                   ';
               descripcion = descripcion.substring(0, 20);
-              //descripcion = descripcion + ' ' + talla;
-              
-              if (inventario) {
-                cadena = cadena + 'T 0 2 25 ' + Salto + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 80 ' + Salto + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 150 ' + Salto + element.descripcion + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 390 ' + Salto + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 480 ' + Salto + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+              descripcion = descripcion + ' ' + talla;
+              if (DatoAnt = !descripcion) {
+                if (!primera) {
+                  cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 445 ' + Salto + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
+                  
+                  Totmas = 0;
+                  Salto += 30;
+                }
+                DatoAnt = descripcion;
+                primera = false;
+                Salto += 30;
+                
               }
-              else {
-                cadena = cadena + 'T 0 2 25 ' + Salto + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 80 ' + Salto + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 150 ' + Salto + '' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 390 ' + Salto + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 480 ' + Salto + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
-            
-              }
-              Dbltotal += element.Master;
+              cadena = cadena + 'T 0 2 25 ' + Salto + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 0 2 135 ' + Salto + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 0 3 290 ' + Salto + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 0 2 445 ' + Salto + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+
+              Totmas = element.Master;
               Salto += 30;
-              cadena = cadena + 'T 7 2 390 ' + '        ' + strSubtitulo + Dbltotal.toString();
-              cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
             });
+            cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
+            'T 7 0 445 ' + Salto + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
+            primera = false;
+            Totmas = 0;
+            
+            cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+            'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+            'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
 
             console.log(cadena);
-            for (let index = 0; index < Number(this.copias); index++) {
-              rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-              if (rsPrint) {
-                await this.presentAlert("Información", "Impresión realizada");
-              }
-   
+            rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+            if (rsPrint) {
+              await this.presentAlert("Información", "Impresión realizada");
+              cadena = '';
             }
+ 
             
 
 
