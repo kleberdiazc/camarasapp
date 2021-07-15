@@ -21,7 +21,7 @@ export class DetalleConsultaPage implements OnInit {
   resumido: boolean;
   consulta: string;
   data: any;
-  tipo: string = "CAJA"
+  tipo: string = "TOTAL"
   codigo: string;
   talla: string;
   Descri: string;
@@ -98,12 +98,13 @@ export class DetalleConsultaPage implements OnInit {
     if (this.router.getCurrentNavigation().extras.state != undefined) {
       console.log(this.router.getCurrentNavigation().extras.state.sscc)
       this.data = this.router.getCurrentNavigation().extras.state;
-      if (this.data.sscc.substring(1, 9) == '786115922' || this.data.sscc.substring(1, 9) == '786120672') {
+      /*if (this.data.sscc.substring(1, 9) == '786115922' || this.data.sscc.substring(1, 9) == '786120672') {
         this.tipo = "CAJA"
       }
       if (this.data.sscc.substring(1, 9) == '786115923' || this.data.sscc.substring(1, 9) == '786120673') {
         this.tipo = "MASTER"
-      }
+      }*/
+      //this.GetTIPO();
 
     }
   }
@@ -152,17 +153,65 @@ export class DetalleConsultaPage implements OnInit {
         return resolve(true);
       });
     });
-    this.hideLoading();
+    //this.hideLoading();
 
     if (this.data.sscc != '') {
-      this.GetCodigoPadre();
-    } 
+      await this.GetCodigoPadre();
+    }
+    //await this.showLoading("Cargando..");
+    await this.GetTIPO();
+    //this.hideLoading();
+    //await this.GetTIPO();
 
+    this.hideLoading();
+  }
+
+  async GetTIPO() {
+    const valor = await new Promise(async (resolve) => {
+      this._detalle.getTipoSSCC(this.data.sscc).subscribe((resp) => {
+  
+        if (resp.Codigo) {
+          
+         
+          if (Object.keys(resp.Dt).length > 0) {
+           
+            if (resp.Dt.Table.length > 0) {
+              let dt: [][] = resp.Dt.Table;
+              let det = dt[0]["Clase"];
+              switch (det) {
+                case 'C':
+                  this.tipo = 'Caja';
+                  break;
+                case 'M':
+                  this.tipo = 'Master';
+                  break;
+                case 'P':
+                  this.tipo = 'Pallet';
+                  break;
+                default:
+                  break;
+              }
+            }
+            
+            else {
+              return resolve(true);
+            }
+          }
+        } else {
+          this.presentAlert("Error", resp.Description);
+          return resolve(true);
+        }
+
+        return resolve(true);
+      });
+    });
+    
+    
   }
 
   async GetCodigoPadre() {
     console.log('padre');
-    await this.showLoading("Cargando..");
+    //await this.showLoading("Cargando..");
     const valor = await new Promise(async (resolve) => {
       this._detalle.ConsultarPadre(this.data.sscc).subscribe((resp) => {
   
@@ -188,7 +237,7 @@ export class DetalleConsultaPage implements OnInit {
         return resolve(true);
       });
     });
-    this.hideLoading();
+    //this.hideLoading();
   }
 
   cargaPrimero(row) {

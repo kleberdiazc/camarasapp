@@ -1,4 +1,4 @@
-import { RWDetalleCons } from './../interfaces/interfaces';
+import { ResultWS, RWDetalleCons } from './../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController } from '@ionic/angular';
@@ -344,5 +344,18 @@ export class DetalleConsultaService {
     };
 
     return this.http.post<RWDetalleCons>(URL_CONSULT, base);
+  }
+  
+  getTipoSSCC(sscc) {
+    console.log("8");
+    const ListParam = [{ "Name": "CODIGO", "Type": "Varchar", "Value": sscc }];
+
+    const base = {
+      sp: 'sp_gettiposscc',
+      param: ListParam,
+      conexion: CONNECTION_PROD
+    };
+
+    return this.http.post<ResultWS>(URL_CONSULT, base);
   }
 }
