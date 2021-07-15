@@ -110,7 +110,7 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   async ngOnInit() {
-    let oculta = (await this._param.getvaluesInventario() == 'true');
+    let inv = (await this._param.getvaluesInventario() == 'true');
     //this.loading = await this.showLoading('Cargando');
     await this.showLoading("Cargando..");
     let resum;
@@ -125,10 +125,10 @@ export class DetalleConsultaPage implements OnInit {
       resum = 'N';
     }
 
-    if (oculta) {
-      this.muestraImp = true;
-    } else {
+    if (inv) {
       this.muestraImp = false;
+    } else {
+      this.muestraImp = true;
     }
 
     const valor = await new Promise(async (resolve) => {
@@ -270,7 +270,7 @@ export class DetalleConsultaPage implements OnInit {
     let fechaMovil;
     let horaMovil;
     let formaPallet;
-    let sscc = this.router.getCurrentNavigation().extras.state.sscc;
+    let sscc = this.data.sscc;
 
     if (this.Pallet == '') {
       sscc = this.Pallet;
@@ -310,22 +310,22 @@ export class DetalleConsultaPage implements OnInit {
             let oculta = (await this._param.getvaluesOculta() == 'true');
             let prod = resp.Dt.Table; //OBTENER EL DATO PROD
             let cadena;
-            if (oculta = true) {
+            if (oculta) {
               cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 'PEED 5' + String.fromCharCode(13) + String.fromCharCode(10)
-              'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
                 '// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'T90 7 1 35 625 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'T90 0 2 100 586 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'T90 7 0 138 495 ' + String.fromCharCode(13) + String.fromCharCode(10) + formaPallet + "\n" +
-                '90 7 1 204 555 (00)' + String.fromCharCode(13) + String.fromCharCode(10) + sscc + String.fromCharCode(13) + String.fromCharCode(10)
-              'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                '90 7 1 204 555 (00)' + String.fromCharCode(13) + String.fromCharCode(10) + sscc + String.fromCharCode(13) + String.fromCharCode(10)+
+                 'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'VB 128 2 0 200 288 625 00' + String.fromCharCode(13) + String.fromCharCode(10) + sscc + "\n" +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10)
+                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
             }
             else {
 
@@ -340,10 +340,11 @@ export class DetalleConsultaPage implements OnInit {
                 'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) + "PRINT" + String.fromCharCode(13) + String.fromCharCode(10)
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10)+
+                + "PRINT" + String.fromCharCode(13) + String.fromCharCode(10);
             }
 
-            console.log(cadena);
+            console.log('esta es la cadena Pallet',cadena);
             rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
             if (rsPrint) {
               await this.presentAlert("Información", "Impresión realizada");
@@ -368,7 +369,7 @@ export class DetalleConsultaPage implements OnInit {
 
 
   async imprime() {
-    let sscc = this.router.getCurrentNavigation().extras.state.sscc;
+    let sscc = this.data.sscc;
     try {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
@@ -494,7 +495,7 @@ export class DetalleConsultaPage implements OnInit {
                 'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
             });
 
-            console.log(cadena);
+            console.log('esta es la cadena Impime1',cadena);
             for (let index = 0; index < Number(this.copias); index++) {
               rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
               if (rsPrint) {
@@ -521,7 +522,7 @@ export class DetalleConsultaPage implements OnInit {
   }
 
   async imprime2() {
-    let sscc = this.router.getCurrentNavigation().extras.state.sscc;
+    let sscc = this.data.sscc;
     let user = await this._login.getuser();
     if (this.matric) {
       await this.showLoading("Cargando..");
@@ -698,7 +699,7 @@ export class DetalleConsultaPage implements OnInit {
             'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
               'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
 
-            console.log(cadena);
+              console.log('esta es la cadena Impime2',cadena);
             rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
             if (rsPrint) {
               await this.presentAlert("Información", "Impresión realizada");
