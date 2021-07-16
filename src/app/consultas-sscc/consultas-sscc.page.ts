@@ -90,8 +90,8 @@ export class ConsultasSsccPage implements OnInit {
     return this.loading.present();
   }
 
-  async onSubmit(values) {
-
+  async onSubmit() {
+    console.log('SUBMIT');
     await this.showLoading("Cargando...");
     await this.bringData();
     this.hideLoading();
@@ -144,8 +144,9 @@ export class ConsultasSsccPage implements OnInit {
   }
 
   async keyChange(event) {
+    console.log('KEYCHANGE');
     if (this.validationsForm.get('sscc').value.length === 20) {
-      await this.presentLoading("Cargando...");
+      await this.showLoading("Cargando...");
       await this.bringData();
       this.hideLoading();
     }

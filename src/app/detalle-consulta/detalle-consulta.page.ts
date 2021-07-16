@@ -289,73 +289,75 @@ export class DetalleConsultaPage implements OnInit {
         formaPallet = fecha[0]["FechaFormatPallet"];
       });
 
-      this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-
-        } else {
-          if (resp.Dt.Table.length = 0) {
+      const v2 = await new Promise(async (resolve) => {
+        this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
+          if (resp.Codigo.toString() == 'false') {
             const alert = await this.alertController.create({
               header: 'Error!',
-              message: 'No existen el codigo SSCC',
+              message: resp.Description,
               buttons: ['OK']
             });
             await alert.present();
+
           } else {
-            let oculta = (await this._param.getvaluesOculta() == 'true');
-            let prod = resp.Dt.Table; //OBTENER EL DATO PROD
-            let cadena;
-            if (oculta) {
-              cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                '// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'T90 7 1 35 625 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'T90 0 2 100 586 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'T90 7 0 138 495 ' + formaPallet + String.fromCharCode(13) + String.fromCharCode(10) +
-                '90 7 1 204 555 (00)' + sscc + String.fromCharCode(13) + String.fromCharCode(10)+
-                 'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
-            }
-            else {
+            if (resp.Dt.Table.length = 0) {
+              const alert = await this.alertController.create({
+                header: 'Error!',
+                message: 'No existen el codigo SSCC',
+                buttons: ['OK']
+              });
+              await alert.present();
+            } else {
+              let oculta = (await this._param.getvaluesOculta() == 'true');
+              let prod = resp.Dt.Table; //OBTENER EL DATO PROD
+              let cadena;
+              if (oculta) {
+                cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  '// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T90 7 1 35 625 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T90 0 2 100 586 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T90 7 0 138 495 ' + formaPallet + String.fromCharCode(13) + String.fromCharCode(10) +
+                  '90 7 1 204 555 (00)' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+              }
+              else {
 
-              cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'T90 7 1 204 555 (00)' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10)+
-                + "PRINT" + String.fromCharCode(13) + String.fromCharCode(10);
-            }
+                cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'GAP-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T90 7 1 204 555 (00)' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  + 'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+              }
 
-            console.log('esta es la cadena Pallet',cadena);
-            rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-            if (rsPrint) {
-              await this.presentAlert("Información", "Impresión realizada");
-            }
+              console.log('esta es la cadena Pallet', cadena);
+              rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+              if (rsPrint) {
+                await this.presentAlert("Información", "Impresión realizada");
+              }
 
+
+            }
 
           }
-
-        }
-      })
-
+        })
+        return resolve(true);
+      });
     } catch (error) {
       await this.presentAlert("Error", error);
     }
@@ -373,6 +375,7 @@ export class DetalleConsultaPage implements OnInit {
     try {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
+      const v2 = await new Promise(async (resolve) => {
       this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
         if (resp.Codigo.toString() == 'false') {
           const alert = await this.alertController.create({
@@ -510,8 +513,8 @@ export class DetalleConsultaPage implements OnInit {
 
         }
       });
-
-
+        return resolve(true);
+      });
 
 
     } catch (error) {
@@ -535,111 +538,64 @@ export class DetalleConsultaPage implements OnInit {
     try {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
-      this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-
-        } else {
-          if (resp.Dt.Table.length = 0) {
+      const v2 = await new Promise(async (resolve) => {
+        this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
+          if (resp.Codigo.toString() == 'false') {
             const alert = await this.alertController.create({
               header: 'Error!',
-              message: 'No existen el codigo SSCC',
+              message: resp.Description,
               buttons: ['OK']
             });
             await alert.present();
+
           } else {
-            let oculta = (await this._param.getvaluesOculta() == 'true');
-            let inventario = (await this._param.getvaluesInventario() == 'true');
-            let resumen = (await this._param.getvaluesResumido() == 'true');
-            let mac = await this._param.getvaluesMac();
-            let prod = resp.Dt.Table; //OBTENER EL DATO PROD
-            let cadena = '';
-            let strSubtitulo;
-            let DatoAnt;
-
-            if (oculta) {
-              if (inventario) {
-                cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 150 115 Detalle Pallet 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
-              } else {
-                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 1 150 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
-              }
-              
+            if (resp.Dt.Table.length = 0) {
+              const alert = await this.alertController.create({
+                header: 'Error!',
+                message: 'No existen el codigo SSCC',
+                buttons: ['OK']
+              });
+              await alert.present();
             } else {
-              if (inventario) {
-                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 0 150 115 Detalle Pallet 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
+              let oculta = (await this._param.getvaluesOculta() == 'true');
+              let inventario = (await this._param.getvaluesInventario() == 'true');
+              let resumen = (await this._param.getvaluesResumido() == 'true');
+              let mac = await this._param.getvaluesMac();
+              let prod = resp.Dt.Table; //OBTENER EL DATO PROD
+              let cadena = '';
+              let strSubtitulo;
+              let DatoAnt;
+
+              if (oculta) {
+                if (inventario) {
+                  cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 150 115 Detalle Pallet 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
+                } else {
+                  cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 150 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
+                }
+              
               } else {
-                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 1 194 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
-              }
-            }
-            let Salto = 170
-            let talla: string;
-            let TotCaj: string;
-            let Totmas: number = 0;
-            let descripcion: string;
-            let datoAnt: string = '';
-            let primera: boolean = true;
-            let Dbltotal = 0;
-
-
-
-            this.rows.forEach(async element => {
-              
-
-              
-              if (Salto >= 750) {
-                cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
-                // retorno no entiendo que hace aqui 
-                rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-                /*if (rsPrint) {
-                await this.presentAlert("Información", "Impresión realizada");
-                }*/
-                cadena = '';
- 
                 if (inventario) {
                   cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -648,74 +604,121 @@ export class DetalleConsultaPage implements OnInit {
                     'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
                     ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 150 115 Detalle Pallet 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
+                } else {
+                  cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 194 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
                 }
-                else {
-                  cadena = cadena + ' 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                  'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                  'T 7 0 22 135                                          ' + String.fromCharCode(13) + String.fromCharCode(10);
-                }
-                Salto = 170;
               }
+              let Salto = 170
+              let talla: string;
+              let TotCaj: string;
+              let Totmas: number = 0;
+              let descripcion: string;
+              let datoAnt: string = '';
+              let primera: boolean = true;
+              let Dbltotal = 0;
+
+
+
+              this.rows.forEach(async element => {
               
-              talla = element.Talla;
-              descripcion = element.Descri;
-              descripcion = descripcion + '                   ';
-              descripcion = descripcion.substring(0, 20);
-              descripcion = descripcion + ' ' + talla;
-              if (DatoAnt = !descripcion) {
-                if (!primera) {
-                  cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
-                    'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
-                  
-                  Totmas = 0;
-                  Salto += 30;
+
+              
+                if (Salto >= 750) {
+                  cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+                  // retorno no entiendo que hace aqui 
+                  rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+                  /*if (rsPrint) {
+                  await this.presentAlert("Información", "Impresión realizada");
+                  }*/
+                  cadena = '';
+ 
+                  if (inventario) {
+                    cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
+                  }
+                  else {
+                    cadena = cadena + ' 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'T 7 0 22 135                                          ' + String.fromCharCode(13) + String.fromCharCode(10);
+                  }
+                  Salto = 170;
                 }
-                DatoAnt = descripcion;
-                primera = false;
-                Salto += 30;
+              
+                talla = element.Talla;
+                descripcion = element.Descri;
+                descripcion = descripcion + '                   ';
+                descripcion = descripcion.substring(0, 20);
+                descripcion = descripcion + ' ' + talla;
+                if (DatoAnt = !descripcion) {
+                  if (!primera) {
+                    cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
+                      'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
+                  
+                    Totmas = 0;
+                    Salto += 30;
+                  }
+                  DatoAnt = descripcion;
+                  primera = false;
+                  Salto += 30;
                 
-              }
-              cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 0 2 135 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 0 3 290 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 0 2 445 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+                }
+                cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 135 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 3 290 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 445 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
 
-              Totmas = element.Master;
-              Salto += 30;
-            });
-            cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
-            primera = false;
-            Totmas = 0;
+                Totmas = element.Master;
+                Salto += 30;
+              });
+              cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
+              primera = false;
+              Totmas = 0;
             
-            cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-              'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+              cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
 
-              console.log('esta es la cadena Impime2',cadena);
-            rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-            if (rsPrint) {
-              await this.presentAlert("Información", "Impresión realizada");
-              cadena = '';
-            }
+              console.log('esta es la cadena Impime2', cadena);
+              rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+              if (rsPrint) {
+                await this.presentAlert("Información", "Impresión realizada");
+                cadena = '';
+              }
  
             
 
 
+            }
+
           }
-
-        }
+        });
+        return resolve(true);
       });
-
-
-
 
     } catch (error) {
       await this.presentAlert("Error", error);
