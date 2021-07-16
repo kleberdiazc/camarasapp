@@ -496,6 +496,7 @@ export class TransaccionesPage implements OnInit {
   async OnClickNuevo(tipo) {
     this.tb_detalle.length = 0;
     this.DataGrid.length = 0;
+    this.colSaldoProd.length = 0;
 
     this.dataCombosMotivo = null;
     this.dataCombosOrigen = null;
@@ -699,12 +700,27 @@ export class TransaccionesPage implements OnInit {
         }
       }
 
+      if (this.cmbTipo.trim() === "T") {
+        if (this.cmbReci === null || this.cmbReci.trim() === "") {
+          this.presentAlert("Advertencia", "Debe ingresar responsable");
+          return;
+        }
+      }
+
+      if (this.cmbTipo.trim() === "I") {
+        if (this.txt_referencia.trim() === "") {
+          this.presentAlert("Advertencia", "Debe de ingresar Número de referencia");
+          return;
+        }
+      }
+
       if (this.chkConversion === "N") {
         if (this.cmbTipoConv !== "CM" && this.cmbTipoConv !== "D") {
 
         }
       }
       if (this.txtFactura === "") { this.txtFactura = "0"; }
+
 
 
       if (this.DataGrid.length <= 0) {
@@ -790,6 +806,21 @@ export class TransaccionesPage implements OnInit {
           return;
         }
       }
+
+      if (this.cmbTipo.trim() === "T") {
+        if (this.cmbReci === null || this.cmbReci.trim() === "") {
+          this.presentAlert("Advertencia", "Debe ingresar responsable");
+          return;
+        }
+      }
+
+      if (this.cmbTipo.trim() === "I") {
+        if (this.txt_referencia.trim() === "") {
+          this.presentAlert("Advertencia", "Debe de ingresar Número de referencia");
+          return;
+        }
+      }
+
       if ((txt.length === 20 && txt.substring(0, 1) !== "]") ||
         (txt.length === 23 && txt.substring(0, 1) === "]")) {
         if (txt.length === 23) {
@@ -918,6 +949,7 @@ export class TransaccionesPage implements OnInit {
                         return;
                       }
 
+                      this.InicializaGrid();
                       this.num = 0;
                       this.WorkingProd = Prodx;
                       this.WorkingTalla = Talla;
@@ -1082,8 +1114,8 @@ export class TransaccionesPage implements OnInit {
             this.hideLoading();
             return;
           }
-
-          /* InicializaGrid() */
+          //aqui
+          this.InicializaGrid();
           this.AñadirFilaalGrid("Nuevo");
 
           if (!await this.AniadirMasteraPallet(this.ssccp, this.lote, this.txtSSCC)) {
@@ -1126,7 +1158,7 @@ export class TransaccionesPage implements OnInit {
             await this.presentAlert("Error", "Error al añadir al pallet");
             return;
           }
-          /* InicializaGrid() */
+          this.InicializaGrid();
           this.num = this.num + 1;
           let r_dt: tb_DataGrid = { "sscc": "", "num": 0, "ssccp": "", "ubic": "" };
           r_dt.sscc = this.txtSSCC;
@@ -1186,6 +1218,28 @@ export class TransaccionesPage implements OnInit {
     }
 
     this.hideLoading();
+  }
+
+  InicializaGrid() {
+    if (this.tb_detalle.length === 0) {
+      this.totcajas = 0;
+    }
+
+    if (this.cmbTipoConv === "N") {
+      return;
+    }
+    if (this.cmbTipoConv.trim() === "R" && this.num === 0) {
+      this.num1 = this.num1 + 1;
+
+      let r_dt: tb_DataGrid = { "sscc": "", "num": 0, "ssccp": "", "ubic": "" };
+
+      r_dt.sscc = this.ssccp;
+      r_dt.num = this.num1;
+      r_dt.ssccp = "";
+      r_dt.ubic = this.cmbUbicacion;
+      this.DataGrid.push(r_dt);
+      this.DataGrid = JSON.parse(JSON.stringify(this.DataGrid));
+    }
   }
 
   async ValidarCodigosSSCCxOpcion() {
@@ -1290,7 +1344,7 @@ export class TransaccionesPage implements OnInit {
         }
         this.ssccp = this.txtSSCC;
 
-        /* InicializaGrid() */
+        this.InicializaGrid();
 
         if (this.cmbTipoConv === "CM") {
           this.btn_DesEmpaque === this.ssccp;
@@ -1342,7 +1396,7 @@ export class TransaccionesPage implements OnInit {
                 this.num = 0;
 
                 if (this.cmbTipoConv === "UP") {
-                  /* InicializaGrid() */
+                  this.InicializaGrid();
                   this.totcajas = 0;
                   this.txtScannedValue = "";
                   setTimeout(() => this.inputSSCC.setFocus(), 300);
@@ -1351,7 +1405,7 @@ export class TransaccionesPage implements OnInit {
 
                 for (let ii = 0; ii < ds.length; ii++) {
                   if (this.cmbTipoConv !== "R") {
-                    /*  InicializaGrid() */
+                    this.InicializaGrid();
                     this.totcajas = 0;
                   }
                   this.txt_pallets = this.num1.toString();
@@ -1425,7 +1479,7 @@ export class TransaccionesPage implements OnInit {
             await this._dataService.getExistenciaTra(this.secuen).subscribe(async (resp) => {
               if (!resp.Codigo) {
                 this.presentAlert("Error", resp.Description);
-                return resolveo(false);
+                return resolveo(true);
                 /* return rs; */
               }
               if (Object.keys(resp.Dt).length > 0) {
@@ -1439,7 +1493,7 @@ export class TransaccionesPage implements OnInit {
                     if (await !this.presentAlertConfirm("Desea Imprimir Resumen?")) {
                       this.ImprimirMultipaginas(this.secuen, "");
                     }
-                    return resolveo(false);
+                    return resolveo(true);
                     /* return rs; */
                   }
                 }
@@ -1448,7 +1502,7 @@ export class TransaccionesPage implements OnInit {
             });
 
           });
-          if (!r2) {
+          if (r2) {
             return resolve(r2);
           }
         }
@@ -2190,11 +2244,12 @@ export class TransaccionesPage implements OnInit {
               let strRes: [][] = resp.Dt.Table;
               if (strRes.length > 0) {
                 for (let ii = 0; ii < strRes.length; ii++) {
+                  debugger;
                   produc1 = strRes[ii]["tcd_produc"].toString().trim();
                   talla1 = strRes[ii]["tcd_codtal"].toString().trim();
                   lote1 = strRes[ii]["tcd_lote"].toString().trim();
-                  acum1 = strRes[ii]["tcd_cantid"].toString().trim();
-                  saldo1 = strRes[ii]["Saldo"].toString().trim();
+                  acum1 = strRes[ii]["tcd_cantid"];
+                  saldo1 = strRes[ii]["Saldo"];
                   if (saldo1 < acum1) {
                     this.presentAlert("Error", "No existe saldo para el lote " + lote1);
                     this._dataService.EnvioCorreoSinSaldo(produc1, talla1, lote1, await this._log.getuser()).subscribe((resp) => {

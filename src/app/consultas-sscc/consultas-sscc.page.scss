@@ -13,13 +13,18 @@ ion-header {
     --background: transparent;
   }
 }
-ion-content {
+
+ion-toolbar, ion-header {
+  --min-height: 48px;
+ }
+
+/* ion-content {
   position: absolute;
   top: 0;
   border-top: calc(var(--app-header-height) + var(--ion-safe-area-top));
   border-top-style: solid;
   border-top-color: var(--ion-color-primary);
-}
+} */
 
 // Note:  All the CSS variables defined below are overrides of Ionic elements CSS Custom Properties
 .forms-validations-content {

@@ -24,3 +24,10 @@
 @import './packages/themes/material.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 
+ion-toolbar, ion-header {
+    --min-height: 48px;
+   }
+
+   ion-title{
+       font-size: 17px;
+   }
