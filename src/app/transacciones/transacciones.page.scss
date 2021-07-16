@@ -1,5 +1,15 @@
 @import "theme/mixins/inputs/select-alert";
 
+
+ /* ion-content {
+  position: absolute;
+  top: 0;
+  border-top: calc(var(--app-header-height) + var(--ion-safe-area-top));
+  border-top-style: solid;
+  border-top-color: var(--ion-color-primary);
+} */
+
+
 ion-content{
   font-size: 14px;
 }
