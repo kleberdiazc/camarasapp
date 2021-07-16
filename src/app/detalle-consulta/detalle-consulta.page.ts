@@ -318,10 +318,10 @@ export class DetalleConsultaPage implements OnInit {
                 '// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'T90 7 1 35 625 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'T90 0 2 100 586 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'T90 7 0 138 495 ' + String.fromCharCode(13) + String.fromCharCode(10) + formaPallet + "\n" +
-                '90 7 1 204 555 (00)' + String.fromCharCode(13) + String.fromCharCode(10) + sscc + String.fromCharCode(13) + String.fromCharCode(10)+
+                'T90 7 0 138 495 ' + formaPallet + String.fromCharCode(13) + String.fromCharCode(10) +
+                '90 7 1 204 555 (00)' + sscc + String.fromCharCode(13) + String.fromCharCode(10)+
                  'BT 0 3 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'VB 128 2 0 200 288 625 00' + String.fromCharCode(13) + String.fromCharCode(10) + sscc + "\n" +
+                'VB 128 2 0 200 288 625 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -397,13 +397,13 @@ export class DetalleConsultaPage implements OnInit {
             let mac = await this._param.getvaluesMac();
             let prod = resp.Dt.Table; //OBTENER EL DATO PROD
             let cadena = '';
-            let strSubtitulo;
+            let strSubtitulo = '';
 
             if (this.data.sscc.substring(2, 10) == '3786115923' || this.data.sscc.substring(2, 10) == '3786120673') {
-              strSubtitulo = "";
+              strSubtitulo = '';
             }
             if (this.data.sscc.substring(2, 10) == '3786120673' || this.data.sscc.substring(2, 10) == '3786120672') {
-              strSubtitulo = ""
+              strSubtitulo = '';
             }
 
             if (oculta) {
@@ -458,7 +458,7 @@ export class DetalleConsultaPage implements OnInit {
             let talla: string;
             let TotCaj: string;
             let Totmas: number = 0;
-            let descripcion: string;
+            let descripcion: string = '';
             let datoAnt: string = '';
             let primera: boolean = true;
             let Dbltotal = 0;
@@ -472,23 +472,23 @@ export class DetalleConsultaPage implements OnInit {
               //descripcion = descripcion + ' ' + talla;
               
               if (inventario) {
-                cadena = cadena + 'T 0 2 25 ' + Salto + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 80 ' + Salto + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 150 ' + Salto + element.descripcion + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 390 ' + Salto + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 480 ' + Salto + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+                cadena = cadena + 'T 0 2 25 ' + Salto  + ' ' +element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 80 ' + Salto + ' ' + element.Talla  + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 150 ' + Salto + ' ' + descripcion  + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 390 ' + Salto + ' ' + element.Lote  + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 480 ' + Salto + ' ' + element.Master  + String.fromCharCode(13) + String.fromCharCode(10);
               }
               else {
-                cadena = cadena + 'T 0 2 25 ' + Salto + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 80 ' + Salto + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 150 ' + Salto + '' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 390 ' + Salto + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 480 ' + Salto + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+                cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 80 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 150 ' + Salto + ' ' +'' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 390 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 0 2 480 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
             
               }
               Dbltotal += element.Master;
               Salto += 30;
-              cadena = cadena + 'T 7 2 390 ' + '        ' + strSubtitulo + Dbltotal.toString();
+              cadena = cadena + 'T 7 2 390 ' + '        ' + strSubtitulo + ' ' + Dbltotal.toString()+ String.fromCharCode(13) + String.fromCharCode(10) ;
               cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -574,7 +574,7 @@ export class DetalleConsultaPage implements OnInit {
                   'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 150 115 Detalle Pallet ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'T 7 0 150 115 Detalle Pallet 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
               } else {
                 cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + "LABEL" + String.fromCharCode(13) + String.fromCharCode(10) + "CONTRAST 0" + String.fromCharCode(13) + String.fromCharCode(10) + 
@@ -600,7 +600,7 @@ export class DetalleConsultaPage implements OnInit {
                 'PAGE-HEIGHT 800' + String.fromCharCode(13) + String.fromCharCode(10) + 
                 'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) + 
                 ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) + 
-                'T 7 0 150 115 Detalle Pallet ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) + 
+                'T 7 0 150 115 Detalle Pallet 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) + 
                 'T 7 0 22 135 Producto              lote          Mstr' + String.fromCharCode(13) + String.fromCharCode(10);
               } else {
                 cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -671,7 +671,7 @@ export class DetalleConsultaPage implements OnInit {
               if (DatoAnt = !descripcion) {
                 if (!primera) {
                   cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
-                    'T 7 0 445 ' + Salto + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
+                    'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
                   
                   Totmas = 0;
                   Salto += 30;
@@ -681,16 +681,16 @@ export class DetalleConsultaPage implements OnInit {
                 Salto += 30;
                 
               }
-              cadena = cadena + 'T 0 2 25 ' + Salto + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 0 2 135 ' + Salto + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 0 3 290 ' + Salto + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 0 2 445 ' + Salto + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+              cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 0 2 135 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 0 3 290 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 0 2 445 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
 
               Totmas = element.Master;
               Salto += 30;
             });
             cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 7 0 445 ' + Salto + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
+            'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
             primera = false;
             Totmas = 0;
             
