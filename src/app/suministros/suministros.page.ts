@@ -71,11 +71,11 @@ export class SuministrosPage implements OnInit {
       ]))
       ,
       'Origen': new FormControl('', Validators.compose([
-        //Validators.required,
+        Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
       ])),
       'Destino': new FormControl('', Validators.compose([
-        //Validators.required,
+        Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
       ]))
     });
@@ -117,6 +117,13 @@ export class SuministrosPage implements OnInit {
 
   async onSubmit(values) {
     await this.showLoading("Grabando..");
+    await this.grabar();
+    this.hideLoading();
+    //this.removeValidators(this.validationsForm);
+    
+  }
+
+  async grabar() {
     const valor = await new Promise(async (resolve) => {
       this._suministrto.ConsultarTransac(this.validationsForm.get('Sello').value,
         this.validationsForm.get('Item').value,
@@ -133,30 +140,27 @@ export class SuministrosPage implements OnInit {
           }
           return resolve(true);
         });
+      
     });
-    this.hideLoading();
-    //this.removeValidators(this.validationsForm);
     this.validationsForm.reset({
       'Sello': '',
       'Item': '',
       'Cantidad': '',
-      'Origen': null,
-      'Destino': null
+      'Origen': '',
+      'Destino': ''
     });
 
-  }
-
-
+ }
 
   imprimirConsu() {
     this.imprimir("CONSULTA");
   }
 
-  change($event) {
+  /*change($event) {
     console.log($event.target.value, this.itemName);
     var item = this.Item.find(item => item['CODIGO'] === $event.target.value);
     this.itemName = item.DESCRIPCION;
-  }
+  }*/
 
   /* changeOr($event) {
     debugger;
@@ -170,7 +174,7 @@ export class SuministrosPage implements OnInit {
     this.destinoName = item.DESCRIPCION;
   } */
   async imprimir(tipo) {
-
+    
 
     let sello = this.validationsForm.get('Sello').value;
     let us = '';
@@ -182,60 +186,67 @@ export class SuministrosPage implements OnInit {
     try {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
-      this._suministrto.Imprimir(sello, tipo).subscribe(async (resp) => {
-        let table = [];
-        table = resp.Dt.Table;
-        if (table.length > 0) {
-          fecha = table[0]["Fecha"];
-          if (tipo = 'GRABAR') {
-            us = await this._log.getuser();
-            item = this.validationsForm.get('Item').value;
-            origen = this.validationsForm.get('Origen').value;
-            destino = this.validationsForm.get('Destino').value;
-            cantidad = this.validationsForm.get('Cantidad').value;
+      const v2 = await new Promise(async (resolve) => {
+        this._suministrto.Imprimir(sello, tipo).subscribe(async (resp) => {
+          let table = [];
+          table = resp.Dt.Table;
+          if (table.length > 0) {
+            fecha = table[0]["Fecha"];
+            if (tipo = 'GRABAR') {
+              us = await this._log.getuser();
+              item = this.validationsForm.get('Item').value;
+              origen = this.validationsForm.get('Origen').value;
+              destino = this.validationsForm.get('Destino').value;
+              cantidad = this.validationsForm.get('Cantidad').value;
+            }
+            else {
+              us = table[0]["trc_usucre"];
+              item = table[0]["ite_descri"];
+              origen = table[0]["Origen"];
+              destino = table[0]["Destino"];
+              cantidad = table[0]["tcd_cantid"]
+
+            }
+            //this.dataCombosTipoConv.find(s => s.CODIGO === this.cmbTipoConv)["DESCRIPCION"].toString().trim()
+            this.itemName = this.Item.find(r => r['CODIGO'] === item)["DESCRIPCION"].toString().trim();
+            this.origenName = this.Origen.find(r => r['CODIGO'] === origen)["DESCRIPCION"].toString().trim();
+            this.destinoName = this.Destino.find(r => r['CODIGO'] === destino)["DESCRIPCION"].toString().trim();
+            let cadena = ' 0 200 200 830 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'JOURNAL' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+              ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'CENTER' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 1 0 44 TRANSFERENCIA DE ' + this.itemName.toUpperCase() + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 92 Usuario: ' + us + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 140 Fecha: ' + fecha + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 188 Sello: ' + sello + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 236 Item: ' + this.itemName.toUpperCase() + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 248 Bod. Origen: ' + this.origenName + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 332 Bod. Destino: ' + this.destinoName + String.fromCharCode(13) + String.fromCharCode(10) +
+              'T 5 0 38 380 Cantidad: ' + cantidad + String.fromCharCode(13) + String.fromCharCode(10) +
+              'ENDML' + String.fromCharCode(13) + String.fromCharCode(10) +
+              'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+
+            console.log(cadena);
+            rsPrint = await this._suministrto.printer(cadena, await this._param.getvaluesMac());
+            if (rsPrint) {
+              await this.presentAlert("Información", "Impresión realizada");
+            }
           }
           else {
-            us = table[0]["trc_usucre"];
-            item = table[0]["ite_descri"];
-            origen = table[0]["Origen"];
-            destino = table[0]["Destino"];
-            cantidad = table[0]["tcd_cantid"]
-
+            await this.presentAlert("Error", resp.Description);
           }
-          let cadena = ' 0 200 200 830 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'JOURNAL' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-            ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'CENTER' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 1 0 44 TRANSFERENCIA DE ' + this.itemName.toUpperCase() + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 92 Usuario: ' + us + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 140 Fecha: ' + fecha + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 188 Sello: ' + sello + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 236 Item: ' + this.itemName.toUpperCase() + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 248 Bod. Origen: ' + this.origenName + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 332 Bod. Destino: ' + this.destinoName + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 5 0 38 380 Cantidad: ' + cantidad + String.fromCharCode(13) + String.fromCharCode(10) +
-            'ENDML' + String.fromCharCode(13) + String.fromCharCode(10) +
-            'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
-
-          console.log(cadena);
-          rsPrint = await this._suministrto.printer(cadena, await this._param.getvaluesMac());
-          if (rsPrint) {
-            await this.presentAlert("Información", "Impresión realizada");
-          }
-        }
-        else {
-          await this.presentAlert("Error", resp.Description);
-        }
+          return resolve(true);
+        }); 
       });
 
     } catch (error) {
       await this.presentAlert("Error", error);
     }
-    this.hideLoading();
+    //this.hideLoading();
 
   }
 

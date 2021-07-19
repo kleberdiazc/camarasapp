@@ -32,7 +32,7 @@
       <ion-col size="12">
         <ion-item>
           <ion-label>Item:</ion-label>
-          <ion-select placeholder="" (ionChange)="change($event)" formControlName="Item" interface="action-sheet">
+          <ion-select placeholder=""  formControlName="Item" interface="action-sheet">
             <ion-select-option *ngFor="let it of Item" [value]="it.CODIGO">{{it.DESCRIPCION}}</ion-select-option>
           </ion-select>
         </ion-item>
