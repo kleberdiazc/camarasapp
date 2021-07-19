@@ -70,11 +70,11 @@ export class SuministrosPage implements OnInit {
         // Validators.pattern('^([-+,0-9.]+)')
       ])),
       'Origen': new FormControl('', Validators.compose([
-        Validators.required,
+        //Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
       ])),
       'Destino': new FormControl('', Validators.compose([
-        Validators.required,
+        //Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
       ]))
     });
@@ -134,7 +134,11 @@ export class SuministrosPage implements OnInit {
         });
     });
     this.hideLoading();
+    //this.removeValidators(this.validationsForm);
+    this.validationsForm.reset();
   }
+
+
 
   imprimirConsu() {
     this.imprimir("CONSULTA");

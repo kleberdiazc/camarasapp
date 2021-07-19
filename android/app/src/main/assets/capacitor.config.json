@@ -1,6 +1,6 @@
 {
-  "appId": "com.ionicthemes.ionic5fullapp",
-  "appName": "Ionic5FullApp",
+  "appId": "com.ionicthemes.camaraSonga",
+  "appName": "CamaraSonga",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

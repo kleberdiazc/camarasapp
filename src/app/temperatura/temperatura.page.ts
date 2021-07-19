@@ -154,6 +154,8 @@ export class TemperaturaPage implements OnInit, OnDestroy {
           });
       }
     });
+    this.hideLoading();
+    this.validationsForm.reset();
 
   }
 
