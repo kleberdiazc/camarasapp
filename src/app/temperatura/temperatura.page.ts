@@ -129,9 +129,10 @@ export class TemperaturaPage implements OnInit, OnDestroy {
           , await this._log.getuser()).subscribe(async (resp) => {
 
             if (resp.Codigo) {
-              this.presentAlert("Información", "La transacción se ha realizado con exito.");
+              await this.presentAlert("Información", "La transacción se ha realizado con exito.");
+
             } else {
-              this.presentAlert("Error", resp.Description);
+              await this.presentAlert("Error", resp.Description);
 
             }
             return resolve(true);
@@ -142,9 +143,10 @@ export class TemperaturaPage implements OnInit, OnDestroy {
           , this.validationsForm.get('sscc').value
           , await this._log.getuser()).subscribe(async (resp) => {
             if (resp.Codigo) {
-              this.presentAlert("Información", "La transacción se ha realizado con exito.");
+              await this.presentAlert("Información", "La transacción se ha realizado con exito.");
+
             } else {
-              this.presentAlert("Error", resp.Description);
+              await this.presentAlert("Error", resp.Description);
 
             }
             return resolve(true);

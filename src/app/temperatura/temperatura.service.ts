@@ -60,7 +60,7 @@ export class TemperaturaService {
       conexion: CONNECTION_PROD
     };
 
-    return this.http.post<Valida>('URL_CONSULT', base);
+    return this.http.post<Valida>(URL_CONSULT, base);
   }
 
   Imprimir(numsec: string, usuario: string) {

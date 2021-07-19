@@ -21,7 +21,7 @@ export class DetalleConsultaPage implements OnInit {
   resumido: boolean;
   consulta: string;
   data: any;
-  tipo: string = "TOTAL"
+  tipo: string = "Total"
   codigo: string;
   talla: string;
   Descri: string;
@@ -30,7 +30,7 @@ export class DetalleConsultaPage implements OnInit {
   Pallet: string
   saldo: string;
   bodega: string;
-  totalcant: string;
+  totalcant: string = "0";
   copias: string = "2";
   primero = false;
   segundo = true;
@@ -85,7 +85,7 @@ export class DetalleConsultaPage implements OnInit {
     public loadingController: LoadingController,
     private alertController: AlertController,
     private _param: ParametrosService,
-    private _login:LoginservicesService) {
+    private _login: LoginservicesService) {
     this.columns = [
       { prop: 'Cod', name: 'Cod' },
       { prop: 'Talla', name: 'Talla' },
@@ -134,10 +134,15 @@ export class DetalleConsultaPage implements OnInit {
     const valor = await new Promise(async (resolve) => {
       this._detalle.ConsultarDetalle(resum, this.data.sscc).subscribe((resp) => {
         if (resp.Codigo) {
+
           if (Object.keys(resp.Dt).length > 0) {
             let dt: [][] = resp.Dt.Table;
             if (resp.Dt.Table.length > 0) {
               this.rows = resp.Dt.Table;
+              for (let ii = 0; ii < this.rows.length; ii++) {
+                this.totalcant = (Number(this.totalcant) + Number(this.rows[ii]["Master"])).toString();
+
+              }
               this.cargaPrimero(this.rows[0]);
             }
             else {
@@ -169,30 +174,30 @@ export class DetalleConsultaPage implements OnInit {
   async GetTIPO() {
     const valor = await new Promise(async (resolve) => {
       this._detalle.getTipoSSCC(this.data.sscc).subscribe((resp) => {
-  
+
         if (resp.Codigo) {
-          
-         
+
+
           if (Object.keys(resp.Dt).length > 0) {
-           
+
             if (resp.Dt.Table.length > 0) {
               let dt: [][] = resp.Dt.Table;
               let det = dt[0]["Clase"];
               switch (det) {
                 case 'C':
-                  this.tipo = 'Caja';
+                  this.tipo = 'Cajas';
                   break;
                 case 'M':
-                  this.tipo = 'Master';
+                  this.tipo = 'Cajas ';
                   break;
                 case 'P':
-                  this.tipo = 'Pallet';
+                  this.tipo = 'Masters';
                   break;
                 default:
                   break;
               }
             }
-            
+
             else {
               return resolve(true);
             }
@@ -205,8 +210,8 @@ export class DetalleConsultaPage implements OnInit {
         return resolve(true);
       });
     });
-    
-    
+
+
   }
 
   async GetCodigoPadre() {
@@ -214,16 +219,16 @@ export class DetalleConsultaPage implements OnInit {
     //await this.showLoading("Cargando..");
     const valor = await new Promise(async (resolve) => {
       this._detalle.ConsultarPadre(this.data.sscc).subscribe((resp) => {
-  
+
         if (resp.Codigo) {
-          
-         
+
+
           if (Object.keys(resp.Dt).length > 0) {
-           
+
             if (resp.Dt.Table.length > 0) {
               let dt: [][] = resp.Dt.Table;
               this.Pallet = dt[0]["dsscc_sscc"];
-              console.log('tabla pallet',dt[0]["dsscc_sscc"]);
+              console.log('tabla pallet', dt[0]["dsscc_sscc"]);
             }
             else {
               return resolve(true);
@@ -247,13 +252,13 @@ export class DetalleConsultaPage implements OnInit {
     this.Lote = row.Lote;
     this.Total = row.Master;
     this.saldo = row.Saldo;
-    this.bodega = row.sscc_Bodega;
-    this.totalcant = row.Master;
+    this.bodega = row.Ubica + ' ' + row.sscc_Bodega;
+    //this.totalcant = row.Master;
     this.tal_codigo = row.tal_codigo
   }
   onClickRow(row) {
 
-    console.log('mi row', row);
+
     this.codigo = row.Cod;
     this.talla = row.Talla;
     this.Descri = row.Descri;
@@ -261,7 +266,7 @@ export class DetalleConsultaPage implements OnInit {
     this.Total = row.Master;
     this.saldo = row.Saldo;
     this.bodega = row.sscc_Bodega;
-    this.totalcant = row.Master;
+    //this.totalcant = row.Master;
     this.tal_codigo = row.tal_codigo
 
   }
@@ -376,143 +381,143 @@ export class DetalleConsultaPage implements OnInit {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
       const v2 = await new Promise(async (resolve) => {
-      this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
-        if (resp.Codigo.toString() == 'false') {
-          const alert = await this.alertController.create({
-            header: 'Error!',
-            message: resp.Description,
-            buttons: ['OK']
-          });
-          await alert.present();
-
-        } else {
-          if (resp.Dt.Table.length = 0) {
+        this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
+          if (resp.Codigo.toString() == 'false') {
             const alert = await this.alertController.create({
               header: 'Error!',
-              message: 'No existen el codigo SSCC',
+              message: resp.Description,
               buttons: ['OK']
             });
             await alert.present();
+
           } else {
-            let oculta = (await this._param.getvaluesOculta() == 'true');
-            let inventario = (await this._param.getvaluesInventario() == 'true');
-            let resumen = (await this._param.getvaluesResumido() == 'true');
-            let mac = await this._param.getvaluesMac();
-            let prod = resp.Dt.Table; //OBTENER EL DATO PROD
-            let cadena = '';
-            let strSubtitulo = '';
-
-            if (this.data.sscc.substring(2, 10) == '3786115923' || this.data.sscc.substring(2, 10) == '3786120673') {
-              strSubtitulo = '';
-            }
-            if (this.data.sscc.substring(2, 10) == '3786120673' || this.data.sscc.substring(2, 10) == '3786120672') {
-              strSubtitulo = '';
-            }
-
-            if (oculta) {
-              if (inventario) {
-                cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
-              } else {
-                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 194 115         ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135                                             ' + String.fromCharCode(13) + String.fromCharCode(10);
-              }
-              
+            if (resp.Dt.Table.length = 0) {
+              const alert = await this.alertController.create({
+                header: 'Error!',
+                message: 'No existen el codigo SSCC',
+                buttons: ['OK']
+              });
+              await alert.present();
             } else {
-              if (inventario) {
-                cadena = cadena + ' 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
+              let oculta = (await this._param.getvaluesOculta() == 'true');
+              let inventario = (await this._param.getvaluesInventario() == 'true');
+              let resumen = (await this._param.getvaluesResumido() == 'true');
+              let mac = await this._param.getvaluesMac();
+              let prod = resp.Dt.Table; //OBTENER EL DATO PROD
+              let cadena = '';
+              let strSubtitulo = '';
+
+              if (this.data.sscc.substring(2, 10) == '3786115923' || this.data.sscc.substring(2, 10) == '3786120673') {
+                strSubtitulo = '';
+              }
+              if (this.data.sscc.substring(2, 10) == '3786120673' || this.data.sscc.substring(2, 10) == '3786120672') {
+                strSubtitulo = '';
+              }
+
+              if (oculta) {
+                if (inventario) {
+                  cadena = '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
+                } else {
+                  cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 194 115         ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135                                             ' + String.fromCharCode(13) + String.fromCharCode(10);
+                }
+
               } else {
-                cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 1 194 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
+                if (inventario) {
+                  cadena = cadena + ' 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
+                } else {
+                  cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'SPEED 5' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 194 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
+                }
               }
+              let Salto = 170
+              let talla: string;
+              let TotCaj: string;
+              let Totmas: number = 0;
+              let descripcion: string = '';
+              let datoAnt: string = '';
+              let primera: boolean = true;
+              let Dbltotal = 0;
+
+              this.rows.forEach(element => {
+
+
+                descripcion = element.Descri;
+                descripcion = descripcion + '                   ';
+                descripcion = descripcion.substring(0, 20);
+                //descripcion = descripcion + ' ' + talla;
+
+                if (inventario) {
+                  cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 80 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 150 ' + Salto + ' ' + descripcion + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 390 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 480 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+                }
+                else {
+                  cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 80 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 150 ' + Salto + ' ' + '' + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 390 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 0 2 480 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+
+                }
+                Dbltotal += element.Master;
+                Salto += 30;
+                cadena = cadena + 'T 7 2 390 ' + '        ' + strSubtitulo + ' ' + Dbltotal.toString() + String.fromCharCode(13) + String.fromCharCode(10);
+                cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                  'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+              });
+
+              console.log('esta es la cadena Impime1', cadena);
+              for (let index = 0; index < Number(this.copias); index++) {
+                rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+                if (rsPrint) {
+                  await this.presentAlert("Información", "Impresión realizada");
+                }
+
+              }
+
+
+
             }
-            let Salto = 170
-            let talla: string;
-            let TotCaj: string;
-            let Totmas: number = 0;
-            let descripcion: string = '';
-            let datoAnt: string = '';
-            let primera: boolean = true;
-            let Dbltotal = 0;
-
-            this.rows.forEach(element => {
-              
-
-              descripcion = element.Descri;
-              descripcion = descripcion + '                   ';
-              descripcion = descripcion.substring(0, 20);
-              //descripcion = descripcion + ' ' + talla;
-              
-              if (inventario) {
-                cadena = cadena + 'T 0 2 25 ' + Salto  + ' ' +element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 80 ' + Salto + ' ' + element.Talla  + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 150 ' + Salto + ' ' + descripcion  + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 390 ' + Salto + ' ' + element.Lote  + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 480 ' + Salto + ' ' + element.Master  + String.fromCharCode(13) + String.fromCharCode(10);
-              }
-              else {
-                cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 80 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 150 ' + Salto + ' ' +'' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 390 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'T 0 2 480 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
-            
-              }
-              Dbltotal += element.Master;
-              Salto += 30;
-              cadena = cadena + 'T 7 2 390 ' + '        ' + strSubtitulo + ' ' + Dbltotal.toString()+ String.fromCharCode(13) + String.fromCharCode(10) ;
-              cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
-            });
-
-            console.log('esta es la cadena Impime1',cadena);
-            for (let index = 0; index < Number(this.copias); index++) {
-              rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-              if (rsPrint) {
-                await this.presentAlert("Información", "Impresión realizada");
-              }
-   
-            }
-            
-
 
           }
-
-        }
-      });
+        });
         return resolve(true);
       });
 
@@ -529,12 +534,12 @@ export class DetalleConsultaPage implements OnInit {
     let user = await this._login.getuser();
     if (this.matric) {
       await this.showLoading("Cargando..");
-      await this.agregarColaPallet(sscc,user);
+      await this.agregarColaPallet(sscc, user);
       this.hideLoading();
-  
+
     }
-   
-   
+
+
     try {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
@@ -594,7 +599,7 @@ export class DetalleConsultaPage implements OnInit {
                     'T 7 1 150 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
                 }
-              
+
               } else {
                 if (inventario) {
                   cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -629,9 +634,9 @@ export class DetalleConsultaPage implements OnInit {
 
 
               this.rows.forEach(async element => {
-              
 
-              
+
+
                 if (Salto >= 750) {
                   cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -643,7 +648,7 @@ export class DetalleConsultaPage implements OnInit {
                   await this.presentAlert("Información", "Impresión realizada");
                   }*/
                   cadena = '';
- 
+
                   if (inventario) {
                     cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                       'TONE 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -666,7 +671,7 @@ export class DetalleConsultaPage implements OnInit {
                   }
                   Salto = 170;
                 }
-              
+
                 talla = element.Talla;
                 descripcion = element.Descri;
                 descripcion = descripcion + '                   ';
@@ -676,14 +681,14 @@ export class DetalleConsultaPage implements OnInit {
                   if (!primera) {
                     cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
                       'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
-                  
+
                     Totmas = 0;
                     Salto += 30;
                   }
                   DatoAnt = descripcion;
                   primera = false;
                   Salto += 30;
-                
+
                 }
                 cadena = cadena + 'T 0 2 25 ' + Salto + ' ' + element.Cod + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 0 2 135 ' + Salto + ' ' + element.Talla + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -697,7 +702,7 @@ export class DetalleConsultaPage implements OnInit {
                 'T 7 0 445 ' + Salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
               primera = false;
               Totmas = 0;
-            
+
               cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
                 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -709,8 +714,8 @@ export class DetalleConsultaPage implements OnInit {
                 await this.presentAlert("Información", "Impresión realizada");
                 cadena = '';
               }
- 
-            
+
+
 
 
             }
@@ -727,9 +732,9 @@ export class DetalleConsultaPage implements OnInit {
 
   }
 
-  async agregarColaPallet(sscc,usuario) {
+  async agregarColaPallet(sscc, usuario) {
     const valor = await new Promise(async (resolve) => {
-      this._detalle.colaImpresionPallet(sscc,usuario).subscribe((resp) => {
+      this._detalle.colaImpresionPallet(sscc, usuario).subscribe((resp) => {
         if (resp.Codigo) {
           if (Object.keys(resp.Dt).length > 0) {
             //this.embarques = resp.Dt.Table;
@@ -742,7 +747,7 @@ export class DetalleConsultaPage implements OnInit {
       });
     });
   }
-  
+
 
   async onPopUp() {
     this.loading = await this.showLoading('Cargando');

@@ -1972,7 +1972,7 @@ export class TransaccionesPage implements OnInit {
                         /* End If */
                       } else {
                         if (this.cmbTipoConv !== "CM") {
-                          this.presentAlert("Error", "Código ya ha sido leído");
+                          await this.presentAlert("Error", "Código ya ha sido leído");
                         }
                       }
 
@@ -2244,7 +2244,7 @@ export class TransaccionesPage implements OnInit {
               let strRes: [][] = resp.Dt.Table;
               if (strRes.length > 0) {
                 for (let ii = 0; ii < strRes.length; ii++) {
-                  debugger;
+                  //debugger;
                   produc1 = strRes[ii]["tcd_produc"].toString().trim();
                   talla1 = strRes[ii]["tcd_codtal"].toString().trim();
                   lote1 = strRes[ii]["tcd_lote"].toString().trim();
