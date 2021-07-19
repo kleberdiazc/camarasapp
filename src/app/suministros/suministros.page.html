@@ -9,17 +9,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content  class="forms-validations-content"  >
+<ion-content class="forms-validations-content">
   <form class="validations-form" [formGroup]="validationsForm" (ngSubmit)="onSubmit(validationsForm.value)">
     <ion-row>
       <ion-col size="12">
         <ion-item>
           <ion-label>Sello:</ion-label>
-          <ion-input  formControlName ="Sello" ></ion-input>
-        </ion-item> 
+          <ion-input formControlName="Sello"></ion-input>
+        </ion-item>
         <div class="error-container">
           <ng-container *ngFor="let validation of validations.Sello">
-            <div class="error-message" *ngIf="validationsForm.get('Sello').hasError(validation.type) && (validationsForm.get('Sello').dirty || validationsForm.get('Sello').touched)">
+            <div class="error-message"
+              *ngIf="validationsForm.get('Sello').hasError(validation.type) && (validationsForm.get('Sello').dirty || validationsForm.get('Sello').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
@@ -31,13 +32,14 @@
       <ion-col size="12">
         <ion-item>
           <ion-label>Item:</ion-label>
-          <ion-select placeholder=""  (ionChange)="change($event)"  formControlName ="Item"  interface="action-sheet">
-              <ion-select-option *ngFor="let it of Item"   [value]="it.CODIGO">{{it.DESCRIPCION}}</ion-select-option>
+          <ion-select placeholder="" (ionChange)="change($event)" formControlName="Item" interface="action-sheet">
+            <ion-select-option *ngFor="let it of Item" [value]="it.CODIGO">{{it.DESCRIPCION}}</ion-select-option>
           </ion-select>
         </ion-item>
         <div class="error-container">
           <ng-container *ngFor="let validation of validations.Item">
-            <div class="error-message" *ngIf="validationsForm.get('Item').hasError(validation.type) && (validationsForm.get('Item').dirty || validationsForm.get('Item').touched)">
+            <div class="error-message"
+              *ngIf="validationsForm.get('Item').hasError(validation.type) && (validationsForm.get('Item').dirty || validationsForm.get('Item').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
@@ -50,11 +52,12 @@
       <ion-col size="12">
         <ion-item>
           <ion-label>Cantidad:</ion-label>
-          <ion-input type="number" formControlName ="Cantidad" ></ion-input>
-        </ion-item> 
+          <ion-input type="number" formControlName="Cantidad"></ion-input>
+        </ion-item>
         <div class="error-container">
           <ng-container *ngFor="let validation of validations.Cantidad">
-            <div class="error-message" *ngIf="validationsForm.get('Cantidad').hasError(validation.type) && (validationsForm.get('Cantidad').dirty || validationsForm.get('Cantidad').touched)">
+            <div class="error-message"
+              *ngIf="validationsForm.get('Cantidad').hasError(validation.type) && (validationsForm.get('Cantidad').dirty || validationsForm.get('Cantidad').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
@@ -63,50 +66,54 @@
       </ion-col>
     </ion-row>
     <ion-row>
-        <ion-col size="12">
-          <ion-item>
-            <ion-label>B.Origen:</ion-label>
-            <ion-select placeholder=""  (ionChange)="changeOr($event)"  formControlName ="Origen"  interface="action-sheet">
-              <ion-select-option *ngFor="let or of Origen"   [value]="or.CODIGO">{{or.DESCRIPCION}}</ion-select-option>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>B.Origen:</ion-label>
+          <ion-select placeholder="" formControlName="Origen" interface="action-sheet">
+            <ion-select-option *ngFor="let or of Origen" [value]="or.CODIGO">{{or.DESCRIPCION}}</ion-select-option>
           </ion-select>
-      </ion-item>
-      <div class="error-container">
-        <ng-container *ngFor="let validation of validations.Origen">
-          <div class="error-message" *ngIf="validationsForm.get('Origen').hasError(validation.type) && (validationsForm.get('Origen').dirty || validationsForm.get('Origen').touched)">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            <span>{{ validation.message }}</span>
-          </div>
-        </ng-container>
-      </div>
-    </ion-col>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.Origen">
+            <div class="error-message"
+              *ngIf="validationsForm.get('Origen').hasError(validation.type) && (validationsForm.get('Origen').dirty || validationsForm.get('Origen').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col size="12">
         <ion-item>
-            <ion-label>B. Destino:</ion-label>
-          <ion-select placeholder=""  (ionChange)="changeDes($event)"  formControlName ="Destino"  interface="action-sheet">
-              <ion-select-option *ngFor="let des of Destino"   [value]="des.CODIGO">{{des.DESCRIPCION}}</ion-select-option>
+          <ion-label>B. Destino:</ion-label>
+          <ion-select placeholder="" formControlName="Destino" interface="action-sheet">
+            <ion-select-option *ngFor="let des of Destino" [value]="des.CODIGO">{{des.DESCRIPCION}}</ion-select-option>
           </ion-select>
-      </ion-item>
-      <div class="error-container">
-        <ng-container *ngFor="let validation of validations.Destino">
-          <div class="error-message" *ngIf="validationsForm.get('Destino').hasError(validation.type) && (validationsForm.get('Destino').dirty || validationsForm.get('Destino').touched)">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            <span>{{ validation.message }}</span>
-          </div>
-        </ng-container>
-      </div>
-    </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">Guardar</ion-button>
+        </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.Destino">
+            <div class="error-message"
+              *ngIf="validationsForm.get('Destino').hasError(validation.type) && (validationsForm.get('Destino').dirty || validationsForm.get('Destino').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-button class="submit-btn" (click)="imprimirConsu()" expand="block" fill="outline" [disabled]="!validationsForm.valid">Imprimir</ion-button>
+        <ion-button class="submit-btn" type="submit" expand="block" fill="outline" [disabled]="!validationsForm.valid">
+          Guardar</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="submit-btn" (click)="imprimirConsu()" expand="block" fill="outline"
+          [disabled]="!validationsForm.valid">Imprimir</ion-button>
       </ion-col>
     </ion-row>
   </form>

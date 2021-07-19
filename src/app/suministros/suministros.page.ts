@@ -68,7 +68,8 @@ export class SuministrosPage implements OnInit {
       'Cantidad': new FormControl('', Validators.compose([
         Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
-      ])),
+      ]))
+      ,
       'Origen': new FormControl('', Validators.compose([
         //Validators.required,
         // Validators.pattern('^([-+,0-9.]+)')
@@ -135,7 +136,14 @@ export class SuministrosPage implements OnInit {
     });
     this.hideLoading();
     //this.removeValidators(this.validationsForm);
-    this.validationsForm.reset();
+    this.validationsForm.reset({
+      'Sello': '',
+      'Item': '',
+      'Cantidad': '',
+      'Origen': null,
+      'Destino': null
+    });
+
   }
 
 
@@ -150,15 +158,17 @@ export class SuministrosPage implements OnInit {
     this.itemName = item.DESCRIPCION;
   }
 
-  changeOr($event) {
+  /* changeOr($event) {
+    debugger;
     var item = this.Origen.find(item => item['CODIGO'] === $event.target.value);
     this.origenName = item.DESCRIPCION;
   }
 
   changeDes($event) {
+    debugger;
     var item = this.Destino.find(item => item['CODIGO'] === $event.target.value);
     this.destinoName = item.DESCRIPCION;
-  }
+  } */
   async imprimir(tipo) {
 
 
