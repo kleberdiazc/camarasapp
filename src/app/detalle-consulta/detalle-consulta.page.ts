@@ -134,7 +134,7 @@ export class DetalleConsultaPage implements OnInit {
     const valor = await new Promise(async (resolve) => {
       this._detalle.ConsultarDetalle(resum, this.data.sscc).subscribe((resp) => {
         if (resp.Codigo) {
-
+          console.log("ok");
           if (Object.keys(resp.Dt).length > 0) {
             let dt: [][] = resp.Dt.Table;
             if (resp.Dt.Table.length > 0) {
@@ -286,12 +286,16 @@ export class DetalleConsultaPage implements OnInit {
     try {
       await this.showLoading("Imprimiendo...");
       let rsPrint: any = false;
-      this._detalle.obtieneFechaHora().subscribe((resp) => {
-        let fecha = [];
-        fecha = resp.Dt.Table;
-        fechaMovil = fecha[0]["fecha"];
-        horaMovil = fecha[0]["hora"];
-        formaPallet = fecha[0]["FechaFormatPallet"];
+
+      const v1 = await new Promise(async (resolve) => {
+        this._detalle.obtieneFechaHora().subscribe((resp) => {
+          let fecha = [];
+          fecha = resp.Dt.Table;
+          fechaMovil = fecha[0]["fecha"];
+          horaMovil = fecha[0]["hora"];
+          formaPallet = fecha[0]["FechaFormatPallet"];
+          return resolve(true);
+        });
       });
 
       const v2 = await new Promise(async (resolve) => {
@@ -347,7 +351,7 @@ export class DetalleConsultaPage implements OnInit {
                   'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'BOX 188 215 258 520 1' + String.fromCharCode(13) + String.fromCharCode(10) +
                   'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  + 'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+                  'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
               }
 
               console.log('esta es la cadena Pallet', cadena);
@@ -360,13 +364,17 @@ export class DetalleConsultaPage implements OnInit {
             }
 
           }
+          return resolve(true);
         })
-        return resolve(true);
+
       });
+
+      this.hideLoading();
     } catch (error) {
       await this.presentAlert("Error", error);
+      this.hideLoading();
     }
-    this.hideLoading();
+
 
 
 
@@ -383,21 +391,12 @@ export class DetalleConsultaPage implements OnInit {
       const v2 = await new Promise(async (resolve) => {
         this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
           if (resp.Codigo.toString() == 'false') {
-            const alert = await this.alertController.create({
-              header: 'Error!',
-              message: resp.Description,
-              buttons: ['OK']
-            });
-            await alert.present();
+            await this.presentAlert("Error", resp.Description);
 
           } else {
             if (resp.Dt.Table.length = 0) {
-              const alert = await this.alertController.create({
-                header: 'Error!',
-                message: 'No existen el codigo SSCC',
-                buttons: ['OK']
-              });
-              await alert.present();
+
+              await this.presentAlert("Error", "No existen el codigo SSCC");
             } else {
               let oculta = (await this._param.getvaluesOculta() == 'true');
               let inventario = (await this._param.getvaluesInventario() == 'true');
@@ -425,7 +424,7 @@ export class DetalleConsultaPage implements OnInit {
                     'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                    'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 194 115 Detalle 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
                 } else {
                   cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -437,7 +436,7 @@ export class DetalleConsultaPage implements OnInit {
                     'T 7 1 65 14 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 0 2 104 57 ' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 184 84 ' + String.fromCharCode(13) + String.fromCharCode(10) +
-                    'T 7 0 194 115         ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 194 115         00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 22 135                                             ' + String.fromCharCode(13) + String.fromCharCode(10);
                 }
 
@@ -449,7 +448,7 @@ export class DetalleConsultaPage implements OnInit {
                     'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
                     ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                    'T 7 0 194 115 Detalle ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 0 194 115 Detalle 00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 22 135 Cód  Talla Descripción         Lote  Total' + String.fromCharCode(13) + String.fromCharCode(10);
                 } else {
                   cadena = cadena + '! 0 200 200 800 1' + String.fromCharCode(13) + String.fromCharCode(10) + 'LABEL' + String.fromCharCode(13) + String.fromCharCode(10) + 'CONTRAST 0' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -458,7 +457,7 @@ export class DetalleConsultaPage implements OnInit {
                     'PAGE-WIDTH 560' + String.fromCharCode(13) + String.fromCharCode(10) +
                     'BAR-SENSE' + String.fromCharCode(13) + String.fromCharCode(10) +
                     ';// PAGE 0000000005600800' + String.fromCharCode(13) + String.fromCharCode(10) +
-                    'T 7 1 194 115  ' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
+                    'T 7 1 194 115  00' + sscc + String.fromCharCode(13) + String.fromCharCode(10) + String.fromCharCode(13) + String.fromCharCode(10) +
                     'T 7 0 22 135                                           ' + String.fromCharCode(13) + String.fromCharCode(10);
                 }
               }
@@ -496,29 +495,31 @@ export class DetalleConsultaPage implements OnInit {
                 }
                 Dbltotal += element.Master;
                 Salto += 30;
-                cadena = cadena + 'T 7 2 390 ' + '        ' + strSubtitulo + ' ' + Dbltotal.toString() + String.fromCharCode(13) + String.fromCharCode(10);
-                cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
-                  'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
+
               });
+
+              cadena = cadena + 'T 7 2 390 ' + Salto + '        ' + strSubtitulo + ' ' + Dbltotal.toString() + String.fromCharCode(13) + String.fromCharCode(10);
+              Salto += 30;
+              cadena = cadena + 'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
+                'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
 
               console.log('esta es la cadena Impime1', cadena);
               for (let index = 0; index < Number(this.copias); index++) {
                 rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-                if (rsPrint) {
-                  await this.presentAlert("Información", "Impresión realizada");
-                }
-
               }
 
-
+              if (rsPrint) {
+                await this.presentAlert("Información", "Impresión realizada");
+              }
 
             }
 
           }
+          return resolve(true);
         });
-        return resolve(true);
+
       });
 
 
@@ -533,10 +534,11 @@ export class DetalleConsultaPage implements OnInit {
     let sscc = this.data.sscc;
     let user = await this._login.getuser();
     if (this.matric) {
-      await this.showLoading("Cargando..");
+      await this.showLoading("Imprimiendo..");
       await this.agregarColaPallet(sscc, user);
+      await this.presentAlert("Información", "Enviada a la cola de Impresión");
       this.hideLoading();
-
+      return;
     }
 
 
@@ -546,21 +548,12 @@ export class DetalleConsultaPage implements OnInit {
       const v2 = await new Promise(async (resolve) => {
         this._detalle.consultaCajas(sscc).subscribe(async (resp) => {
           if (resp.Codigo.toString() == 'false') {
-            const alert = await this.alertController.create({
-              header: 'Error!',
-              message: resp.Description,
-              buttons: ['OK']
-            });
-            await alert.present();
 
+            await this.presentAlert("Error", resp.Description);
           } else {
             if (resp.Dt.Table.length = 0) {
-              const alert = await this.alertController.create({
-                header: 'Error!',
-                message: 'No existen el codigo SSCC',
-                buttons: ['OK']
-              });
-              await alert.present();
+
+              await this.presentAlert("Error", "No existen el codigo SSCC");
             } else {
               let oculta = (await this._param.getvaluesOculta() == 'true');
               let inventario = (await this._param.getvaluesInventario() == 'true');
@@ -695,7 +688,7 @@ export class DetalleConsultaPage implements OnInit {
                   'T 0 3 290 ' + Salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
                   'T 0 2 445 ' + Salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
 
-                Totmas = element.Master;
+                Totmas = Totmas + Number(element.Master);
                 Salto += 30;
               });
               cadena = cadena + 'T 7 0 290 ' + Salto + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
@@ -715,14 +708,12 @@ export class DetalleConsultaPage implements OnInit {
                 cadena = '';
               }
 
-
-
-
             }
 
           }
+          return resolve(true);
         });
-        return resolve(true);
+
       });
 
     } catch (error) {

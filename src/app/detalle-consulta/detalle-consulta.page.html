@@ -42,19 +42,19 @@
         <ion-list>
           <ion-item>
             <ion-label position="fixed">{{tipo}}</ion-label>
-            <ion-input [(ngModel)]="totalcant"></ion-input>
+            <ion-input [readonly]="true" [(ngModel)]="totalcant"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="fixed">Codigo</ion-label>
-            <ion-input>{{codigo}}</ion-input>
+            <ion-input [readonly]="true">{{codigo}}</ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="fixed">Talla</ion-label>
-            <ion-input>{{talla}}</ion-input>
+            <ion-input [readonly]="true">{{talla}}</ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="fixed">Descripción</ion-label>
-            <ion-input>{{Descri}}</ion-input>
+            <ion-input [readonly]="true">{{Descri}}</ion-input>
           </ion-item>
 
         </ion-list>
@@ -65,7 +65,7 @@
         <ion-list>
           <ion-item>
             <ion-label position="fixed">Lote</ion-label>
-            <ion-input>{{Lote}}</ion-input>
+            <ion-input [readonly]="true">{{Lote}}</ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -75,7 +75,7 @@
         <ion-list>
           <ion-item>
             <ion-label position="fixed">Pallet</ion-label>
-            <ion-input>{{Pallet}}</ion-input>
+            <ion-input [readonly]="true">{{Pallet}}</ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -86,7 +86,7 @@
         <ion-list>
           <ion-item>
             <ion-label position="fixed" Text="Total">total</ion-label>
-            <ion-input>{{Total}}</ion-input>
+            <ion-input [readonly]="true">{{Total}}</ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -97,21 +97,21 @@
         <ion-list>
           <ion-item>
             <ion-label position="fixed">Bodega</ion-label>
-            <ion-input>{{bodega}}</ion-input>
+            <ion-input [readonly]="true">{{bodega}}</ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="6">
+      <ion-col size="9">
         <ion-list>
           <ion-item>
             <ion-label position="fixed">Saldo</ion-label>
-            <ion-input>{{saldo}}</ion-input>
+            <ion-input [readonly]="true">{{saldo}}</ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
-      <ion-col size="6">
+      <ion-col size="3">
         <ion-item>
           <ion-button (click)="onPopUp()" expand="block" fill="outline">...</ion-button>
         </ion-item>

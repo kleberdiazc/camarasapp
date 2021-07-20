@@ -68,9 +68,8 @@ export class DetallePalletService {
   }
 
   DetalleTransac(NUMTRA: string) {
-    let numero: string = '' + NUMTRA + ''
 
-    const ListParam = [{ "Name": "tran", "Type": "NVarchar", "Value": numero },
+    const ListParam = [{ "Name": "tran", "Type": "NVarchar", "Value": NUMTRA.toString() },
     ];
     const base = {
       sp: 'spr_dettrans',
@@ -84,9 +83,8 @@ export class DetallePalletService {
   }
 
   getTransac(NUMTRA: string) {
-    let numero: string = '' + NUMTRA + ''
 
-    const ListParam = [{ "Name": "pallet", "Type": "Varchar", "Value": numero },
+    const ListParam = [{ "Name": "pallet", "Type": "Varchar", "Value": NUMTRA.toString() },
     ];
     const base = {
       sp: 'sp_gettransac',

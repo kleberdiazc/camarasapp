@@ -20,7 +20,7 @@ export class DetallePalletPage implements OnInit {
   consulta: string;
   rows = [];
   columns = [];
-  
+
   loading: any = this.loadingController.create();
   Descripcion = '';
   validations = {
@@ -110,7 +110,7 @@ export class DetallePalletPage implements OnInit {
       }
       else {
         //this.loading = this.presentLoading('Cargando');
-        const valor = await new Promise(async (resolve) => {
+        const valor2 = await new Promise(async (resolve) => {
           this._detalle.DetalleTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
 
             if (resp.Codigo) {
@@ -128,7 +128,7 @@ export class DetallePalletPage implements OnInit {
                     });
                   }
                   this.columns = JSON.parse(JSON.stringify(ColumnData));
-                  this.rows = resp.Dt.Table;
+                  this.rows = JSON.parse(JSON.stringify(resp.Dt.Table));
 
                 }
               }
@@ -141,11 +141,11 @@ export class DetallePalletPage implements OnInit {
 
         });
 
-        if (!valor) {
+        if (!valor2) {
           return resolve(true);
         }
 
-        const valor2 = await new Promise(async (resolve) => {
+        const valor3 = await new Promise(async (resolve) => {
           this._detalle.getTransac(this.validationsForm.get('sscc').value).subscribe(async (resp) => {
 
             if (resp.Codigo) {
@@ -155,19 +155,16 @@ export class DetallePalletPage implements OnInit {
                   let detalle: [][] = resp.Dt.Table;
                   this.Descripcion = detalle[0]["Tipo"] + " " + detalle[0]["Resp"] + " " + detalle[0]["Bod1"]
                     + " " + detalle[0]["fecha"];
-
                 }
               }
-              return resolve(true);
             } else {
               this.presentAlert("Error", resp.Description);
-              return resolve(true);
             }
+            return resolve(true);
           });
         });
 
         return resolve(true);
-
       }
     });
 
@@ -200,6 +197,7 @@ export class DetallePalletPage implements OnInit {
         let descripcion: string;
         let datoAnt: string = '';
         let primera: boolean = true;
+        let masters: number = 0;
 
         this.rows.forEach(element => {
           console.log(element);
@@ -221,10 +219,10 @@ export class DetallePalletPage implements OnInit {
             salto = 170;
           }
 
+          masters = Number(element[Object.keys(element).find(x => x.toString().toUpperCase() === "MSTRS" || x.toString().toUpperCase() === "MASTER")])
+          talla = element[Object.keys(element).find(x => x.toString().toUpperCase() === "TALLA")];
 
-          talla = element.Talla;
-
-          descripcion = element.Descri;
+          descripcion = element[Object.keys(element).find(x => x.toString().toUpperCase() === "PRODUCTO" || x.toString().toUpperCase() === "DESCRI")];
           //falta subtring 20
           descripcion = descripcion + '                   ';
           descripcion = descripcion.substring(0, 20);
@@ -239,12 +237,12 @@ export class DetallePalletPage implements OnInit {
               salto += 30;
             }
             datoAnt = descripcion;
-            cadena = cadena + 'T 7 0 25 ' + salto + ' ' + '' + String.fromCharCode(13) + String.fromCharCode(10);
+            cadena = cadena + 'T 7 0 25 ' + salto + '' + String.fromCharCode(13) + String.fromCharCode(10);
             salto += 30;
           }
-          cadena = cadena + 'T 0 2 290 ' + salto + ' ' + element.Lote + String.fromCharCode(13) + String.fromCharCode(10) +
-            'T 0 2 445 ' + salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
-          Totmas += Number(element.Master);
+          cadena = cadena + 'T 0 2 290 ' + salto + ' ' + element[Object.keys(element).find(x => x.toString().toUpperCase() === "LOTE")] + String.fromCharCode(13) + String.fromCharCode(10) +
+            'T 0 2 445 ' + salto + ' ' + masters.toString() + String.fromCharCode(13) + String.fromCharCode(10);
+          Totmas += masters;
           salto += 30
 
 
@@ -259,16 +257,16 @@ export class DetallePalletPage implements OnInit {
           'BT 0 1 0' + String.fromCharCode(13) + String.fromCharCode(10) +
           'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
           'PRINT' + String.fromCharCode(13) + String.fromCharCode(10);
-          console.log('detalle pallet 1 ',cadena);
-          rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
-          if (rsPrint) {
-            await this.presentAlert("Información", "Impresión realizada");
-          }
-        
-          return resolve(true); 
+        console.log('detalle pallet 1 ', cadena);
+        rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
+        if (rsPrint) {
+          await this.presentAlert("Información", "Impresión realizada");
+        }
+
+        return resolve(true);
       });
 
-        
+
 
     } catch (error) {
       await this.presentAlert("Error", error);
@@ -345,6 +343,7 @@ export class DetallePalletPage implements OnInit {
         let descripcion: string;
         let datoAnt: string = '';
         let primera: boolean = true;
+        let masters: number = 0;
 
         this.rows.forEach(element => {
           if (salto >= 750) {
@@ -363,8 +362,10 @@ export class DetallePalletPage implements OnInit {
               'T 7 0 22 135' + String.fromCharCode(13) + String.fromCharCode(10);
             salto = 170;
           }
-          talla = element.Talla;
-          descripcion = element.Description;
+          masters = Number(element[Object.keys(element).find(x => x.toString().toUpperCase() === "MSTRS" || x.toString().toUpperCase() === "MASTER")])
+          talla = element[Object.keys(element).find(x => x.toString().toUpperCase() === "TALLA")];
+
+          descripcion = element[Object.keys(element).find(x => x.toString().toUpperCase() === "PRODUCTO" || x.toString().toUpperCase() === "DESCRI")];
           //falta subtring 20
           descripcion = descripcion + '                   ';
           descripcion = descripcion.substring(0, 20);
@@ -373,7 +374,7 @@ export class DetallePalletPage implements OnInit {
           if (datoAnt != descripcion) {
             if (!primera) {
               cadena = (cadena + 'T 7 0 290 ' + salto + ' ' + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
-              'T 7 0 290 ' + salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10));
+                'T 7 0 290 ' + salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10));
 
               Totmas = 0;
               salto += 30;
@@ -382,17 +383,17 @@ export class DetallePalletPage implements OnInit {
             cadena = cadena + 'T 7 0 25 ' + salto + ' ' + '' + String.fromCharCode(13) + String.fromCharCode(10);
             primera = false;
             salto += 30;
-  
-            
+
+
           }
-          cadena = cadena + 'T 7 0 290 ' + salto + ' ' + element.Lote+ String.fromCharCode(13) + String.fromCharCode(10) + 
-          'T 7 0 445 ' + salto + ' ' + element.Master + String.fromCharCode(13) + String.fromCharCode(10);
+          cadena = cadena + 'T 7 0 290 ' + salto + ' ' + element[Object.keys(element).find(x => x.toString().toUpperCase() === "LOTE")] + String.fromCharCode(13) + String.fromCharCode(10) +
+            'T 7 0 445 ' + salto + ' ' + masters.toString() + String.fromCharCode(13) + String.fromCharCode(10);
           primera = false;
-          Totmas = Totmas + element.Master;
+          Totmas = Totmas + masters;
           salto += 30;
 
         });
-        cadena = cadena + 'T 7 0 290 ' + salto + ' ' + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) + 
+        cadena = cadena + 'T 7 0 290 ' + salto + ' ' + '      ->' + String.fromCharCode(13) + String.fromCharCode(10) +
           'T 7 0 445 ' + salto + ' ' + Totmas + String.fromCharCode(13) + String.fromCharCode(10);
         primera = false;
         Totmas = 0;
@@ -402,7 +403,7 @@ export class DetallePalletPage implements OnInit {
           'BT OFF' + String.fromCharCode(13) + String.fromCharCode(10) +
           'PRINT' + String.fromCharCode(13) + String.fromCharCode(10) +
 
-          console.log('DETALLE PALLET 2',cadena);
+          console.log('DETALLE PALLET 2', cadena);
         rsPrint = await this._detalle.printer(cadena, await this._param.getvaluesMac());
         if (rsPrint) {
           await this.presentAlert("Información", "Impresión realizada");
